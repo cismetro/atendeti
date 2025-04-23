@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Chamados - Saúde</title>
+    <style>
+        :root {
+            --primary-color: #4fc9c4;
+            --primary-dark: #36afaa;
+            --secondary-color: #f8f9fa;
+            --text-color: #333;
+            --border-color: #ddd;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: var(--text-color);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        nav {
+            display: flex;
+            margin: 15px 0;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        nav button {
+            flex: 1;
+            background-color: transparent;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        nav button:hover {
+            background-color: #e0e0e0;
+        }
+
+        nav button.active {
+            background-color: var(--secondary-color);
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            display: inline-block;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: middle;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-info {
+            background-color: var(--info-color);
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        table th {
+            background-color: var(--secondary-color);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .badge-primary {
+            background-color: var(--primary-color);
+        }
+
+        .badge-success {
+            background-color: var(--success-color);
+        }
+
+        .badge-warning {
+            background-color: var(--warning-color);
+            color: #212529;
+        }
+
+        .badge-danger {
+            background-color: var(--danger-color);
+        }
+
+        .badge-info {
+            background-color: var(--info-color);
+        }
+
+        .badge-secondary {
+            background-color: #6c757d;
+        }
+
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 200px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .stats-container {
+                flex-direction: column;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            .responsive-table {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Sistema de Chamados - Saúde</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <button id="btn-novo-chamado" class="active">Novo Chamado</button>
+            <button id="btn-meus-chamados">Meus Chamados</button>
+            <button id="btn-dashboard">Dashboard</button>
+        </nav>
+
+        <!-- Novo Chamado -->
+        <div id="novo-chamado" class="section">
+            <h2>Abrir Novo Chamado</h2>
+            <form id="form-chamado">
+                <div class="form-group">
+                    <label for="setor-origem">Setor de Origem:</label>
+                    <select id="setor-origem" required>
+                        <option value="">Selecione o setor</option>
+                        <option value="UBS CSII - Centro">UBS CSII - Centro</option>
+                        <option value="UBS Jardim de Fáveri">UBS Jardim de Fáveri</option>
+                        <option value="UBS / PSF Andorinhas">UBS / PSF Andorinhas</option>
+                        <option value="UBS / PSF Beto Spana">UBS / PSF Beto Spana</option>
+                        <option value="PSF Cosmópolis I">PSF Cosmópolis I</option>
+                        <option value="PSF Vila Cosmos">PSF Vila Cosmos</option>
+                        <option value="PSF Henrique Scursoni Neto">PSF Henrique Scursoni Neto</option>
+                        <option value="PSF Sidney Alves Aranha TIDE">PSF Sidney Alves Aranha TIDE</option>
+                        <option value="UBS Nosso Teto">UBS Nosso Teto</option>
+                        <option value="AME">AME - Atendimento Médico Especializado</option>
+                        <option value="CERC">CERC - Centro de Reabilitação</option>
+                        <option value="CEO">CEO - Centro de Especialidades Odontológicas</option>
+                        <option value="CAPS Adulto">CAPS Adulto</option>
+                        <option value="CAPS i">CAPS i - CAPS Infantil</option>
+                        <option value="Vigilância Epidemiológica">Vigilância Epidemiológica (VE)</option>
+                        <option value="CTA">CTA - Centro de Testagem e Aconselhamento</option>
+                        <option value="NUESA">NUESA - Núcleo de Educação em Saúde</option>
+                        <option value="Farmácia Municipal">Farmácia Municipal</option>
+                        <option value="SAD">SAD - Sistema de Atendimento Domiciliar</option>
+                        <option value="Secretaria de Saúde">Secretaria de Saúde</option>
+                        <option value="Central de Regulação">Central de Regulação e Agendamento</option>
+                        <option value="Central CROSS">Central de Gerenciamento CROSS / Serviço Social</option>
+                        <option value="Central de Transportes">Central de Transportes e Ambulâncias</option>
+                        <option value="Almoxarifado">Almoxarifado</option>
+                        <option value="Vigilância Sanitária">Vigilância Sanitária (VISA)</option>
+                        <option value="Zoonoses">Zoonoses</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="setor-destino">Setor de Destino:</label>
+                    <select id="setor-destino" required>
+                        <option value="">Selecione o setor</option>
+                        <option value="TI">TI</option>
+                        <option value="Manutenção">Manutenção</option>
+                        <option value="Almoxarifado">Almoxarifado</option>
+                        <option value="Recursos Humanos">Recursos Humanos</option>
+                        <option value="Secretaria">Secretaria</option>
+                        <option value="Transporte">Transporte</option>
+                        <option value="Farmácia Municipal">Farmácia Municipal</option>
+                        <option value="Vigilância Sanitária">Vigilância Sanitária</option>
+                        <option value="Vigilância Epidemiológica">Vigilância Epidemiológica</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="tipo-chamado">Tipo de Chamado:</label>
+                    <select id="tipo-chamado" required>
+                        <option value="">Selecione o tipo</option>
+                        <option value="Problema de TI">Problema de TI</option>
+                        <option value="Manutenção Predial">Manutenção Predial</option>
+                        <option value="Solicitação de Material">Solicitação de Material</option>
+                        <option value="Solicitação de Transporte">Solicitação de Transporte</option>
+                        <option value="Problema em Equipamento">Problema em Equipamento</option>
+                        <option value="Solicitação de Documento">Solicitação de Documento</option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="prioridade">Prioridade:</label>
+                    <select id="prioridade" required>
+                        <option value="Baixa">Baixa</option>
+                        <option value="Média">Média</option>
+                        <option value="Alta">Alta</option>
+                        <option value="Urgente">Urgente</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="assunto">Assunto:</label>
+                    <input type="text" id="assunto" required placeholder="Digite um título para o chamado">
+                </div>
+
+                <div class="form-group">
+                    <label for="descricao">Descrição:</label>
+                    <textarea id="descricao" required placeholder="Descreva detalhadamente o problema ou solicitação"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Abrir Chamado</button>
+            </form>
+        </div>
+
+        <!-- Meus Chamados -->
+        <div id="meus-chamados" class="section hidden">
+            <h2>Meus Chamados</h2>
+            <div class="responsive-table">
+                <table id="tabela-chamados">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Assunto</th>
+                            <th>Setor Destino</th>
+                            <th>Data</th>
+                            <th>Prioridade</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dados serão inseridos dinamicamente via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="section hidden">
+            <h2>Dashboard</h2>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h3>Total de Chamados</h3>
+                    <div id="total-chamados" class="stat-value">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Em Aberto</h3>
+                    <div id="em-aberto" class="stat-value">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Em Andamento</h3>
+                    <div id="em-andamento" class="stat-value">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Resolvidos</h3>
+                    <div id="resolvidos" class="stat-value">0</div>
+                </div>
+            </div>
+
+            <h3>Chamados por Setor</h3>
+            <div class="responsive-table">
+                <table id="tabela-setores">
+                    <thead>
+                        <tr>
+                            <th>Setor</th>
+                            <th>Total</th>
+                            <th>Em Aberto</th>
+                            <th>Tempo Médio (horas)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dados serão inseridos dinamicamente via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Modal para detalhes do chamado -->
+        <div id="modal-detalhes" class="modal hidden">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Detalhes do Chamado</h2>
+                <div id="detalhes-chamado"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos de navegação
+            const btnNovoChamado = document.getElementById('btn-novo-chamado');
+            const btnMeusChamados = document.getElementById('btn-meus-chamados');
+            const btnDashboard = document.getElementById('btn-dashboard');
+            
+            // Seções
+            const secaoNovoChamado = document.getElementById('novo-chamado');
+            const secaoMeusChamados = document.getElementById('meus-chamados');
+            const secaoDashboard = document.getElementById('dashboard');
+            
+            // Formulário
+            const formChamado = document.getElementById('form-chamado');
+            
+            // Função para trocar entre seções
+            function mostrarSecao(secao) {
+                // Esconde todas as seções
+                secaoNovoChamado.classList.add('hidden');
+                secaoMeusChamados.classList.add('hidden');
+                secaoDashboard.classList.add('hidden');
+                
+                // Remove a classe 'active' de todos os botões
+                btnNovoChamado.classList.remove('active');
+                btnMeusChamados.classList.remove('active');
+                btnDashboard.classList.remove('active');
+                
+                // Mostra a seção selecionada
+                if (secao === 'novo-chamado') {
+                    secaoNovoChamado.classList.remove('hidden');
+                    btnNovoChamado.classList.add('active');
+                } else if (secao === 'meus-chamados') {
+                    secaoMeusChamados.classList.remove('hidden');
+                    btnMeusChamados.classList.add('active');
+                    carregarChamados();
+                } else if (secao === 'dashboard') {
+                    secaoDashboard.classList.remove('hidden');
+                    btnDashboard.classList.add('active');
+                    atualizarDashboard();
+                }
+            }
+            
+            // Adiciona eventos aos botões de navegação
+            btnNovoChamado.addEventListener('click', () => mostrarSecao('novo-chamado'));
+            btnMeusChamados.addEventListener('click', () => mostrarSecao('meus-chamados'));
+            btnDashboard.addEventListener('click', () => mostrarSecao('dashboard'));
+            
+            // Inicializa o array de chamados no localStorage se não existir
+            if (!localStorage.getItem('chamados')) {
+                localStorage.setItem('chamados', JSON.stringify([]));
+            }
+            
+            // Função para gerar um ID único para o chamado
+            function gerarId() {
+                const chamados = JSON.parse(localStorage.getItem('chamados'));
+                if (chamados.length === 0) return 1;
+                return Math.max(...chamados.map(c => c.id)) + 1;
+            }
+            
+            // Event listener para o formulário de novo chamado
+            formChamado.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const setorOrigem = document.getElementById('setor-origem').value;
+                const setorDestino = document.getElementById('setor-destino').value;
+                const tipoChamado = document.getElementById('tipo-chamado').value;
+                const prioridade = document.getElementById('prioridade').value;
+                const assunto = document.getElementById('assunto').value;
+                const descricao = document.getElementById('descricao').value;
+                
+                // Cria um novo chamado
+                const novoChamado = {
+                    id: gerarId(),
+                    setorOrigem,
+                    setorDestino,
+                    tipoChamado,
+                    prioridade,
+                    assunto,
+                    descricao,
+                    dataAbertura: new Date().toISOString(),
+                    status: 'Em aberto',
+                    historico: [
+                        {
+                            data: new Date().toISOString(),
+                            acao: 'Abertura do chamado',
+                            detalhes: 'Chamado aberto pelo setor ' + setorOrigem
+                        }
+                    ]
+                };
+                
+                // Recupera os chamados existentes
+                const chamados = JSON.parse(localStorage.getItem('chamados'));
+                
+                // Adiciona o novo chamado
+                chamados.push(novoChamado);
+                
+                // Salva no localStorage
+                localStorage.setItem('chamados', JSON.stringify(chamados));
+                
+                // Limpa o formulário
+                formChamado.reset();
+                
+                // Mostra mensagem de sucesso
+                alert('Chamado aberto com sucesso! Número do chamado: #' + novoChamado.id);
+                
+                // Redireciona para a seção 'Meus Chamados'
+                mostrarSecao('meus-chamados');
+            });
+            
+            // Função para formatar data ISO para exibição
+            function formatarData(dataISO) {
+                const data = new Date(dataISO);
+                return data.toLocaleDateString('pt-BR');
+            }
+            
+            // Função para carregar os chamados na tabela
+            function carregarChamados() {
+                const chamados = JSON.parse(localStorage.getItem('chamados'));
+                const tbody = document.querySelector('#tabela-chamados tbody');
+                
+                // Limpa a tabela
+                tbody.innerHTML = '';
+                
+                // Ordena os chamados por data (mais recente primeiro)
+                chamados.sort((a, b) => new Date(b.dataAbertura) - new Date(a.dataAbertura));
+                
+                // Adiciona cada chamado à tabela
+                chamados.forEach(chamado => {
+                    const tr = document.createElement('tr');
+                    
+                    // Classe de status para o badge
+                    let statusClass = '';
+                    switch(chamado.status) {
+                        case 'Em aberto':
+                            statusClass = 'badge-warning';
+                            break;
+                        case 'Em andamento':
+                            statusClass = 'badge-info';
+                            break;
+                        case 'Resolvido':
+                            statusClass = 'badge-success';
+                            break;
+                        case 'Fechado':
+                            statusClass = 'badge-secondary';
+                            break;
+                    }
+                    
+                    tr.innerHTML = `
+                        <td>#${chamado.id}</td>
+                        <td>${chamado.assunto}</td>
+                        <td>${chamado.setorDestino}</td>
+                        <td>${formatarData(chamado.dataAbertura)}</td>
+                        <td>${chamado.prioridade}</td>
+                        <td><span class="badge ${statusClass}">${chamado.status}</span></td>
+                        <td>
+                            <button class="btn btn-success btn-ver" data-id="${chamado.id}">Ver</button>
+                        </td>
+                    `;
+                    
+                    tbody.appendChild(tr);
+                });
+                
+                // Adiciona evento aos botões "Ver"
+                document.querySelectorAll('.btn-ver').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.getAttribute('data-id'));
+                        visualizarChamado(id);
+                    });
+                });
+            }
+            
+            // Função para visualizar detalhes de um chamado
+            function visualizarChamado(id) {
+                const chamados = JSON.parse(localStorage.getItem('chamados'));
+                const chamado = chamados.find(c => c.id === id);
+                
+                if (!chamado) {
+                    alert('Chamado não encontrado!');
+                    return;
+                }
+                
+                // Simular a abertura de uma nova página ou modal
+                alert(`
+                    Detalhes do Chamado #${chamado.id}
+                    
+                    Assunto: ${chamado.assunto}
+                    
+                    Setor de Origem: ${chamado.setorOrigem}
+                    Setor de Destino: ${chamado.setorDestino}
+                    
+                    Tipo: ${chamado.tipoChamado}
+                    Prioridade: ${chamado.prioridade}
+                    Status: ${chamado.status}
+                    
+                    Data de Abertura: ${formatarData(chamado.dataAbertura)}
+                    
+                    Descrição:
+                    ${chamado.descricao}
+                    
+                    Histórico:
+                    ${chamado.historico.map(h => `- ${formatarData(h.data)}: ${h.acao}`).join('\n')}
+                `);
+                
+                // Em um sistema real, você poderia abrir um modal ou uma nova página
+            }
+            
+            // Função para atualizar o dashboard
+            function atualizarDashboard() {
+                const chamados = JSON.parse(localStorage.getItem('chamados'));
+                
+                // Contadores
+                let total = chamados.length;
+                let emAberto = chamados.filter(c => c.status === 'Em aberto').length;
+                let emAndamento = chamados.filter(c => c.status === 'Em andamento').length;
+                let resolvidos = chamados.filter(c => c.status === 'Resolvido' || c.status === 'Fechado').length;
+                
+                // Atualiza os contadores no dashboard
+                document.getElementById('total-chamados').textContent = total;
+                document.getElementById('em-aberto').textContent = emAberto;
+                document.getElementById('em-andamento').textContent = emAndamento;
+                document.getElementById('resolvidos').textContent = resolvidos;
+                
+                // Estatísticas por setor
+                const setores = {};
+                
+                chamados.forEach(chamado => {
+                    const setor = chamado.setorDestino;
+                    
+                    if (!setores[setor]) {
+                        setores[setor] = {
+                            total: 0,
+                            emAberto: 0,
+                            tempoMedio: 0, // Em horas
+                            tempoTotal: 0
+                        };
+                    }
+                    
+                    setores[setor].total += 1;
+                    
+                    if (chamado.status === 'Em aberto') {
+                        setores[setor].emAberto += 1;
+                    }
+                    
+                    // Calcula tempo médio (para chamados resolvidos)
+                    if (chamado.status === 'Resolvido' || chamado.status === 'Fechado') {
+                        // Simula uma data de resolução (em um sistema real, isso viria do banco de dados)
+                        const dataResolucao = new Date(chamado.dataAbertura);
+                        dataResolucao.setHours(dataResolucao.getHours() + Math.floor(Math.random() * 72)); // 0-72 horas
+                        
+                        const tempoResolucao = (dataResolucao - new Date(chamado.dataAbertura)) / (1000 * 60 * 60); // em horas
+                        setores[setor].tempoTotal += tempoResolucao;
+                    }
+                });
+                
+                // Calcula o tempo médio para cada setor
+                Object.keys(setores).forEach(setor => {
+                    if (setores[setor].total > 0) {
+                        setores[setor].tempoMedio = Math.round(setores[setor].tempoTotal / setores[setor].total);
+                    }
+                });
+                
+                // Preenche a tabela de setores
+                const tbody = document.querySelector('#tabela-setores tbody');
+                tbody.innerHTML = '';
+                
+                // Dados de exemplo para o dashboard (em um sistema real, esses dados viriam do banco)
+                const dadosExemplo = [
+                    { setor: 'TI', total: 78, emAberto: 15, tempoMedio: 24 },
+                    { setor: 'Manutenção', total: 52, emAberto: 18, tempoMedio: 48 },
+                    { setor: 'Almoxarifado', total: 31, emAberto: 5, tempoMedio: 12 },
+                    { setor: 'Recursos Humanos', total: 14, emAberto: 2, tempoMedio: 8 },
+                    { setor: 'Secretaria', total: 12, emAberto: 2, tempoMedio: 36 }
+                ];
+                
+                // Adiciona os dados à tabela
+                dadosExemplo.forEach(dados => {
+                    const tr = document.createElement('tr');
+                    
+                    tr.innerHTML = `
+                        <td>${dados.setor}</td>
+                        <td>${dados.total}</td>
+                        <td>${dados.emAberto}</td>
+                        <td>${dados.tempoMedio}</td>
+                    `;
+                    
+                    tbody.appendChild(tr);
+                });
+                
+                // Atualiza o dashboard com dados do localStorage
+                Object.keys(setores).forEach(setor => {
+                    // Verifica se o setor já existe na tabela
+                    const existente = Array.from(tbody.querySelectorAll('tr')).find(tr => tr.cells[0].textContent === setor);
+                    
+                    if (existente) {
+                        // Atualiza a linha existente
+                        existente.cells[1].textContent = setores[setor].total;
+                        existente.cells[2].textContent = setores[setor].emAberto;
+                        existente.cells[3].textContent = setores[setor].tempoMedio;
+                    } else {
+                        // Adiciona uma nova linha
+                        const tr = document.createElement('tr');
+                        
+                        tr.innerHTML = `
+                            <td>${setor}</td>
+                            <td>${setores[setor].total}</td>
+                            <td>${setores[setor].emAberto}</td>
+                            <td>${setores[setor].tempoMedio}</td>
+                        `;
+                        
+                        tbody.appendChild(tr);
+                    }
+                });
+            }
+            
+            // Para fins de demonstração, vamos adicionar alguns chamados de exemplo se não houver nenhum
+            const chamados = JSON.parse(localStorage.getItem('chamados'));
+            if (chamados.length === 0) {
+                const chamadosExemplo = [
+                    {
+                        id: 123,
+                        setorOrigem: "UBS CSII - Centro",
+                        setorDestino: "TI",
+                        tipoChamado: "Problema de TI",
+                        prioridade: "Alta",
+                        assunto: "Computador não liga",
+                        descricao: "O computador da recepção não está ligando desde ontem à tarde. Já verificamos os cabos de energia.",
+                        dataAbertura: new Date(2023, 5, 14).toISOString(), // 14/06/2023
+                        status: "Em andamento",
+                        historico: [
+                            {
+                                data: new Date(2023, 5, 14).toISOString(),
+                                acao: "Abertura do chamado",
+                                detalhes: "Chamado aberto pelo setor UBS CSII - Centro"
+                            },
+                            {
+                                data: new Date(2023, 5, 14, 10, 30).toISOString(),
+                                acao: "Atualização de status",
+                                detalhes: "Chamado atribuído à equipe de TI"
+                            }
+                        ]
+                    },
+                    {
+                        id: 122,
+                        setorOrigem: "Secretaria de Saúde",
+                        setorDestino: "Almoxarifado",
+                        tipoChamado: "Solicitação de Material",
+                        prioridade: "Média",
+                        assunto: "Solicitação de toner para impressora",
+                        descricao: "Precisamos de toner para a impressora HP LaserJet Pro MFP M428fdw da sala de reuniões.",
+                        dataAbertura: new Date(2023, 5, 12).toISOString(), // 12/06/2023
+                        status: "Resolvido",
+                        historico: [
+                            {
+                                data: new Date(2023, 5, 12).toISOString(),
+                                acao: "Abertura do chamado",
+                                detalhes: "Chamado aberto pelo setor Secretaria de Saúde"
+                            },
+                            {
+                                data: new Date(2023, 5, 12, 14, 15).toISOString(),
+                                acao: "Atualização de status",
+                                detalhes: "Material separado para entrega"
+                            },
+                            {
+                                data: new Date(2023, 5, 13, 9, 0).toISOString(),
+                                acao: "Atualização de status",
+                                detalhes: "Material entregue e instalado"
+                            }
+                        ]
+                    },
+                    {
+                        id: 118,
+                        setorOrigem: "CAPS Adulto",
+                        setorDestino: "Manutenção",
+                        tipoChamado: "Manutenção Predial",
+                        prioridade: "Baixa",
+                        assunto: "Ar condicionado com problema",
+                        descricao: "O ar condicionado da sala de atendimento 3 está fazendo barulho e não está refrigerando adequadamente.",
+                        dataAbertura: new Date(2023, 5, 5).toISOString(), // 05/06/2023
+                        status: "Fechado",
+                        historico: [
+                            {
+                                data: new Date(2023, 5, 5).toISOString(),
+                                acao: "Abertura do chamado",
+                                detalhes: "Chamado aberto pelo setor CAPS Adulto"
+                            },
+                            {
+                                data: new Date(2023, 5, 6, 11, 0).toISOString(),
+                                acao: "Atualização de status",
+                                detalhes: "Técnico enviado para verificação"
+                            },
+                            {
+                                data: new Date(2023, 5, 6, 16, 30).toISOString(),
+                                acao: "Atualização de status",
+                                detalhes: "Equipamento reparado, filtro limpo e gás recarregado"
+                            }
+                        ]
+                    }
+                ];
+                
+                localStorage.setItem('chamados', JSON.stringify(chamadosExemplo));
+            }
+            
+            // Inicializa a aplicação mostrando a seção "Novo Chamado"
+            mostrarSecao('novo-chamado');
+        });
+    </script>
+</body>
+</html>
