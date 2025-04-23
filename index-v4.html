@@ -1,0 +1,3133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Chamados - Saúde</title>
+    <style>
+        :root {
+            --primary-color: #24b561;
+            --primary-dark: #1a9e4c;
+            --secondary-color: #f8f9fa;
+            --text-color: #333;
+            --border-color: #ddd;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: var(--text-color);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        nav {
+            display: flex;
+            margin: 15px 0;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        nav button {
+            flex: 1;
+            background-color: transparent;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        nav button:hover {
+            background-color: #e0e0e0;
+        }
+
+        nav button.active {
+            background-color: var(--secondary-color);
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            display: inline-block;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: middle;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-info {
+            background-color: var(--info-color);
+            color: white;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        table th {
+            background-color: var(--secondary-color);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .badge-primary {
+            background-color: var(--primary-color);
+        }
+
+        .badge-success {
+            background-color: var(--success-color);
+        }
+
+        .badge-warning {
+            background-color: var(--warning-color);
+            color: #212529;
+        }
+
+        .badge-danger {
+            background-color: var(--danger-color);
+        }
+
+        .badge-info {
+            background-color: var(--info-color);
+        }
+
+        .badge-secondary {
+            background-color: #6c757d;
+        }
+
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 200px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            margin: 0;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .close {
+            font-size: 24px;
+            cursor: pointer;
+            color: #777;
+            transition: color 0.2s;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        /* Tabs dentro do modal */
+        .modal-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .modal-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            border-bottom: 3px solid transparent;
+        }
+
+        .modal-tab.active {
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Estilos para a linha do tempo do histórico */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 20px;
+            width: 2px;
+            background-color: var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding-left: 45px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            border: 2px solid white;
+        }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .timeline-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .timeline-body {
+            color: #555;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .info-item-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .info-item-value {
+            font-weight: bold;
+        }
+
+        /* Notificações */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            padding: 15px 20px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            max-width: 350px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast-icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .toast-success {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .toast-success .toast-icon {
+            color: var(--success-color);
+        }
+
+        .toast-info {
+            border-left: 4px solid var(--info-color);
+        }
+
+        .toast-info .toast-icon {
+            color: var(--info-color);
+        }
+
+        .toast-warning {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .toast-warning .toast-icon {
+            color: var(--warning-color);
+        }
+
+        .divider {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 20px 0;
+        }
+
+        /* Login/perfil styles */
+        .profile-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .profile-details {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .profile-role {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .auth-options {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .auth-option {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            transition: all 0.3s;
+        }
+
+        .auth-option:first-child {
+            border-radius: 5px 0 0 5px;
+        }
+
+        .auth-option:last-child {
+            border-radius: 0 5px 5px 0;
+        }
+
+        .auth-option.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Notificação Sonora e Configurações */
+        .notification-bell {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bell-icon {
+            position: relative;
+        }
+
+        .bell-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bell-animation {
+            animation: bell-shake 0.5s ease infinite;
+        }
+
+        @keyframes bell-shake {
+            0% { transform: rotate(0); }
+            20% { transform: rotate(8deg); }
+            40% { transform: rotate(-8deg); }
+            60% { transform: rotate(4deg); }
+            80% { transform: rotate(-4deg); }
+            100% { transform: rotate(0); }
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            width: 300px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            padding: 15px;
+        }
+
+        .notification-item {
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .notification-info {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .notification-time {
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .notification-item.unread {
+            background-color: #f0f8ff;
+        }
+
+        .notification-item.urgente {
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .notification-item.alta {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .notification-item.media {
+            border-left: 4px solid var(--info-color);
+        }
+
+        .notification-item.baixa {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .notification-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .notification-settings {
+            color: #666;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .notification-mark-all-read {
+            color: var(--primary-color);
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* Settings Modal */
+        .settings-section {
+            margin-bottom: 20px;
+        }
+
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .toggle-label {
+            flex: 1;
+            font-weight: normal;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .volume-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            gap: 10px;
+        }
+
+        .volume-slider {
+            flex: 1;
+        }
+
+        .blink-row {
+            animation: blink-animation 1s infinite alternate;
+        }
+
+        @keyframes blink-animation {
+            from { background-color: transparent; }
+            to { background-color: rgba(220, 53, 69, 0.2); }
+        }
+
+        @media (max-width: 768px) {
+            .stats-container {
+                flex-direction: column;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            .responsive-table {
+                overflow-x: auto;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline::before {
+                left: 15px;
+            }
+            
+            .timeline-item {
+                padding-left: 35px;
+            }
+            
+            .timeline-item::before {
+                left: 7px;
+                width: 14px;
+                height: 14px;
+            }
+
+            .notification-dropdown {
+                width: 100%;
+                right: 0;
+                left: 0;
+                top: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Sistema de Chamados - Saúde</h1>
+            <!-- Sino de Notificações -->
+            <div id="notification-bell" class="notification-bell">
+                <div class="bell-icon">
+                    🔔
+                    <span id="notification-count" class="bell-badge hidden">0</span>
+                </div>
+            </div>
+            <!-- Dropdown de Notificações -->
+            <div id="notification-dropdown" class="notification-dropdown hidden">
+                <h3>Notificações</h3>
+                <div id="notification-list">
+                    <!-- Notificações serão adicionadas dinamicamente -->
+                </div>
+                <div class="notification-footer">
+                    <span id="settings-btn" class="notification-settings">Configurações</span>
+                    <span id="mark-all-read" class="notification-mark-all-read">Marcar todas como lidas</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Informações do Usuário Logado -->
+        <div id="perfil-usuario" class="profile-info">
+            <div class="profile-avatar" id="avatar-inicial">U</div>
+            <div class="profile-details">
+                <div class="profile-name" id="nome-usuario">Usuário não logado</div>
+                <div class="profile-role" id="setor-usuario">Faça login para continuar</div>
+            </div>
+            <button id="btn-logout" class="btn btn-danger hidden">Sair</button>
+        </div>
+
+        <!-- Login -->
+        <div id="login-section" class="section">
+            <h2>Login no Sistema</h2>
+            
+            <div class="auth-options">
+                <div class="auth-option active" data-role="user">Usuário</div>
+                <div class="auth-option" data-role="support">Suporte</div>
+            </div>
+            
+            <form id="form-login" class="login-form">
+                <div class="form-group">
+                    <label for="login-setor">Setor:</label>
+                    <select id="login-setor" required>
+                        <option value="">Selecione o setor</option>
+                        <!-- Opções serão carregadas via JavaScript -->
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-usuario">Usuário:</label>
+                    <input type="text" id="login-usuario" required placeholder="Digite seu nome de usuário">
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-senha">Senha:</label>
+                    <input type="password" id="login-senha" required placeholder="Digite sua senha">
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-email">Email:</label>
+                    <input type="email" id="login-email" required placeholder="Digite seu email">
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Entrar</button>
+            </form>
+        </div>
+
+        <!-- Configurações de Notificação -->
+        <div id="settings-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Configurações de Notificação</h3>
+                    <span class="close" id="close-settings">&times;</span>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="settings-section">
+                        <h4>Alertas Sonoros</h4>
+                        <div class="toggle-switch">
+                            <label class="toggle-label">Ativar sons de notificação</label>
+                            <label class="switch">
+                                <input type="checkbox" id="sound-toggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div id="volume-settings">
+                            <div class="volume-container">
+                                <span>Volume:</span>
+                                <input type="range" id="volume-slider" class="volume-slider" min="0" max="100" value="50">
+                                <span id="volume-value">50%</span>
+                            </div>
+                            
+                            <div class="toggle-switch">
+                                <label class="toggle-label">Tocar som para chamados de baixa prioridade</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="sound-baixa" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="toggle-switch">
+                                <label class="toggle-label">Tocar som para chamados de média prioridade</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="sound-media" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="toggle-switch">
+                                <label class="toggle-label">Tocar som para chamados de alta prioridade</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="sound-alta" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="toggle-switch">
+                                <label class="toggle-label">Tocar som para chamados urgentes</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="sound-urgente" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h4>Alertas Visuais</h4>
+                        <div class="toggle-switch">
+                            <label class="toggle-label">Piscar sino de notificação</label>
+                            <label class="switch">
+                                <input type="checkbox" id="bell-animation" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="toggle-switch">
+                            <label class="toggle-label">Destacar chamados não lidos na tabela</label>
+                            <label class="switch">
+                                <input type="checkbox" id="highlight-unread" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h4>Frequência de Verificação</h4>
+                        <div class="form-group">
+                            <label for="check-interval">Verificar por novos chamados a cada:</label>
+                            <select id="check-interval">
+                                <option value="15">15 segundos</option>
+                                <option value="30" selected>30 segundos</option>
+                                <option value="60">1 minuto</option>
+                                <option value="120">2 minutos</option>
+                                <option value="300">5 minutos</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button id="save-settings" class="btn btn-primary">Salvar Configurações</button>
+                    <button id="cancel-settings" class="btn btn-danger">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navegação Principal (visível apenas após login) -->
+        <nav id="main-nav" class="hidden">
+            <button id="btn-novo-chamado" class="active">Novo Chamado</button>
+            <button id="btn-meus-chamados">Meus Chamados</button>
+            <button id="btn-atender-chamados" class="hidden">Atender Chamados</button>
+            <button id="btn-dashboard">Dashboard</button>
+        </nav>
+
+        <!-- Novo Chamado -->
+        <div id="novo-chamado" class="section hidden">
+            <h2>Abrir Novo Chamado</h2>
+            <form id="form-chamado">
+                <div class="form-group hidden">
+                    <label for="setor-origem">Setor de Origem:</label>
+                    <select id="setor-origem" required disabled>
+                        <!-- Campo preenchido automaticamente com o setor do usuário logado -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="setor-destino">Setor de Destino:</label>
+                    <select id="setor-destino" required>
+                        <option value="">Selecione o setor</option>
+                        <!-- Opções de setores de suporte serão carregadas via JavaScript -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="tipo-chamado">Tipo de Chamado:</label>
+                    <select id="tipo-chamado" required>
+                        <option value="">Selecione o tipo</option>
+                        
+                        <optgroup label="Computadores e Hardware">
+                            <option value="Computador não liga">Computador não liga</option>
+                            <option value="Computador lento">Computador lento</option>
+                            <option value="Tela azul/travamentos">Tela azul/travamentos</option>
+                            <option value="Problema com teclado">Problema com teclado</option>
+                            <option value="Problema com mouse">Problema com mouse</option>
+                            <option value="Problema com monitor">Problema com monitor</option>
+                            <option value="Problema com HD/SSD">Problema com HD/SSD</option>
+                            <option value="Problema com memória RAM">Problema com memória RAM</option>
+                            <option value="Problema com áudio">Problema com áudio/som</option>
+                            <option value="Problema com webcam">Problema com webcam</option>
+                            <option value="Solicitação de novo equipamento">Solicitação de novo equipamento</option>
+                        </optgroup>
+                        
+                        <optgroup label="Software e Sistemas Operacionais">
+                            <option value="Sistema operacional não inicia">Sistema operacional não inicia</option>
+                            <option value="Atualização de Windows">Atualização de Windows</option>
+                            <option value="Instalação de programa">Instalação de programa</option>
+                            <option value="Desinstalação de programa">Desinstalação de programa</option>
+                            <option value="Erro em aplicativo">Erro em aplicativo</option>
+                            <option value="Problema com Office/Suite">Problema com Office/Suite</option>
+                            <option value="Configuração de software">Configuração de software</option>
+                            <option value="Atualização de drivers">Atualização de drivers</option>
+                        </optgroup>
+                        
+                        <optgroup label="Internet e Rede">
+                            <option value="Internet não funciona">Internet não funciona</option>
+                            <option value="Conexão lenta">Conexão lenta</option>
+                            <option value="Problema com Wi-Fi">Problema com Wi-Fi</option>
+                            <option value="Problema com cabo de rede">Problema com cabo de rede</option>
+                            <option value="Configuração de rede">Configuração de rede</option>
+                            <option value="Compartilhamento de arquivos">Compartilhamento de arquivos</option>
+                            <option value="Configuração de VPN">Configuração de VPN</option>
+                        </optgroup>
+                        
+                        <optgroup label="Email e Comunicação">
+                            <option value="Configuração de email">Configuração de email</option>
+                            <option value="Problema para enviar emails">Problema para enviar emails</option>
+                            <option value="Problema para receber emails">Problema para receber emails</option>
+                            <option value="Emails não sincronizam">Emails não sincronizam</option>
+                            <option value="Problema com assinatura de email">Problema com assinatura de email</option>
+                            <option value="Configuração de comunicador">Configuração de comunicador (Teams, Zoom, etc)</option>
+                        </optgroup>
+                        
+                        <optgroup label="Impressoras e Digitalização">
+                            <option value="Impressora não imprime">Impressora não imprime</option>
+                            <option value="Configuração de impressora">Configuração de impressora</option>
+                            <option value="Substituição de toner">Substituição de toner/cartucho</option>
+                            <option value="Erro de impressora">Erro de impressora</option>
+                            <option value="Problema com digitalização">Problema com digitalização</option>
+                            <option value="Configuração de scanner">Configuração de scanner</option>
+                        </optgroup>
+                        
+                        <optgroup label="Segurança e Acesso">
+                            <option value="Problema de login/senha">Problema de login/senha</option>
+                            <option value="Redefinição de senha">Redefinição de senha</option>
+                            <option value="Vírus/malware">Vírus/malware</option>
+                            <option value="Acesso a sistemas">Acesso a sistemas</option>
+                            <option value="Permissões de arquivos">Permissões de arquivos</option>
+                            <option value="Segurança de dados">Segurança de dados</option>
+                        </optgroup>
+                        
+                        <optgroup label="Dados e Backup">
+                            <option value="Backup de dados">Backup de dados</option>
+                            <option value="Recuperação de arquivos">Recuperação de arquivos</option>
+                            <option value="Transferência de dados">Transferência de dados</option>
+                            <option value="Criação de pastas compartilhadas">Criação de pastas compartilhadas</option>
+                        </optgroup>
+                        
+                        <optgroup label="Suporte e Treinamento">
+                            <option value="Suporte ao usuário">Suporte ao usuário</option>
+                            <option value="Treinamento em software">Treinamento em software</option>
+                            <option value="Dúvidas técnicas">Dúvidas técnicas</option>
+                        </optgroup>
+                        
+                        <optgroup label="Outros">
+                            <option value="Manutenção preventiva">Manutenção preventiva</option>
+                            <option value="Configuração de dispositivo móvel">Configuração de dispositivo móvel</option>
+                            <option value="Outro problema de TI">Outro problema de TI</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="prioridade">Prioridade:</label>
+                    <select id="prioridade" required>
+                        <option value="Baixa">Baixa</option>
+                        <option value="Média">Média</option>
+                        <option value="Alta">Alta</option>
+                        <option value="Urgente">Urgente</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="assunto">Assunto:</label>
+                    <input type="text" id="assunto" required placeholder="Digite um título para o chamado">
+                </div>
+
+                <div class="form-group">
+                    <label for="descricao">Descrição:</label>
+                    <textarea id="descricao" required placeholder="Descreva detalhadamente o problema ou solicitação"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Abrir Chamado</button>
+            </form>
+        </div>
+
+        <!-- Meus Chamados (para usuários) -->
+        <div id="meus-chamados" class="section hidden">
+            <h2>Meus Chamados</h2>
+            <div class="responsive-table">
+                <table id="tabela-meus-chamados">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Assunto</th>
+                            <th>Setor Destino</th>
+                            <th>Data</th>
+                            <th>Prioridade</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dados serão inseridos dinamicamente via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Atender Chamados (para suporte) -->
+        <div id="atender-chamados" class="section hidden">
+            <h2>Chamados para Atendimento</h2>
+            <div class="responsive-table">
+                <table id="tabela-atender-chamados">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Assunto</th>
+                            <th>Setor Origem</th>
+                            <th>Data</th>
+                            <th>Prioridade</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dados serão inseridos dinamicamente via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="section hidden">
+            <h2>Dashboard</h2>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h3>Total de Chamados</h3>
+                    <div id="total-chamados" class="stat-value">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Em Aberto</h3>
+                    <div id="em-aberto" class="stat-value">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Em Andamento</h3>
+                    <div id="em-andamento" class="stat-value">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Resolvidos</h3>
+                    <div id="resolvidos" class="stat-value">0</div>
+                </div>
+            </div>
+
+            <h3>Chamados por Setor</h3>
+            <div class="responsive-table">
+                <table id="tabela-setores">
+                    <thead>
+                        <tr>
+                            <th>Setor</th>
+                            <th>Total</th>
+                            <th>Em Aberto</th>
+                            <th>Tempo Médio (horas)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dados serão inseridos dinamicamente via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Modal para detalhes do chamado -->
+        <div id="modal-detalhes" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modal-titulo">Detalhes do Chamado</h3>
+                    <span class="close" id="fechar-modal">&times;</span>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="modal-tabs">
+                        <div class="modal-tab active" data-tab="info">Informações</div>
+                        <div class="modal-tab" data-tab="history">Histórico</div>
+                        <div id="tab-responder" class="modal-tab hidden" data-tab="response">Responder</div>
+                    </div>
+                    
+                    <!-- Tab de Informações -->
+                    <div id="tab-info" class="tab-content active">
+                        <div class="info-grid" id="info-chamado">
+                            <!-- Informações do chamado serão inseridas aqui -->
+                        </div>
+                        
+                        <div class="divider"></div>
+                        
+                        <h4>Descrição</h4>
+                        <div id="descricao-chamado" class="timeline-body" style="margin-top: 10px;"></div>
+                    </div>
+                    
+                    <!-- Tab de Histórico -->
+                    <div id="tab-history" class="tab-content">
+                        <div class="timeline" id="historico-chamado">
+                            <!-- Histórico será inserido aqui -->
+                        </div>
+                    </div>
+                    
+                    <!-- Tab de Resposta (apenas para suporte) -->
+                    <div id="tab-response" class="tab-content">
+                        <form id="form-resposta">
+                            <input type="hidden" id="chamado-id">
+                            
+                            <div class="form-group">
+                                <label for="novo-status">Atualizar Status:</label>
+                                <select id="novo-status" required>
+                                    <option value="Em aberto">Em aberto</option>
+                                    <option value="Em andamento">Em andamento</option>
+                                    <option value="Resolvido">Resolvido</option>
+                                    <option value="Fechado">Fechado</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="resposta">Comentário:</label>
+                                <textarea id="resposta" rows="5" required placeholder="Digite sua resposta ou comentário..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Enviar Resposta</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="btn-fechar-modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Container de Notificações Toast -->
+        <div id="toast-container"></div>
+
+        <!-- Elemento de Áudio para Notificações -->
+        <audio id="notification-sound-urgente" preload="auto">
+            <source src="https://cdn.jsdelivr.net/gh/anars/blank-audio@master/1-second-of-silence.mp3" type="audio/mp3">
+        </audio>
+        <audio id="notification-sound-alta" preload="auto">
+            <source src="https://cdn.jsdelivr.net/gh/anars/blank-audio@master/1-second-of-silence.mp3" type="audio/mp3">
+        </audio>
+        <audio id="notification-sound-media" preload="auto">
+            <source src="https://cdn.jsdelivr.net/gh/anars/blank-audio@master/1-second-of-silence.mp3" type="audio/mp3">
+        </audio>
+        <audio id="notification-sound-baixa" preload="auto">
+            <source src="https://cdn.jsdelivr.net/gh/anars/blank-audio@master/1-second-of-silence.mp3" type="audio/mp3">
+        </audio>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // CORREÇÃO: Garantir que o modal está oculto na inicialização
+            const modalDetalhes = document.getElementById('modal-detalhes');
+            if (modalDetalhes) {
+                modalDetalhes.classList.add('hidden');
+            }
+            
+            // Elementos do login
+            const loginSection = document.getElementById('login-section');
+            const formLogin = document.getElementById('form-login');
+            const authOptions = document.querySelectorAll('.auth-option');
+            const loginSetor = document.getElementById('login-setor');
+            const loginUsuario = document.getElementById('login-usuario');
+            const loginSenha = document.getElementById('login-senha');
+            const loginEmail = document.getElementById('login-email');
+            
+            // Elementos de perfil
+            const perfilUsuario = document.getElementById('perfil-usuario');
+            const avatarInicial = document.getElementById('avatar-inicial');
+            const nomeUsuario = document.getElementById('nome-usuario');
+            const setorUsuario = document.getElementById('setor-usuario');
+            const btnLogout = document.getElementById('btn-logout');
+            
+            // Elementos de navegação
+            const mainNav = document.getElementById('main-nav');
+            const btnNovoChamado = document.getElementById('btn-novo-chamado');
+            const btnMeusChamados = document.getElementById('btn-meus-chamados');
+            const btnAtenderChamados = document.getElementById('btn-atender-chamados');
+            const btnDashboard = document.getElementById('btn-dashboard');
+            
+            // Seções
+            const secaoNovoChamado = document.getElementById('novo-chamado');
+            const secaoMeusChamados = document.getElementById('meus-chamados');
+            const secaoAtenderChamados = document.getElementById('atender-chamados');
+            const secaoDashboard = document.getElementById('dashboard');
+            
+            // Formulário de chamado
+            const formChamado = document.getElementById('form-chamado');
+            const setorOrigem = document.getElementById('setor-origem');
+            const setorDestino = document.getElementById('setor-destino');
+            
+            // Modal e seus elementos
+            const modalTitulo = document.getElementById('modal-titulo');
+            const fecharModal = document.getElementById('fechar-modal');
+            const btnFecharModal = document.getElementById('btn-fechar-modal');
+            const modalTabs = document.querySelectorAll('.modal-tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const tabResponder = document.getElementById('tab-responder');
+            
+            // Formulário de resposta
+            const formResposta = document.getElementById('form-resposta');
+            const inputChamadoId = document.getElementById('chamado-id');
+            
+            // Elementos de Notificação
+            const notificationBell = document.getElementById('notification-bell');
+            const bellIcon = notificationBell.querySelector('.bell-icon');
+            const notificationCount = document.getElementById('notification-count');
+            const notificationDropdown = document.getElementById('notification-dropdown');
+            const notificationList = document.getElementById('notification-list');
+            const markAllRead = document.getElementById('mark-all-read');
+            
+            // Elementos de áudio
+            const notificationSoundUrgente = document.getElementById('notification-sound-urgente');
+            const notificationSoundAlta = document.getElementById('notification-sound-alta');
+            const notificationSoundMedia = document.getElementById('notification-sound-media');
+            const notificationSoundBaixa = document.getElementById('notification-sound-baixa');
+            
+            // Elementos de configuração
+            const settingsBtn = document.getElementById('settings-btn');
+            const settingsModal = document.getElementById('settings-modal');
+            const closeSettings = document.getElementById('close-settings');
+            const saveSettings = document.getElementById('save-settings');
+            const cancelSettings = document.getElementById('cancel-settings');
+            const soundToggle = document.getElementById('sound-toggle');
+            const volumeSlider = document.getElementById('volume-slider');
+            const volumeValue = document.getElementById('volume-value');
+            const soundBaixa = document.getElementById('sound-baixa');
+            const soundMedia = document.getElementById('sound-media');
+            const soundAlta = document.getElementById('sound-alta');
+            const soundUrgente = document.getElementById('sound-urgente');
+            const bellAnimation = document.getElementById('bell-animation');
+            const highlightUnread = document.getElementById('highlight-unread');
+            const checkInterval = document.getElementById('check-interval');
+            const volumeSettings = document.getElementById('volume-settings');
+            
+            // Estado do usuário
+            let usuarioAtual = null;
+            let tipoUsuario = 'user'; // 'user' ou 'support'
+            let notificacoes = [];
+            let ultimosChamados = [];
+            let verificadorChamados = null;
+            let configuracoes = {
+                somAtivado: true,
+                volume: 50,
+                somBaixa: true,
+                somMedia: true,
+                somAlta: true,
+                somUrgente: true,
+                animacaoSino: true,
+                destacarNaoLidos: true,
+                intervaloVerificacao: 30 // em segundos
+            };
+
+            // Cadastro de usuários válidos
+            const usuariosValidos = [
+                { setor: "UBS CSII - Centro", nome: "cs2_centro", senha: "cs2_centro2025", email: "ubscosmopoliscs2@yahoo.com" },
+                { setor: "UBS Jardim de Fáveri", nome: "jardim_faveri", senha: "jardim_faveri2025", email: "ubsfaveri@gmail.com" },
+                { setor: "UBS / PSF Andorinhas", nome: "andorinhas_psf", senha: "andorinhas_psf2025", email: "ubsandorinhas@gmail.com" },
+                { setor: "UBS / PSF Beto Spana", nome: "beto_spana", senha: "beto_spana2025", email: "betospana@gmail.com" },
+                { setor: "PSF Cosmópolis I", nome: "cosmopolis_1", senha: "cosmopolis_12025", email: "psf.cosmopolis.01@gmail.com" },
+                { setor: "PSF Vila Cosmos", nome: "vila_cosmos", senha: "vila_cosmos2025", email: "psfvilacosmos@gmail.com" },
+                { setor: "PSF Henrique Scursoni Neto", nome: "henrique_neto", senha: "henrique_neto2025", email: "psfparqueester1@gmail.com" },
+                { setor: "PSF Sidney Alves Aranha TIDE", nome: "sidney_tide", senha: "sidney_tide2025", email: "ubssidneyalvesaranha@gmail.com" },
+                { setor: "UBS Nosso Teto", nome: "nosso_teto", senha: "nosso_teto2025", email: "postonossoteto@gmail.com" },
+                { setor: "AME Atendimento Médico Especializado", nome: "ame_especializado", senha: "ame_especializado2025", email: "especialidades.cosm@gmail.com" },
+                { setor: "CERC (Centro de Reabilitação)", nome: "cerc_reabilitacao", senha: "cerc_reabilitacao2025", email: "cerccosmopolis@gmail.com" },
+                { setor: "CEO (Centro de Especialidades Odontológicas)", nome: "ceo_odontologicas", senha: "ceo_odontologicas2025", email: "pediatriaceopediatria@outlook.com" },
+                { setor: "CAPS Adulto", nome: "caps_adulto", senha: "caps_adulto2025", email: "caps@cosmopolis.sp.gov.br" },
+                { setor: "CAPS i (CAPS Infantil)", nome: "caps_infantil", senha: "caps_infantil2025", email: "capsicosmopolis@yahoo.com.br" },
+                { setor: "Vigilância Epidemiológica (VE)", nome: "vigilancia_epidemiologica", senha: "vigilancia_epidemiologica2025", email: "vigilancia.epidemiologica@cosmopolis.sp.gov.br" },
+                { setor: "Centro de Testagem e Aconselhamento (CTA)", nome: "centro_aconselhamento", senha: "centro_aconselhamento2025", email: "ctacosmopolis@gmail.com" },
+                { setor: "NUESA (Núcleo de Educação em Saúde)", nome: "nuesa_saude", senha: "nuesa_saude2025", email: "nuesa@cosmopolis.sp.gov.br" },
+                { setor: "Farmácia Municipal", nome: "farmacia_municipal", senha: "farmacia_municipal2025", email: "farmacia@cosmopolis.sp.gov.br" },
+                { setor: "SAD (Sistema de Atendimento Domiciliar)", nome: "sad_domiciliar", senha: "sad_domiciliar2025", email: "sadcosmopolis@gmail.com" },
+                { setor: "Secretaria de Saúde", nome: "secretaria_saude", senha: "secretaria_saude2025", email: "recepcao.saudecosmopolis@gmail.com" },
+                { setor: "Central de Regulação e Agendamento", nome: "central_agendamento", senha: "central_agendamento2025", email: "regulacao.cosmopolis@gmail.com" },
+                { setor: "Central de gerenciamento CROSS / Serviço Social", nome: "cross_social", senha: "cross_social2025", email: "servicosocial.cosmopolis@gmail.com" },
+                { setor: "Central de Transportes e Ambulâncias", nome: "transportes_ambulancias", senha: "transportes_ambulancias2025", email: "agendatransportecosmopolis@gmail.com" },
+                { setor: "Almoxarifado", nome: "almoxarifado_", senha: "almoxarifado_2025", email: "cads.saude@cosmopolis.sp.gov.br" },
+                { setor: "Vigilância Sanitária (VISA)", nome: "vigilancia_sanitaria", senha: "vigilancia_sanitaria2025", email: "visa@cosmopolis.sp.gov.br" },
+                { setor: "Zoonoses", nome: "zoonoses_", senha: "zoonoses_2025", email: "zoonoses@cosmopolis.sp.gov.br" },
+                { setor: "TI", nome: "intranet_saude", senha: "intranet_saude2025", email: "ti.saude@cosmopolis.sp.gov.br" }
+            ];
+            
+            // Função para criar sons usando Web Audio API
+            function criarSons() {
+                try {
+                    // Tenta inicializar o contexto de áudio quando o usuário interage pela primeira vez
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    const audioContext = new AudioContext();
+                    
+                    function criarBeep(frequencia, duracao, tipo, audioElement) {
+                        const oscillator = audioContext.createOscillator();
+                        const gainNode = audioContext.createGain();
+                        
+                        oscillator.type = tipo;
+                        oscillator.frequency.value = frequencia;
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+                        
+                        gainNode.gain.value = configuracoes.volume / 100;
+                        
+                        oscillator.start();
+                        setTimeout(() => {
+                            oscillator.stop();
+                        }, duracao);
+                    }
+                    
+                    // Sobrescreve a função playSound para usar Web Audio API
+                    window.tocarSom = function(prioridade) {
+                        if (!configuracoes.somAtivado) return;
+                        
+                        switch(prioridade.toLowerCase()) {
+                            case 'urgente':
+                                if (configuracoes.somUrgente) {
+                                    criarBeep(880, 500, 'square', notificationSoundUrgente);
+                                    setTimeout(() => {
+                                        criarBeep(880, 500, 'square', notificationSoundUrgente);
+                                    }, 600);
+                                }
+                                break;
+                            case 'alta':
+                                if (configuracoes.somAlta) {
+                                    criarBeep(660, 400, 'sine', notificationSoundAlta);
+                                }
+                                break;
+                            case 'média':
+                                if (configuracoes.somMedia) {
+                                    criarBeep(440, 300, 'sine', notificationSoundMedia);
+                                }
+                                break;
+                            case 'baixa':
+                                if (configuracoes.somBaixa) {
+                                    criarBeep(330, 200, 'sine', notificationSoundBaixa);
+                                }
+                                break;
+                        }
+                    };
+                } catch (error) {
+                    console.log("Web Audio API não suportada, usando fallback");
+                    
+                    // Fallback para HTML5 Audio
+                    window.tocarSom = function(prioridade) {
+                        if (!configuracoes.somAtivado) return;
+                        
+                        let sound = null;
+                        switch(prioridade.toLowerCase()) {
+                            case 'urgente':
+                                if (configuracoes.somUrgente) sound = notificationSoundUrgente;
+                                break;
+                            case 'alta':
+                                if (configuracoes.somAlta) sound = notificationSoundAlta;
+                                break;
+                            case 'média':
+                                if (configuracoes.somMedia) sound = notificationSoundMedia;
+                                break;
+                            case 'baixa':
+                                if (configuracoes.somBaixa) sound = notificationSoundBaixa;
+                                break;
+                        }
+                        
+                        if (sound) {
+                            sound.volume = configuracoes.volume / 100;
+                            sound.play().catch(e => console.log("Erro ao tocar som:", e));
+                        }
+                    };
+                }
+            }
+            
+            // Inicializa o array de setores no localStorage se não existir
+            if (!localStorage.getItem('setores')) {
+                const setores = [
+                    // Setores de origem (usuários)
+                    { id: 1, nome: "UBS CSII - Centro", tipo: "user" },
+                    { id: 2, nome: "UBS Jardim de Fáveri", tipo: "user" },
+                    { id: 3, nome: "UBS / PSF Andorinhas", tipo: "user" },
+                    { id: 4, nome: "UBS / PSF Beto Spana", tipo: "user" },
+                    { id: 5, nome: "PSF Cosmópolis I", tipo: "user" },
+                    { id: 6, nome: "PSF Vila Cosmos", tipo: "user" },
+                    { id: 7, nome: "PSF Henrique Scursoni Neto", tipo: "user" },
+                    { id: 8, nome: "PSF Sidney Alves Aranha TIDE", tipo: "user" },
+                    { id: 9, nome: "UBS Nosso Teto", tipo: "user" },
+                    { id: 10, nome: "AME - Atendimento Médico Especializado", tipo: "user" },
+                    { id: 11, nome: "CERC - Centro de Reabilitação", tipo: "user" },
+                    { id: 12, nome: "CEO - Centro de Especialidades Odontológicas", tipo: "user" },
+                    { id: 13, nome: "CAPS Adulto", tipo: "user" },
+                    { id: 14, nome: "CAPS i - CAPS Infantil", tipo: "user" },
+                    { id: 15, nome: "Vigilância Epidemiológica (VE)", tipo: "user" },
+                    { id: 16, nome: "CTA - Centro de Testagem e Aconselhamento", tipo: "user" },
+                    { id: 17, nome: "NUESA - Núcleo de Educação em Saúde", tipo: "user" },
+                    { id: 18, nome: "Farmácia Municipal", tipo: "user" },
+                    { id: 19, nome: "SAD - Sistema de Atendimento Domiciliar", tipo: "user" },
+                    { id: 20, nome: "Secretaria de Saúde", tipo: "user" },
+                    { id: 21, nome: "Central de Regulação e Agendamento", tipo: "user" },
+                    { id: 22, nome: "Central de Gerenciamento CROSS / Serviço Social", tipo: "user" },
+                    { id: 23, nome: "Central de Transportes e Ambulâncias", tipo: "user" },
+                    { id: 24, nome: "Almoxarifado", tipo: "user" },
+                    { id: 25, nome: "Vigilância Sanitária (VISA)", tipo: "user" },
+                    { id: 26, nome: "Zoonoses", tipo: "user" },
+                    
+                    // MODIFICADO: Apenas o setor de TI como suporte
+                    { id: 27, nome: "TI", tipo: "support" }
+                    // REMOVIDOS todos os outros setores de suporte
+                ];
+                
+                localStorage.setItem('setores', JSON.stringify(setores));
+            }
+            
+            // Inicializa o array de chamados no localStorage se não existir
+            if (!localStorage.getItem('chamados')) {
+                localStorage.setItem('chamados', JSON.stringify([]));
+            }
+            
+            // Inicializa o array de emails no localStorage se não existir
+            if (!localStorage.getItem('emails')) {
+                localStorage.setItem('emails', JSON.stringify([]));
+            }
+            
+            // Inicializa as configurações no localStorage se não existir
+            if (!localStorage.getItem('configuracoes')) {
+                localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
+            } else {
+                configuracoes = JSON.parse(localStorage.getItem('configuracoes'));
+            }
+            
+            // Inicializa as notificações no localStorage se não existir
+            if (!localStorage.getItem('notificacoes')) {
+                localStorage.setItem('notificacoes', JSON.stringify([]));
+            } else {
+                notificacoes = JSON.parse(localStorage.getItem('notificacoes'));
+            }
+            
+            // Função para verificar novos chamados periodicamente
+            function iniciarVerificadorChamados() {
+                if (verificadorChamados) {
+                    clearInterval(verificadorChamados);
+                }
+                
+                // Guarda o estado atual dos chamados
+                const chamados = JSON.parse(localStorage.getItem('chamados'));
+                ultimosChamados = [...chamados];
+                
+                // Inicia o verificador
+                verificadorChamados = setInterval(() => {
+                    if (usuarioAtual) {
+                        verificarNovosChamados();
+                    }
+                }, configuracoes.intervaloVerificacao * 1000);
+            }
+            
+            // Função para verificar se há novos chamados
+            function verificarNovosChamados() {
+                const chamadosAtuais = JSON.parse(localStorage.getItem('chamados'));
+                
+                // Para suporte, verifica se há novos chamados destinados ao setor
+                if (usuarioAtual.tipoUsuario === 'support') {
+                    const novos = chamadosAtuais.filter(c => {
+                        const existente = ultimosChamados.find(old => old.id === c.id);
+                        return (c.setorDestinoId === usuarioAtual.setorId && 
+                               (!existente || (existente && c.status !== existente.status)));
+                    });
+                    
+                    if (novos.length > 0) {
+                        // Para cada novo chamado ou atualização, cria uma notificação
+                        novos.forEach(chamado => {
+                            const existente = ultimosChamados.find(old => old.id === chamado.id);
+                            
+                            if (!existente) {
+                                // Novo chamado
+                                criarNotificacao(
+                                    `Novo chamado: ${chamado.assunto}`,
+                                    `De: ${chamado.setorOrigemNome} - ${chamado.tipoChamado}`,
+                                    chamado.id,
+                                    chamado.prioridade,
+                                    'novo'
+                                );
+                                tocarSom(chamado.prioridade);
+                            } else if (existente.status !== chamado.status) {
+                                // Chamado atualizado
+                                const ultimaAtualizacao = chamado.historico[chamado.historico.length - 1];
+                                criarNotificacao(
+                                    `Chamado atualizado: ${chamado.assunto}`,
+                                    `Status alterado para: ${chamado.status}`,
+                                    chamado.id,
+                                    chamado.prioridade,
+                                    'atualizado'
+                                );
+                            }
+                        });
+                        
+                        // Atualiza a interface das notificações
+                        atualizarInterfaceNotificacoes();
+                        
+                        // Atualiza a tabela de chamados se estiver visível
+                        if (!secaoAtenderChamados.classList.contains('hidden')) {
+                            carregarChamadosParaAtendimento();
+                        }
+                    }
+                } 
+                // Para usuários comuns, verifica se há atualizações nos seus chamados
+                else {
+                    const atualizados = chamadosAtuais.filter(c => {
+                        const existente = ultimosChamados.find(old => old.id === c.id);
+                        return (c.setorOrigemId === usuarioAtual.setorId && 
+                               (existente && c.status !== existente.status));
+                    });
+                    
+                    if (atualizados.length > 0) {
+                        // Para cada chamado atualizado, cria uma notificação
+                        atualizados.forEach(chamado => {
+                            const existente = ultimosChamados.find(old => old.id === chamado.id);
+                            if (existente.status !== chamado.status) {
+                                criarNotificacao(
+                                    `Chamado #${chamado.id} atualizado`,
+                                    `Status alterado para: ${chamado.status}`,
+                                    chamado.id,
+                                    chamado.prioridade,
+                                    'atualizado'
+                                );
+                                tocarSom(chamado.prioridade);
+                            }
+                        });
+                        
+                        // Atualiza a interface das notificações
+                        atualizarInterfaceNotificacoes();
+                        
+                        // Atualiza a tabela de chamados se estiver visível
+                        if (!secaoMeusChamados.classList.contains('hidden')) {
+                            carregarMeusChamados();
+                        }
+                    }
+                }
+                
+                // Atualiza o estado de referência dos chamados
+                ultimosChamados = [...chamadosAtuais];
+            }
+            
+            // Função para criar uma nova notificação
+            function criarNotificacao(titulo, mensagem, chamadoId, prioridade, tipo) {
+                const agora = new Date();
+                
+                // Criar um objeto de notificação
+                const notificacao = {
+                    id: Date.now(),
+                    titulo: titulo,
+                    mensagem: mensagem,
+                    chamadoId: chamadoId,
+                    prioridade: prioridade,
+                    tipo: tipo,
+                    lida: false,
+                    data: agora.toISOString()
+                };
+                
+                // Adiciona a notificação à lista
+                notificacoes.unshift(notificacao);
+                
+                // Limita a 50 notificações para não sobrecarregar
+                if (notificacoes.length > 50) {
+                    notificacoes = notificacoes.slice(0, 50);
+                }
+                
+                // Salva no localStorage
+                localStorage.setItem('notificacoes', JSON.stringify(notificacoes));
+                
+                // Também exibe um toast
+                showToast(getPrioridadeToastType(prioridade), titulo, mensagem);
+                
+                return notificacao;
+            }
+            
+            // Função para converter prioridade em tipo de toast
+            function getPrioridadeToastType(prioridade) {
+                switch(prioridade) {
+                    case 'Urgente':
+                    case 'Alta':
+                        return 'warning';
+                    case 'Média':
+                        return 'info';
+                    case 'Baixa':
+                        return 'success';
+                    default:
+                        return 'info';
+                }
+            }
+            
+            // Função para atualizar a interface das notificações
+            function atualizarInterfaceNotificacoes() {
+                // Conta notificações não lidas
+                const naoLidas = notificacoes.filter(n => !n.lida).length;
+                
+                // Atualiza o contador
+                if (naoLidas > 0) {
+                    notificationCount.textContent = naoLidas > 99 ? '99+' : naoLidas;
+                    notificationCount.classList.remove('hidden');
+                    
+                    // Anima o sino se configurado
+                    if (configuracoes.animacaoSino) {
+                        bellIcon.classList.add('bell-animation');
+                    }
+                } else {
+                    notificationCount.classList.add('hidden');
+                    bellIcon.classList.remove('bell-animation');
+                }
+                
+                // Preenche a lista de notificações
+                notificationList.innerHTML = '';
+                
+                if (notificacoes.length === 0) {
+                    notificationList.innerHTML = '<div class="notification-item">Nenhuma notificação.</div>';
+                } else {
+                    notificacoes.slice(0, 10).forEach(notificacao => { // Limita a 10 notificações no dropdown
+                        const notificationItem = document.createElement('div');
+                        notificationItem.className = `notification-item ${notificacao.lida ? '' : 'unread'} ${notificacao.prioridade.toLowerCase()}`;
+                        
+                        const dataFormatada = formatarTempoRelativo(new Date(notificacao.data));
+                        
+                        notificationItem.innerHTML = `
+                            <div class="notification-title">${notificacao.titulo}</div>
+                            <div class="notification-info">${notificacao.mensagem}</div>
+                            <div class="notification-time">${dataFormatada}</div>
+                        `;
+                        
+                        // Adiciona evento para abrir o chamado ao clicar
+                        notificationItem.addEventListener('click', () => {
+                            // Marca a notificação como lida
+                            const index = notificacoes.findIndex(n => n.id === notificacao.id);
+                            if (index !== -1) {
+                                notificacoes[index].lida = true;
+                                localStorage.setItem('notificacoes', JSON.stringify(notificacoes));
+                            }
+                            
+                            // Fecha o dropdown
+                            notificationDropdown.classList.add('hidden');
+                            
+                            // Abre o modal do chamado
+                            abrirModalChamado(notificacao.chamadoId);
+                            
+                            // Atualiza a interface
+                            atualizarInterfaceNotificacoes();
+                        });
+                        
+                        notificationList.appendChild(notificationItem);
+                    });
+                    
+                    if (notificacoes.length > 10) {
+                        const moreNotifications = document.createElement('div');
+                        moreNotifications.className = 'notification-item';
+                        moreNotifications.innerHTML = `<div class="notification-info">+ ${notificacoes.length - 10} mais notificações...</div>`;
+                        notificationList.appendChild(moreNotifications);
+                    }
+                }
+            }
+            
+            // Função para formatar tempo relativo
+            function formatarTempoRelativo(data) {
+                const agora = new Date();
+                const diff = Math.floor((agora - data) / 1000); // diferença em segundos
+                
+                if (diff < 60) return 'agora';
+                if (diff < 3600) return `${Math.floor(diff / 60)} min atrás`;
+                if (diff < 86400) return `${Math.floor(diff / 3600)} h atrás`;
+                if (diff < 2592000) return `${Math.floor(diff / 86400)} dias atrás`;
+                
+                return `${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()}`;
+            }
+            
+            // Evento para o sino de notificações
+            notificationBell.addEventListener('click', function(e) {
+                e.stopPropagation();
+                notificationDropdown.classList.toggle('hidden');
+                
+                if (!notificationDropdown.classList.contains('hidden')) {
+                    atualizarInterfaceNotificacoes();
+                }
+            });
+            
+            // Evento para fechar o dropdown ao clicar fora
+            document.addEventListener('click', function(e) {
+                if (!notificationDropdown.classList.contains('hidden') && 
+                    !notificationDropdown.contains(e.target) && 
+                    !notificationBell.contains(e.target)) {
+                    notificationDropdown.classList.add('hidden');
+                }
+            });
+            
+            // Evento para marcar todas como lidas
+            markAllRead.addEventListener('click', function() {
+                notificacoes.forEach(notificacao => {
+                    notificacao.lida = true;
+                });
+                
+                localStorage.setItem('notificacoes', JSON.stringify(notificacoes));
+                atualizarInterfaceNotificacoes();
+                
+                showToast('success', 'Notificações', 'Todas as notificações foram marcadas como lidas.');
+            });
+            
+            // Eventos para as configurações
+            settingsBtn.addEventListener('click', function() {
+                // Preenche as configurações com os valores atuais
+                soundToggle.checked = configuracoes.somAtivado;
+                volumeSlider.value = configuracoes.volume;
+                volumeValue.textContent = configuracoes.volume + '%';
+                soundBaixa.checked = configuracoes.somBaixa;
+                soundMedia.checked = configuracoes.somMedia;
+                soundAlta.checked = configuracoes.somAlta;
+                soundUrgente.checked = configuracoes.somUrgente;
+                bellAnimation.checked = configuracoes.animacaoSino;
+                highlightUnread.checked = configuracoes.destacarNaoLidos;
+                checkInterval.value = configuracoes.intervaloVerificacao;
+                
+                // Atualiza o estado dos controles de volume
+                volumeSettings.style.opacity = configuracoes.somAtivado ? '1' : '0.5';
+                volumeSettings.style.pointerEvents = configuracoes.somAtivado ? 'auto' : 'none';
+                
+                // Mostra o modal de configurações
+                settingsModal.classList.remove('hidden');
+                
+                // Esconde o dropdown de notificações
+                notificationDropdown.classList.add('hidden');
+            });
+            
+            // Evento para alternar o estado dos controles de volume
+            soundToggle.addEventListener('change', function() {
+                volumeSettings.style.opacity = this.checked ? '1' : '0.5';
+                volumeSettings.style.pointerEvents = this.checked ? 'auto' : 'none';
+            });
+            
+            // Evento para atualizar o valor do volume exibido
+            volumeSlider.addEventListener('input', function() {
+                volumeValue.textContent = this.value + '%';
+            });
+            
+            // Eventos para fechar o modal de configurações
+            closeSettings.addEventListener('click', () => settingsModal.classList.add('hidden'));
+            cancelSettings.addEventListener('click', () => settingsModal.classList.add('hidden'));
+            
+            // Evento para salvar as configurações
+            saveSettings.addEventListener('click', function() {
+                // Atualiza as configurações
+                configuracoes.somAtivado = soundToggle.checked;
+                configuracoes.volume = parseInt(volumeSlider.value);
+                configuracoes.somBaixa = soundBaixa.checked;
+                configuracoes.somMedia = soundMedia.checked;
+                configuracoes.somAlta = soundAlta.checked;
+                configuracoes.somUrgente = soundUrgente.checked;
+                configuracoes.animacaoSino = bellAnimation.checked;
+                configuracoes.destacarNaoLidos = highlightUnread.checked;
+                configuracoes.intervaloVerificacao = parseInt(checkInterval.value);
+                
+                // Salva no localStorage
+                localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
+                
+                // Reinicia o verificador de chamados com o novo intervalo
+                iniciarVerificadorChamados();
+                
+                // Atualiza a interface
+                if (!configuracoes.animacaoSino) {
+                    bellIcon.classList.remove('bell-animation');
+                } else if (notificacoes.filter(n => !n.lida).length > 0) {
+                    bellIcon.classList.add('bell-animation');
+                }
+                
+                // Fecha o modal
+                settingsModal.classList.add('hidden');
+                
+                // Mostra confirmação
+                showToast('success', 'Configurações', 'Configurações salvas com sucesso!');
+            });
+            
+            // Carrega as opções de setor no formulário de login
+            function carregarSetoresLogin() {
+                const setores = JSON.parse(localStorage.getItem('setores'));
+                loginSetor.innerHTML = '<option value="">Selecione o setor</option>';
+                
+                // Filtra os setores pelo tipo selecionado
+                const setoresFiltrados = setores.filter(setor => setor.tipo === tipoUsuario);
+                
+                setoresFiltrados.forEach(setor => {
+                    const option = document.createElement('option');
+                    option.value = setor.id;
+                    option.textContent = setor.nome;
+                    loginSetor.appendChild(option);
+                });
+            }
+            
+            // MODIFICADO: Função para carregar apenas o setor TI como destino
+			function carregarSetoresDestino() {
+				const setores = JSON.parse(localStorage.getItem('setores'));
+				setorDestino.innerHTML = '<option value="">Selecione o setor</option>';
+				
+				// Filtrar apenas o setor de TI (TI será o único setor de tipo 'support')
+				const setorTI = setores.find(setor => setor.tipo === 'support');
+				
+				if (setorTI) {
+					const option = document.createElement('option');
+					option.value = setorTI.id;
+					option.textContent = setorTI.nome;
+					setorDestino.appendChild(option);
+					
+					// Pré-selecionar o setor TI já que é a única opção
+					setorDestino.value = setorTI.id;
+				} else {
+					console.error("Erro: Setor TI não encontrado!");
+				}
+			}
+            
+            // Eventos para alternar entre usuário e suporte no login
+            authOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove a classe active de todas as opções
+                    authOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Adiciona a classe active na opção selecionada
+                    this.classList.add('active');
+                    
+                    // Atualiza o tipo de usuário
+                    tipoUsuario = this.getAttribute('data-role');
+                    
+                    // Atualiza os setores no formulário de login
+                    carregarSetoresLogin();
+                });
+            });
+            
+            // Event listener para o formulário de login
+            formLogin.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const setorId = parseInt(loginSetor.value);
+                const usuario = loginUsuario.value;
+                const senha = loginSenha.value;
+                const email = loginEmail.value;
+                
+                if (!setorId || !usuario || !senha || !email) {
+                    showToast('warning', 'Erro de Login', 'Preencha todos os campos!');
+                    return;
+                }
+                
+                const setores = JSON.parse(localStorage.getItem('setores'));
+                const setor = setores.find(s => s.id === setorId);
+                
+                if (!setor) {
+                    showToast('warning', 'Erro de Login', 'Setor não encontrado!');
+                    return;
+                }
+
+                // Verifica se as credenciais são válidas
+                let credenciaisValidas = false;
+                let setorNome = "";
+
+                // Encontra o usuário correspondente ao setor
+                const usuarioValido = usuariosValidos.find(u => {
+                    if (tipoUsuario === 'support') {
+                        return u.setor === "TI" && 
+                               u.nome === usuario && 
+                               u.senha === senha && 
+                               u.email === email;
+                    } else {
+                        return u.setor === setor.nome && 
+                               u.nome === usuario && 
+                               u.senha === senha && 
+                               u.email === email;
+                    }
+                });
+
+                if (usuarioValido) {
+                    credenciaisValidas = true;
+                    setorNome = usuarioValido.setor;
+                }
+
+                if (!credenciaisValidas) {
+                    showToast('warning', 'Erro de Login', 'Credenciais inválidas. Verifique seu usuário, senha e email.');
+                    return;
+                }
+                
+                // Cria o objeto do usuário
+                usuarioAtual = {
+                    id: Date.now(), // Simula um ID único
+                    nome: usuario,
+                    email: email,
+                    setorId: setorId,
+                    setorNome: setorNome,
+                    tipoUsuario: tipoUsuario
+                };
+                
+                // Inicializa o sistema de áudio após interação do usuário
+                criarSons();
+                
+                // Inicia o verificador de chamados
+                iniciarVerificadorChamados();
+                
+                // Atualiza a interface para o usuário logado
+                atualizarInterfaceUsuario();
+                
+                // Mostra mensagem de boas-vindas
+                showToast('success', 'Login Efetuado', `Bem-vindo(a), ${usuario}!`);
+            });
+            
+            // Evento para logout
+            btnLogout.addEventListener('click', function() {
+                // Limpa os dados do usuário
+                usuarioAtual = null;
+                
+                // Para o verificador de chamados
+                if (verificadorChamados) {
+                    clearInterval(verificadorChamados);
+                    verificadorChamados = null;
+                }
+                
+                // Reseta a interface
+                resetarInterface();
+                
+                // Mostra mensagem
+                showToast('info', 'Logout', 'Você saiu do sistema.');
+            });
+            
+            // Função para atualizar a interface após o login
+            function atualizarInterfaceUsuario() {
+                // Esconde a seção de login
+                loginSection.classList.add('hidden');
+                
+                // Atualiza o perfil do usuário
+                avatarInicial.textContent = usuarioAtual.nome.charAt(0).toUpperCase();
+                nomeUsuario.textContent = usuarioAtual.nome;
+                setorUsuario.textContent = usuarioAtual.setorNome;
+                btnLogout.classList.remove('hidden');
+                
+                // Mostra a navegação principal
+                mainNav.classList.remove('hidden');
+                
+                // Configura os botões da navegação conforme o tipo de usuário
+                if (usuarioAtual.tipoUsuario === 'support') {
+                    btnNovoChamado.classList.add('hidden');
+                    btnMeusChamados.classList.add('hidden');
+                    btnAtenderChamados.classList.remove('hidden');
+                    
+                    // Atualiza as notificações para mostrar apenas as relevantes para o suporte
+                    notificacoes = notificacoes.filter(n => {
+                        const chamados = JSON.parse(localStorage.getItem('chamados'));
+                        const chamado = chamados.find(c => c.id === n.chamadoId);
+                        return chamado && chamado.setorDestinoId === usuarioAtual.setorId;
+                    });
+                    localStorage.setItem('notificacoes', JSON.stringify(notificacoes));
+                    
+                    // Atualiza a interface das notificações
+                    atualizarInterfaceNotificacoes();
+                    
+                    // Redireciona para a seção de atender chamados
+                    mostrarSecao('atender-chamados');
+                } else {
+                    btnNovoChamado.classList.remove('hidden');
+                    btnMeusChamados.classList.remove('hidden');
+                    btnAtenderChamados.classList.add('hidden');
+                    
+                    // Atualiza as notificações para mostrar apenas as relevantes para o usuário
+                    notificacoes = notificacoes.filter(n => {
+                        const chamados = JSON.parse(localStorage.getItem('chamados'));
+                        const chamado = chamados.find(c => c.id === n.chamadoId);
+                        return chamado && chamado.setorOrigemId === usuarioAtual.setorId;
+                    });
+                    localStorage.setItem('notificacoes', JSON.stringify(notificacoes));
+                    
+                    // Atualiza a interface das notificações
+                    atualizarInterfaceNotificacoes();
+                    
+                    // Configura o setor de origem no formulário de chamado
+                    const optionOrigem = document.createElement('option');
+                    optionOrigem.value = usuarioAtual.setorId;
+                    optionOrigem.textContent = usuarioAtual.setorNome;
+                    setorOrigem.innerHTML = '';
+                    setorOrigem.appendChild(optionOrigem);
+                    
+                    // Carrega os setores de destino
+                    carregarSetoresDestino();
+                    
+                    // Redireciona para a seção de novo chamado
+                    mostrarSecao('novo-chamado');
+                }
+            }
+            
+            // Função para resetar a interface (logout)
+            function resetarInterface() {
+                // Esconde a navegação e todas as seções
+                mainNav.classList.add('hidden');
+                secaoNovoChamado.classList.add('hidden');
+                secaoMeusChamados.classList.add('hidden');
+                secaoAtenderChamados.classList.add('hidden');
+                secaoDashboard.classList.add('hidden');
+                
+                // Reseta o perfil do usuário
+                avatarInicial.textContent = 'U';
+                nomeUsuario.textContent = 'Usuário não logado';
+                setorUsuario.textContent = 'Faça login para continuar';
+                btnLogout.classList.add('hidden');
+                
+                // Esconde as notificações
+                notificationCount.classList.add('hidden');
+                bellIcon.classList.remove('bell-animation');
+                notificationDropdown.classList.add('hidden');
+                
+                // Mostra a seção de login
+                loginSection.classList.remove('hidden');
+                
+                // Limpa o formulário de login
+                formLogin.reset();
+            }
+            
+            // Função para trocar entre seções
+            function mostrarSecao(secao) {
+                // Esconde todas as seções
+                secaoNovoChamado.classList.add('hidden');
+                secaoMeusChamados.classList.add('hidden');
+                secaoAtenderChamados.classList.add('hidden');
+                secaoDashboard.classList.add('hidden');
+                
+                // Remove a classe 'active' de todos os botões
+                btnNovoChamado.classList.remove('active');
+                btnMeusChamados.classList.remove('active');
+                btnAtenderChamados.classList.remove('active');
+                btnDashboard.classList.remove('active');
+                
+                // Mostra a seção selecionada
+                if (secao === 'novo-chamado') {
+                    secaoNovoChamado.classList.remove('hidden');
+                    btnNovoChamado.classList.add('active');
+                } else if (secao === 'meus-chamados') {
+                    secaoMeusChamados.classList.remove('hidden');
+                    btnMeusChamados.classList.add('active');
+                    carregarMeusChamados();
+                } else if (secao === 'atender-chamados') {
+                    secaoAtenderChamados.classList.remove('hidden');
+                    btnAtenderChamados.classList.add('active');
+                    carregarChamadosParaAtendimento();
+                } else if (secao === 'dashboard') {
+                    secaoDashboard.classList.remove('hidden');
+                    btnDashboard.classList.add('active');
+                    atualizarDashboard();
+                }
+            }
+            
+            // Adiciona eventos aos botões de navegação
+            btnNovoChamado.addEventListener('click', () => mostrarSecao('novo-chamado'));
+            btnMeusChamados.addEventListener('click', () => mostrarSecao('meus-chamados'));
+            btnAtenderChamados.addEventListener('click', () => mostrarSecao('atender-chamados'));
+            btnDashboard.addEventListener('click', () => mostrarSecao('dashboard'));
+            
+            // Função para gerar um ID único para o chamado
+            function gerarId() {
+                const chamados = JSON.parse(localStorage.getItem('chamados'));
+                if (chamados.length === 0) return 1;
+                return Math.max(...chamados.map(c => c.id)) + 1;
+            }
+            
+            // Função para exibir notificação toast
+            function showToast(type, title, message, duration = 5000) {
+                const toastContainer = document.getElementById('toast-container');
+                
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                
+                let icon = '';
+                if (type === 'success') icon = '✓';
+                else if (type === 'warning') icon = '⚠';
+                else if (type === 'info') icon = 'ℹ';
+                
+                toast.innerHTML = `
+                    <div class="toast-icon">${icon}</div>
+                    <div class="toast-content">
+                        <div class="toast-title">${title}</div>
+                        <div class="toast-message">${message}</div>
+                    </div>
+                `;
+                
+                toastContainer.appendChild(toast);
+                
+                // Mostra a notificação com um pequeno delay para o efeito de animação
+                setTimeout(() => {
+                    toast.classList.add('show');
+                }, 10);
+                
+                // Remove a notificação após o tempo especificado
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => {
+                        toastContainer.removeChild(toast);
+                    }, 300);
+                }, duration);
+            }
+            
+            // Função para simular o envio de email
+            function enviarEmail(destinatario, assunto, corpo) {
+                // Em um ambiente real, isso seria uma chamada para um servidor de email
+                console.log(`Enviando email para: ${destinatario}`);
+                console.log(`Assunto: ${assunto}`);
+                console.log(`Corpo: ${corpo}`);
+                
+                // Simula o armazenamento do email enviado
+                const emails = JSON.parse(localStorage.getItem('emails'));
+                emails.push({
+                    destinatario,
+                    assunto,
+                    corpo,
+                    dataEnvio: new Date().toISOString()
+                });
+                localStorage.setItem('emails', JSON.stringify(emails));
+                
+                // Exibe notificação de sucesso
+                showToast('success', 'Email Enviado', `Notificação enviada para: ${destinatario}`);
+                
+                return true;
+            }
+            
+            // Função para enviar email de notificação de novo chamado
+            function enviarEmailNovoChamado(chamado) {
+                const destinatario = chamado.usuarioEmail;
+                const assunto = `[Chamado #${chamado.id}] Confirmação de Abertura: ${chamado.assunto}`;
+                
+                const corpo = `
+                    <h2>Confirmação de Abertura de Chamado</h2>
+                    <p>Olá ${chamado.usuarioNome},</p>
+                    <p>Seu chamado foi aberto com sucesso no Sistema de Chamados da Saúde.</p>
+                    
+                    <div style="margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #24b561;">
+                        <p><strong>Número do chamado:</strong> #${chamado.id}</p>
+                        <p><strong>Assunto:</strong> ${chamado.assunto}</p>
+                        <p><strong>Setor de Destino:</strong> ${chamado.setorDestinoNome}</p>
+                        <p><strong>Prioridade:</strong> ${chamado.prioridade}</p>
+                        <p><strong>Status:</strong> Em aberto</p>
+                    </div>
+                    
+                    <p>Você receberá notificações sempre que houver atualizações em seu chamado.</p>
+                    <p>Este é um email automático, por favor não responda.</p>
+                    <p>Atenciosamente,<br>Sistema de Chamados - Saúde</p>
+                `;
+                
+                return enviarEmail(destinatario, assunto, corpo);
+            }
+            
+            // Função para enviar email de notificação de atualização de chamado
+            function enviarEmailAtualizacaoChamado(chamado, acao, comentario) {
+                const destinatario = chamado.usuarioEmail;
+                const assunto = `[Chamado #${chamado.id}] Atualização: ${chamado.assunto}`;
+                
+                // Define a cor do status para o email
+                let corStatus = "#ffc107"; // Amarelo para "Em aberto"
+                if (chamado.status === "Em andamento") {
+                    corStatus = "#17a2b8"; // Azul
+                } else if (chamado.status === "Resolvido") {
+                    corStatus = "#28a745"; // Verde
+                } else if (chamado.status === "Fechado") {
+                    corStatus = "#6c757d"; // Cinza
+                }
+                
+                const corpo = `
+                    <h2>Atualização de Chamado</h2>
+                    <p>Olá ${chamado.usuarioNome},</p>
+                    <p>Seu chamado foi atualizado no Sistema de Chamados da Saúde.</p>
+                    
+                    <div style="margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #24b561;">
+                        <p><strong>Número do chamado:</strong> #${chamado.id}</p>
+                        <p><strong>Assunto:</strong> ${chamado.assunto}</p>
+                        <p><strong>Status atual:</strong> <span style="display: inline-block; padding: 5px 10px; border-radius: 15px; color: white; font-size: 14px; background-color: ${corStatus};">${chamado.status}</span></p>
+                    </div>
+                    
+                    <div style="margin: 20px 0; padding: 15px; background-color: #f0f7ff; border-left: 4px solid #17a2b8;">
+                        <p><strong>Atualização:</strong> ${acao}</p>
+                        ${comentario ? `<p><strong>Comentário:</strong><br>${comentario}</p>` : ''}
+                    </div>
+                    
+                    <p>Você receberá notificações sempre que houver novas atualizações em seu chamado.</p>
+                    <p>Este é um email automático, por favor não responda.</p>
+                    <p>Atenciosamente,<br>Sistema de Chamados - Saúde</p>
+                `;
+                
+                return enviarEmail(destinatario, assunto, corpo);
+            }
+            
+            // Event listener para o formulário de novo chamado
+            formChamado.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!usuarioAtual) {
+                    showToast('warning', 'Erro', 'Você precisa estar logado para abrir um chamado!');
+                    return;
+                }
+                
+                const setores = JSON.parse(localStorage.getItem('setores'));
+                const setorDestinoId = parseInt(document.getElementById('setor-destino').value);
+                const setorDestinoDB = setores.find(s => s.id === setorDestinoId);
+                
+                if (!setorDestinoDB) {
+                    showToast('warning', 'Erro', 'Selecione um setor de destino válido!');
+                    return;
+                }
+                
+                const tipoChamado = document.getElementById('tipo-chamado').value;
+                const prioridade = document.getElementById('prioridade').value;
+                const assunto = document.getElementById('assunto').value;
+                const descricao = document.getElementById('descricao').value;
+                
+                // Cria um novo chamado
+                const novoChamado = {
+                    id: gerarId(),
+                    usuarioId: usuarioAtual.id,
+                    usuarioNome: usuarioAtual.nome,
+                    usuarioEmail: usuarioAtual.email,
+                    setorOrigemId: usuarioAtual.setorId,
+                    setorOrigemNome: usuarioAtual.setorNome,
+                    setorDestinoId: setorDestinoId,
+                    setorDestinoNome: setorDestinoDB.nome,
+                    tipoChamado,
+                    prioridade,
+                    assunto,
+                    descricao,
+                    dataAbertura: new Date().toISOString(),
+                    status: 'Em aberto',
+                    historico: [
+                        {
+                            data: new Date().toISOString(),
+                            responsavelNome: usuarioAtual.nome,
+                            responsavelSetor: usuarioAtual.setorNome,
+                            acao: 'Abertura do chamado',
+                            detalhes: `Chamado aberto pelo setor ${usuarioAtual.setorNome}`
+                        }
+                    ]
+                };
+                
+                // Recupera os chamados existentes
+                const chamados = JSON.parse(localStorage.getItem('chamados'));
+                
+                // Adiciona o novo chamado
+                chamados.push(novoChamado);
+                
+                // Salva no localStorage
+                localStorage.setItem('chamados', JSON.stringify(chamados));
+                
+                // Limpa o formulário
+                formChamado.reset();
+                // Restaura o setor de origem
+                const optionOrigem = document.createElement('option');
+                optionOrigem.value = usuarioAtual.setorId;
+                optionOrigem.textContent = usuarioAtual.setorNome;
+                setorOrigem.innerHTML = '';
+                setorOrigem.appendChild(optionOrigem);
+                
+                // Carrega novamente os setores de destino
+                carregarSetoresDestino();
+                
+                // Envia email de notificação
+                enviarEmailNovoChamado(novoChamado);
+                
+                // Mostra notificação de sucesso
+                showToast('success', 'Chamado Aberto', `Chamado #${novoChamado.id} aberto com sucesso!`);
+                
+                // Atualiza as informações dos últimos chamados
+                ultimosChamados = JSON.parse(localStorage.getItem('chamados'));
+                
+                // Redireciona para a seção 'Meus Chamados'
+                mostrarSecao('meus-chamados');
+            });
+            
+            // Função para formatar data ISO para exibição
+            function formatarData(dataISO) {
+                const data = new Date(dataISO);
+                return data.toLocaleDateString('pt-BR');
+            }
+            
+            // Função para formatar data e hora ISO para exibição
+            function formatarDataHora(dataISO) {
+                const data = new Date(dataISO);
+                return data.toLocaleDateString('pt-BR') + ' ' + data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            }
+            
+            // Função para verificar se um chamado possui notificação não lida
+            function temNotificacaoNaoLida(chamadoId) {
+                return notificacoes.some(n => n.chamadoId === chamadoId && !n.lida);
+            }
+            
+            // Função para carregar os meus chamados na tabela (para usuários)
+            function carregarMeusChamados() {
+                if (!usuarioAtual) {
+                    showToast('warning', 'Erro', 'Você precisa estar logado para ver seus chamados!');
+                    return;
+                }
+                
+                const chamados = JSON.parse(localStorage.getItem('chamados'));
+                const tbody = document.querySelector('#tabela-meus-chamados tbody');
+                
+                // Limpa a tabela
+                tbody.innerHTML = '';
+                
+                // Filtra os chamados do usuário atual
+                const meusChamados = chamados.filter(c => c.setorOrigemId === usuarioAtual.setorId);
+                
+                // Ordena os chamados por data (mais recente primeiro)
+                meusChamados.sort((a, b) => new Date(b.dataAbertura) - new Date(a.dataAbertura));
+                
+                if (meusChamados.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="text-center">Nenhum chamado encontrado.</td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                // Adiciona cada chamado à tabela
+                meusChamados.forEach(chamado => {
+                    const tr = document.createElement('tr');
+                    
+                    // Verifica se o chamado tem notificações não lidas
+                    const naoLido = temNotificacaoNaoLida(chamado.id);
+                    
+                    // Adiciona classe de destaque para chamados não lidos
+                    if (naoLido && configuracoes.destacarNaoLidos) {
+                        tr.classList.add('blink-row');
+                    }
+                    
+                    // Classe de status para o badge
+                    let statusClass = getStatusClass(chamado.status);
+                    
+                    tr.innerHTML = `
+                        <td>#${chamado.id}</td>
+                        <td>${chamado.assunto}</td>
+                        <td>${chamado.setorDestinoNome}</td>
+                        <td>${formatarData(chamado.dataAbertura)}</td>
+                        <td>${chamado.prioridade}</td>
+                        <td><span class="badge ${statusClass}">${chamado.status}</span></td>
+                        <td>
+                            <button class="btn btn-success btn-ver" data-id="${chamado.id}">Ver</button>
+                        </td>
+                    `;
+                    
+                    tbody.appendChild(tr);
+                });
+                
+                // Adiciona evento aos botões "Ver"
+                document.querySelectorAll('.btn-ver').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.getAttribute('data-id'));
+                        
+                        // Marca todas as notificações deste chamado como lidas
+                        notificacoes.forEach(n => {
+                            if (n.chamadoId === id) {
+                                n.lida = true;
+                            }
+                        });
+                        localStorage.setItem('notificacoes', JSON.stringify(notificacoes));
+                        
+                        // Atualiza a interface das notificações
+                        atualizarInterfaceNotificacoes();
+                        
+                        // Abre o modal do chamado
+                        abrirModalChamado(id);
+                        
+                        // Remove o destaque da linha
+                        if (configuracoes.destacarNaoLidos) {
+                            const tr = this.closest('tr');
+                            tr.classList.remove('blink-row');
+                        }
+                    });
+                });
+            }
+            
+            // Função para carregar os chamados para atendimento na tabela (para suporte)
+            function carregarChamadosParaAtendimento() {
+                if (!usuarioAtual || usuarioAtual.tipoUsuario !== 'support') {
+                    showToast('warning', 'Erro', 'Você precisa estar logado como suporte para ver os chamados!');
+                    return;
+                }
+                
+                const chamados = JSON.parse(localStorage.getItem('chamados'));
+                const tbody = document.querySelector('#tabela-atender-chamados tbody');
+                
+                // Limpa a tabela
+                tbody.innerHTML = '';
+                
+                // Filtra os chamados destinados ao setor de suporte atual
+                const chamadosParaAtender = chamados.filter(c => c.setorDestinoId === usuarioAtual.setorId);
+                
+                // Ordena os chamados por prioridade e depois por data
+                chamadosParaAtender.sort((a, b) => {
+                    // Primeiro por prioridade (Urgente > Alta > Média > Baixa)
+                    const prioridadeOrdem = { 'Urgente': 0, 'Alta': 1, 'Média': 2, 'Baixa': 3 };
+                    const prioridadeDiff = prioridadeOrdem[a.prioridade] - prioridadeOrdem[b.prioridade];
+                    
+                    if (prioridadeDiff !== 0) return prioridadeDiff;
+                    
+                    // Depois por data (mais recente primeiro)
+                    return new Date(b.dataAbertura) - new Date(a.dataAbertura);
+                });
+                
+                if (chamadosParaAtender.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="text-center">Nenhum chamado para atendimento.</td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                // Adiciona cada chamado à tabela
+                chamadosParaAtender.forEach(chamado => {
+                    const tr = document.createElement('tr');
+                    
+                    // Verifica se o chamado tem notificações não lidas
+                    const naoLido = temNotificacaoNaoLida(chamado.id);
+                    
+                    // Adiciona classe de destaque para chamados não lidos
+                    if (naoLido && configuracoes.destacarNaoLidos) {
+                        tr.classList.add('blink-row');
+                    }
+                    
+                    // Classe de status para o badge
+                    let statusClass = getStatusClass(chamado.status);
+                    
+                    tr.innerHTML = `
+                        <td>#${chamado.id}</td>
+                        <td>${chamado.assunto}</td>
+                        <td>${chamado.setorOrigemNome}</td>
+                        <td>${formatarData(chamado.dataAbertura)}</td>
+                        <td><span class="badge ${getPrioridadeBadgeClass(chamado.prioridade)}">${chamado.prioridade}</span></td>
+                        <td><span class="badge ${statusClass}">${chamado.status}</span></td>
+                        <td>
+                            <button class="btn btn-success btn-ver" data-id="${chamado.id}">Ver</button>
+                        </td>
+                    `;
+                    
+                    tbody.appendChild(tr);
+                });
+                
+                // Adiciona evento aos botões "Ver"
+                document.querySelectorAll('.btn-ver').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.getAttribute('data-id'));
+                        
+                        // Marca todas as notificações deste chamado como lidas
+                        notificacoes.forEach(n => {
+                            if (n.chamadoId === id) {
+                                n.lida = true;
+                            }
+                        });
+                        localStorage.setItem('notificacoes', JSON.stringify(notificacoes));
+                        
+                        // Atualiza a interface das notificações
+                        atualizarInterfaceNotificacoes();
+                        
+                        // Abre o modal do chamado
+                        abrirModalChamado(id);
+                        
+                        // Remove o destaque da linha
+                        if (configuracoes.destacarNaoLidos) {
+                            const tr = this.closest('tr');
+                            tr.classList.remove('blink-row');
+                        }
+                    });
+                });
+            }
+            
+            // Função para obter a classe de badge para prioridade
+            function getPrioridadeBadgeClass(prioridade) {
+                switch(prioridade) {
+                    case 'Urgente':
+                        return 'badge-danger';
+                    case 'Alta':
+                        return 'badge-warning';
+                    case 'Média':
+                        return 'badge-info';
+                    case 'Baixa':
+                        return 'badge-success';
+                    default:
+                        return 'badge-secondary';
+                }
+            }
+            
+            // Função para abrir o modal de detalhes do chamado
+            function abrirModalChamado(id) {
+                // CORREÇÃO: Verifica se o usuário está logado antes de abrir o modal
+                if (!usuarioAtual) {
+                    showToast('warning', 'Erro', 'Você precisa estar logado para visualizar detalhes do chamado!');
+                    return;
+                }
+                
+                const chamados = JSON.parse(localStorage.getItem('chamados'));
+                const chamado = chamados.find(c => c.id === id);
+                
+                if (!chamado) {
+                    showToast('warning', 'Erro', 'Chamado não encontrado!');
+                    return;
+                }
+                
+                // Atualiza o título do modal
+                modalTitulo.textContent = `Chamado #${chamado.id} - ${chamado.assunto}`;
+                
+                // Preenche o ID do chamado no formulário de resposta
+                inputChamadoId.value = chamado.id;
+                
+                // Preenche o select de status com o status atual
+                document.getElementById('novo-status').value = chamado.status;
+                
+                // Determina se o usuário atual pode responder a este chamado
+                const podeResponder = usuarioAtual && 
+                                      usuarioAtual.tipoUsuario === 'support' && 
+                                      usuarioAtual.setorId === chamado.setorDestinoId;
+                
+                // Mostra ou esconde a tab de resposta
+                if (podeResponder) {
+                    tabResponder.classList.remove('hidden');
+                } else {
+                    tabResponder.classList.add('hidden');
+                }
+                
+                // Atualiza as informações do chamado
+                const infoChamado = document.getElementById('info-chamado');
+                infoChamado.innerHTML = `
+                    <div class="info-item">
+                        <div class="info-item-label">Setor de Origem</div>
+                        <div class="info-item-value">${chamado.setorOrigemNome}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-item-label">Setor de Destino</div>
+                        <div class="info-item-value">${chamado.setorDestinoNome}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-item-label">Tipo</div>
+                        <div class="info-item-value">${chamado.tipoChamado}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-item-label">Prioridade</div>
+                        <div class="info-item-value">
+                            <span class="badge ${getPrioridadeBadgeClass(chamado.prioridade)}">${chamado.prioridade}</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-item-label">Status</div>
+                        <div class="info-item-value">
+                            <span class="badge ${getStatusClass(chamado.status)}">${chamado.status}</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-item-label">Data de Abertura</div>
+                        <div class="info-item-value">${formatarDataHora(chamado.dataAbertura)}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-item-label">Solicitante</div>
+                        <div class="info-item-value">${chamado.usuarioNome}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-item-label">Email</div>
+                        <div class="info-item-value">${chamado.usuarioEmail}</div>
+                    </div>
+                `;
+                
+                // Atualiza a descrição
+                document.getElementById('descricao-chamado').textContent = chamado.descricao;
+                
+                // Atualiza o histórico
+                const historicoContainer = document.getElementById('historico-chamado');
+                historicoContainer.innerHTML = '';
+                
+                // Adiciona as entradas do histórico em ordem cronológica
+                chamado.historico.forEach(item => {
+                    const historicoItem = document.createElement('div');
+                    historicoItem.className = 'timeline-item';
+                    
+                    historicoItem.innerHTML = `
+                        <div class="timeline-date">${formatarDataHora(item.data)}</div>
+                        <div class="timeline-title">
+                            ${item.acao}
+                            <small style="display: block; margin-top: 3px; color: #666;">
+                                por ${item.responsavelNome} (${item.responsavelSetor})
+                            </small>
+                        </div>
+                        ${item.detalhes ? `<div class="timeline-body">${item.detalhes}</div>` : ''}
+                    `;
+                    
+                    historicoContainer.appendChild(historicoItem);
+                });
+                
+                // Seleciona a primeira tab
+                modalTabs.forEach(tab => tab.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                modalTabs[0].classList.add('active');
+                tabContents[0].classList.add('active');
+                
+                // Exibe o modal
+                modalDetalhes.classList.remove('hidden');
+            }
+            
+            // Função auxiliar para obter a classe de status para o badge
+            function getStatusClass(status) {
+                switch(status) {
+                    case 'Em aberto':
+                        return 'badge-warning';
+                    case 'Em andamento':
+                        return 'badge-info';
+                    case 'Resolvido':
+                        return 'badge-success';
+                    case 'Fechado':
+                        return 'badge-secondary';
+                    default:
+                        return 'badge-secondary';
+                }
+            }
+            
+            // Event listener para o formulário de resposta
+            formResposta.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!usuarioAtual || usuarioAtual.tipoUsuario !== 'support') {
+                    showToast('warning', 'Erro', 'Você não tem permissão para responder a este chamado!');
+                    return;
+                }
+                
+                const chamadoId = parseInt(inputChamadoId.value);
+                const novoStatus = document.getElementById('novo-status').value;
+                const resposta = document.getElementById('resposta').value;
+                
+                // Busca o chamado
+                const chamados = JSON.parse(localStorage.getItem('chamados'));
+                const chamadoIndex = chamados.findIndex(c => c.id === chamadoId);
+                
+                if (chamadoIndex === -1) {
+                    showToast('warning', 'Erro', 'Chamado não encontrado!');
+                    return;
+                }
+                
+                const chamado = chamados[chamadoIndex];
+                
+                // Verifica se o usuário pertence ao setor de destino do chamado
+                if (usuarioAtual.setorId !== chamado.setorDestinoId) {
+                    showToast('warning', 'Erro', 'Você não tem permissão para responder a este chamado!');
+                    return;
+                }
+                
+                const statusAnterior = chamado.status;
+                
+                // Atualiza o status do chamado
+                chamado.status = novoStatus;
+                
+                // Cria uma descrição da ação
+                let acao = '';
+                if (statusAnterior !== novoStatus) {
+                    acao = `Status atualizado de "${statusAnterior}" para "${novoStatus}"`;
+                } else {
+                    acao = 'Novo comentário adicionado';
+                }
+                
+                // Adiciona a entrada no histórico
+                chamado.historico.push({
+                    data: new Date().toISOString(),
+                    responsavelNome: usuarioAtual.nome,
+                    responsavelSetor: usuarioAtual.setorNome,
+                    acao: acao,
+                    detalhes: resposta
+                });
+                
+                // Atualiza o chamado no array
+                chamados[chamadoIndex] = chamado;
+                
+                // Salva no localStorage
+                localStorage.setItem('chamados', JSON.stringify(chamados));
+                
+                // Envia email de notificação
+                enviarEmailAtualizacaoChamado(chamado, acao, resposta);
+                
+                // Limpa o formulário de resposta
+                document.getElementById('resposta').value = '';
+                
+                // Atualiza o estado de referência dos chamados
+                ultimosChamados = [...chamados];
+                
+                // Exibe notificação de sucesso
+                showToast('success', 'Chamado Atualizado', `Chamado #${chamado.id} atualizado com sucesso!`);
+                
+                // Atualiza o modal
+                abrirModalChamado(chamadoId);
+                
+                // Atualiza a listagem de chamados
+                if (usuarioAtual.tipoUsuario === 'support') {
+                    carregarChamadosParaAtendimento();
+                } else {
+                    carregarMeusChamados();
+                }
+            });
+            
+            // Eventos para tab no modal
+            modalTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove a classe active de todas as tabs e conteúdos
+                    modalTabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Adiciona a classe active na tab selecionada
+                    this.classList.add('active');
+                    
+                    // Obtém o ID do conteúdo a ser exibido
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(`tab-${tabId}`).classList.add('active');
+                });
+            });
+            
+            // Eventos para fechar o modal
+            fecharModal.addEventListener('click', () => modalDetalhes.classList.add('hidden'));
+            btnFecharModal.addEventListener('click', () => modalDetalhes.classList.add('hidden'));
+            modalDetalhes.addEventListener('click', e => {
+                if (e.target === modalDetalhes) {
+                    modalDetalhes.classList.add('hidden');
+                }
+            });
+            
+            // CORREÇÃO: Adicionar evento de tecla ESC para fechar o modal
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (!modalDetalhes.classList.contains('hidden')) {
+                        modalDetalhes.classList.add('hidden');
+                    }
+                    if (!settingsModal.classList.contains('hidden')) {
+                        settingsModal.classList.add('hidden');
+                    }
+                    if (!notificationDropdown.classList.contains('hidden')) {
+                        notificationDropdown.classList.add('hidden');
+                    }
+                }
+            });
+            
+            // Função para atualizar o dashboard
+            function atualizarDashboard() {
+                const chamados = JSON.parse(localStorage.getItem('chamados'));
+                
+                // Contadores
+                let total = chamados.length;
+                let emAberto = chamados.filter(c => c.status === 'Em aberto').length;
+                let emAndamento = chamados.filter(c => c.status === 'Em andamento').length;
+                let resolvidos = chamados.filter(c => c.status === 'Resolvido' || c.status === 'Fechado').length;
+                
+                // Atualiza os contadores no dashboard
+                document.getElementById('total-chamados').textContent = total;
+                document.getElementById('em-aberto').textContent = emAberto;
+                document.getElementById('em-andamento').textContent = emAndamento;
+                document.getElementById('resolvidos').textContent = resolvidos;
+                
+                // Estatísticas por setor
+                const setores = {};
+                const setoresDB = JSON.parse(localStorage.getItem('setores'));
+                
+                // Inicializa os setores de suporte
+                setoresDB.filter(setor => setor.tipo === 'support').forEach(setor => {
+                    setores[setor.id] = {
+                        nome: setor.nome,
+                        total: 0,
+                        emAberto: 0,
+                        tempoMedio: 0, // Em horas
+                        tempoTotal: 0,
+                        chamadosResolvidos: 0
+                    };
+                });
+                
+                // Processa os chamados
+                chamados.forEach(chamado => {
+                    const setorId = chamado.setorDestinoId;
+                    
+                    // Ignora se não for um setor de suporte
+                    if (!setores[setorId]) return;
+                    
+                    setores[setorId].total += 1;
+                    
+                    if (chamado.status === 'Em aberto') {
+                        setores[setorId].emAberto += 1;
+                    }
+                    
+                    // Calcula tempo médio (para chamados resolvidos)
+                    if (chamado.status === 'Resolvido' || chamado.status === 'Fechado') {
+                        // Busca a data de resolução no histórico
+                        const historicoResolucao = chamado.historico.find(h => 
+                            h.acao.includes('Status atualizado') && 
+                            (h.acao.includes('Resolvido') || h.acao.includes('Fechado'))
+                        );
+                        
+                        if (historicoResolucao) {
+                            const dataResolucao = new Date(historicoResolucao.data);
+                            const dataAbertura = new Date(chamado.dataAbertura);
+                            const tempoResolucao = (dataResolucao - dataAbertura) / (1000 * 60 * 60); // em horas
+                            setores[setorId].tempoTotal += tempoResolucao;
+                            setores[setorId].chamadosResolvidos += 1;
+                        }
+                    }
+                });
+                
+                // Calcula o tempo médio para cada setor
+                Object.keys(setores).forEach(setorId => {
+                    if (setores[setorId].chamadosResolvidos > 0) {
+                        setores[setorId].tempoMedio = Math.round(setores[setorId].tempoTotal / setores[setorId].chamadosResolvidos);
+                    }
+                });
+                
+                // Preenche a tabela de setores
+                const tbody = document.querySelector('#tabela-setores tbody');
+                tbody.innerHTML = '';
+                
+                // Adiciona os dados à tabela
+                Object.values(setores)
+                    .filter(setor => setor.total > 0) // Mostra apenas setores com chamados
+                    .sort((a, b) => b.total - a.total) // Ordena por total de chamados
+                    .forEach(setor => {
+                        const tr = document.createElement('tr');
+                        
+                        tr.innerHTML = `
+                            <td>${setor.nome}</td>
+                            <td>${setor.total}</td>
+                            <td>${setor.emAberto}</td>
+                            <td>${setor.tempoMedio || 'N/A'}</td>
+                        `;
+                        
+                        tbody.appendChild(tr);
+                    });
+                
+                // Se não houver dados, exibe uma mensagem
+                if (tbody.children.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="text-center">Nenhum dado disponível.</td>
+                        </tr>
+                    `;
+                }
+            }
+            
+            // Para fins de demonstração, vamos adicionar alguns chamados de exemplo se não houver nenhum
+            const chamados = JSON.parse(localStorage.getItem('chamados'));
+            if (chamados.length === 0) {
+                const chamadosExemplo = [
+                    {
+                        id: 123,
+                        usuarioId: 101,
+                        usuarioNome: "cs2_centro",
+                        usuarioEmail: "ubscosmopoliscs2@yahoo.com",
+                        setorOrigemId: 1, // UBS CSII - Centro
+                        setorOrigemNome: "UBS CSII - Centro",
+                        setorDestinoId: 27, // TI
+                        setorDestinoNome: "TI",
+                        tipoChamado: "Computador não liga",
+                        prioridade: "Alta",
+                        assunto: "Computador não liga",
+                        descricao: "O computador da recepção não está ligando desde ontem à tarde. Já verificamos os cabos de energia.",
+                        dataAbertura: new Date(2023, 5, 14).toISOString(), // 14/06/2023
+                        status: "Em andamento",
+                        historico: [
+                            {
+                                data: new Date(2023, 5, 14).toISOString(),
+                                responsavelNome: "cs2_centro",
+                                responsavelSetor: "UBS CSII - Centro",
+                                acao: "Abertura do chamado",
+                                detalhes: "Chamado aberto pelo setor UBS CSII - Centro"
+                            },
+                            {
+                                data: new Date(2023, 5, 14, 10, 30).toISOString(),
+                                responsavelNome: "intranet_saude",
+                                responsavelSetor: "TI",
+                                acao: "Status atualizado de \"Em aberto\" para \"Em andamento\"",
+                                detalhes: "Estamos analisando o problema. Um técnico foi designado e visitará o local ainda hoje."
+                            }
+                        ]
+                    },
+                    {
+                        id: 122,
+                        usuarioId: 102,
+                        usuarioNome: "secretaria_saude",
+                        usuarioEmail: "recepcao.saudecosmopolis@gmail.com",
+                        setorOrigemId: 20, // Secretaria de Saúde
+                        setorOrigemNome: "Secretaria de Saúde",
+                        setorDestinoId: 27, // TI
+                        setorDestinoNome: "TI",
+                        tipoChamado: "Configuração de impressora",
+                        prioridade: "Média",
+                        assunto: "Problemas com impressora",
+                        descricao: "A impressora HP LaserJet Pro MFP M428fdw da sala de reuniões não está imprimindo corretamente.",
+                        dataAbertura: new Date(2023, 5, 12).toISOString(), // 12/06/2023
+                        status: "Resolvido",
+                        historico: [
+                            {
+                                data: new Date(2023, 5, 12).toISOString(),
+                                responsavelNome: "secretaria_saude",
+                                responsavelSetor: "Secretaria de Saúde",
+                                acao: "Abertura do chamado",
+                                detalhes: "Chamado aberto pelo setor Secretaria de Saúde"
+                            },
+                            {
+                                data: new Date(2023, 5, 12, 14, 15).toISOString(),
+                                responsavelNome: "intranet_saude",
+                                responsavelSetor: "TI",
+                                acao: "Status atualizado de \"Em aberto\" para \"Em andamento\"",
+                                detalhes: "Iniciei análise do problema. Verificarei os drivers e conexões."
+                            },
+                            {
+                                data: new Date(2023, 5, 13, 9, 0).toISOString(),
+                                responsavelNome: "intranet_saude",
+                                responsavelSetor: "TI",
+                                acao: "Status atualizado de \"Em andamento\" para \"Resolvido\"",
+                                detalhes: "Drivers reinstalados e testados. Impressora funcionando normalmente."
+                            }
+                        ]
+                    },
+                    {
+                        id: 118,
+                        usuarioId: 103,
+                        usuarioNome: "caps_adulto",
+                        usuarioEmail: "caps@cosmopolis.sp.gov.br",
+                        setorOrigemId: 13, // CAPS Adulto
+                        setorOrigemNome: "CAPS Adulto",
+                        setorDestinoId: 27, // TI
+                        setorDestinoNome: "TI",
+                        tipoChamado: "Atualização de software",
+                        prioridade: "Baixa",
+                        assunto: "Atualização de sistema operacional",
+                        descricao: "Precisamos atualizar o sistema operacional dos computadores da recepção.",
+                        dataAbertura: new Date(2023, 5, 5).toISOString(), // 05/06/2023
+                        status: "Fechado",
+                        historico: [
+                            {
+                                data: new Date(2023, 5, 5).toISOString(),
+                                responsavelNome: "caps_adulto",
+                                responsavelSetor: "CAPS Adulto",
+                                acao: "Abertura do chamado",
+                                detalhes: "Chamado aberto pelo setor CAPS Adulto"
+                            },
+                            {
+                                data: new Date(2023, 5, 6, 11, 0).toISOString(),
+                                responsavelNome: "intranet_saude",
+                                responsavelSetor: "TI",
+                                acao: "Status atualizado de \"Em aberto\" para \"Em andamento\"",
+                                detalhes: "Atualizações agendadas para esta semana. Verificando compatibilidade com os sistemas."
+                            },
+                            {
+                                data: new Date(2023, 5, 6, 16, 30).toISOString(),
+                                responsavelNome: "intranet_saude",
+                                responsavelSetor: "TI",
+                                acao: "Status atualizado de \"Em andamento\" para \"Resolvido\"",
+                                detalhes: "Atualizações concluídas em todos os computadores. Sistemas testados e funcionando."
+                            },
+                            {
+                                data: new Date(2023, 5, 8, 10, 0).toISOString(),
+                                responsavelNome: "intranet_saude",
+                                responsavelSetor: "TI",
+                                acao: "Status atualizado de \"Resolvido\" para \"Fechado\"",
+                                detalhes: "Chamado fechado após confirmação do solicitante."
+                            }
+                        ]
+                    },
+                    {
+                        id: 124,
+                        usuarioId: 104,
+                        usuarioNome: "jardim_faveri",
+                        usuarioEmail: "ubsfaveri@gmail.com",
+                        setorOrigemId: 2, // UBS Jardim de Fáveri
+                        setorOrigemNome: "UBS Jardim de Fáveri",
+                        setorDestinoId: 27, // TI
+                        setorDestinoNome: "TI",
+                        tipoChamado: "Vírus/malware",
+                        prioridade: "Urgente",
+                        assunto: "Computador com vírus",
+                        descricao: "O computador da sala de triagem está muito lento e parece estar infectado com vírus. Estamos com dificuldades para atender os pacientes.",
+                        dataAbertura: new Date().toISOString(), // Data atual
+                        status: "Em aberto",
+                        historico: [
+                            {
+                                data: new Date().toISOString(),
+                                responsavelNome: "jardim_faveri",
+                                responsavelSetor: "UBS Jardim de Fáveri",
+                                acao: "Abertura do chamado",
+                                detalhes: "Chamado aberto pelo setor UBS Jardim de Fáveri"
+                            }
+                        ]
+                    }
+                ];
+                
+                localStorage.setItem('chamados', JSON.stringify(chamadosExemplo));
+            }
+            
+            // CORREÇÃO: Evento extra para garantir que o modal esteja oculto
+            window.addEventListener('load', function() {
+                if (modalDetalhes) {
+                    modalDetalhes.classList.add('hidden');
+                }
+                if (settingsModal) {
+                    settingsModal.classList.add('hidden');
+                }
+                if (notificationDropdown) {
+                    notificationDropdown.classList.add('hidden');
+                }
+            });
+            
+            // Inicializa a aplicação
+            carregarSetoresLogin();
+            
+            // Carrega as configurações da interface
+            soundToggle.checked = configuracoes.somAtivado;
+            volumeSlider.value = configuracoes.volume;
+            volumeValue.textContent = configuracoes.volume + '%';
+            soundBaixa.checked = configuracoes.somBaixa;
+            soundMedia.checked = configuracoes.somMedia;
+            soundAlta.checked = configuracoes.somAlta;
+            soundUrgente.checked = configuracoes.somUrgente;
+            bellAnimation.checked = configuracoes.animacaoSino;
+            highlightUnread.checked = configuracoes.destacarNaoLidos;
+            checkInterval.value = configuracoes.intervaloVerificacao;
+            
+            // Atualiza o estado dos controles de volume
+            volumeSettings.style.opacity = configuracoes.somAtivado ? '1' : '0.5';
+            volumeSettings.style.pointerEvents = configuracoes.somAtivado ? 'auto' : 'none';
+        });
+    </script>
+</body>
+</html>
