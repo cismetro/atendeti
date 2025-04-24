@@ -633,7 +633,7 @@
             border-left: 4px solid var(--warning-color);
         }
 
-        .notification-item.média {
+        .notification-item.media {
             border-left: 4px solid var(--info-color);
         }
 
@@ -780,119 +780,6 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
-        }
-
-        /* Novos estilos para o agendamento de visitas */
-        .agenda-visita {
-            background-color: #f0f8ff;
-            border-left: 4px solid var(--info-color);
-            padding: 10px 15px;
-            margin-bottom: 15px;
-            border-radius: 0 5px 5px 0;
-        }
-
-        .agenda-visita-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .agenda-visita-title {
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .agenda-visita-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .agenda-visita-detail {
-            font-size: 0.9rem;
-        }
-
-        .agenda-visita-detail-label {
-            color: #666;
-            margin-bottom: 3px;
-        }
-
-        .agenda-visita-detail-value {
-            font-weight: bold;
-        }
-
-        .agenda-visita-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        /* Estilos para configuração de email */
-        .email-config-section {
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .email-test-result {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 5px;
-            display: none;
-        }
-
-        .email-test-success {
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-        }
-
-        .email-test-error {
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-        }
-
-        /* Estrutura de tabs para seção de configurações */
-        .config-tabs {
-            display: flex;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 20px;
-        }
-
-        .config-tab {
-            padding: 10px 15px;
-            cursor: pointer;
-            font-weight: bold;
-            border-bottom: 3px solid transparent;
-        }
-
-        .config-tab.active {
-            border-bottom-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .config-content {
-            display: none;
-        }
-
-        .config-content.active {
-            display: block;
-        }
-
-        /* Estilos para agendamento no modal */
-        .tab-agenda {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 15px;
-        }
-
-        .agendamentos-list {
-            margin-top: 15px;
         }
 
         @media (max-width: 768px) {
@@ -1118,8 +1005,6 @@
             <button id="btn-novo-chamado" class="active">Novo Chamado</button>
             <button id="btn-meus-chamados">Meus Chamados</button>
             <button id="btn-atender-chamados" class="hidden">Atender Chamados</button>
-            <button id="btn-visitas-tecnicas" class="hidden">Visitas Técnicas</button>
-            <button id="btn-config-email" class="hidden">Config. Email</button>
             <button id="btn-gerenciar-usuarios" class="hidden">Gerenciar Usuários</button>
             <button id="btn-dashboard">Dashboard</button>
         </nav>
@@ -1291,7 +1176,6 @@
                             <th>Data</th>
                             <th>Prioridade</th>
                             <th>Status</th>
-                            <th>Visita Técnica</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -1299,148 +1183,6 @@
                         <!-- Dados serão inseridos dinamicamente via JavaScript -->
                     </tbody>
                 </table>
-            </div>
-        </div>
-        
-        <!-- Visitas Técnicas (para suporte) -->
-        <div id="visitas-tecnicas" class="section hidden">
-            <h2>Visitas Técnicas Agendadas</h2>
-            <div class="form-group">
-                <label for="filtro-visitas">Filtrar por:</label>
-                <select id="filtro-visitas">
-                    <option value="todas">Todas as visitas</option>
-                    <option value="pendentes">Pendentes</option>
-                    <option value="concluidas">Concluídas</option>
-                    <option value="hoje">Hoje</option>
-                    <option value="semana">Esta semana</option>
-                </select>
-            </div>
-            
-            <div id="lista-visitas-agendadas">
-                <!-- Visitas agendadas serão inseridas dinamicamente via JavaScript -->
-                <p id="sem-visitas" class="hidden">Nenhuma visita técnica agendada.</p>
-            </div>
-        </div>
-        
-        <!-- Configurações de Email (para suporte) -->
-        <div id="config-email" class="section hidden">
-            <h2>Configurações de Email</h2>
-            
-            <div class="config-tabs">
-                <div class="config-tab active" data-tab="smtp">Servidor SMTP</div>
-                <div class="config-tab" data-tab="templates">Templates</div>
-                <div class="config-tab" data-tab="logs">Logs de Email</div>
-            </div>
-            
-            <div id="tab-smtp" class="config-content active">
-                <div class="email-config-section">
-                    <form id="form-config-smtp">
-                        <div class="form-group">
-                            <label for="smtp-servidor">Servidor SMTP:</label>
-                            <input type="text" id="smtp-servidor" placeholder="Ex: smtp.gmail.com" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="smtp-porta">Porta:</label>
-                            <input type="number" id="smtp-porta" placeholder="Ex: 587" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="smtp-seguranca">Segurança:</label>
-                            <select id="smtp-seguranca" required>
-                                <option value="tls">TLS</option>
-                                <option value="ssl">SSL</option>
-                                <option value="none">Nenhuma</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="smtp-usuario">Usuário:</label>
-                            <input type="text" id="smtp-usuario" placeholder="Ex: seu.email@gmail.com" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="smtp-senha">Senha:</label>
-                            <input type="password" id="smtp-senha" placeholder="Senha ou chave de aplicativo" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="smtp-remetente">Nome do Remetente:</label>
-                            <input type="text" id="smtp-remetente" placeholder="Ex: Suporte TI - Saúde" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="smtp-email">Email do Remetente:</label>
-                            <input type="email" id="smtp-email" placeholder="Ex: suporte.ti@saude.gov.br" required>
-                        </div>
-                        
-                        <div>
-                            <button type="submit" class="btn btn-primary">Salvar Configurações</button>
-                            <button type="button" id="btn-testar-email" class="btn btn-info">Testar Conexão</button>
-                        </div>
-                    </form>
-                    
-                    <div id="email-test-result" class="email-test-result"></div>
-                </div>
-            </div>
-            
-            <div id="tab-templates" class="config-content">
-                <div class="email-config-section">
-                    <h3>Templates de Email</h3>
-                    
-                    <div class="form-group">
-                        <label for="template-selector">Selecione o template:</label>
-                        <select id="template-selector">
-                            <option value="novo-chamado">Novo Chamado</option>
-                            <option value="atualizacao">Atualização de Chamado</option>
-                            <option value="resolucao">Resolução de Chamado</option>
-                            <option value="agendamento">Agendamento de Visita</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="template-assunto">Assunto:</label>
-                        <input type="text" id="template-assunto">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="template-conteudo">Conteúdo (suporta HTML):</label>
-                        <textarea id="template-conteudo" rows="10"></textarea>
-                    </div>
-                    
-                    <div>
-                        <p><strong>Variáveis disponíveis:</strong> {nome_usuario}, {setor_origem}, {setor_destino}, {id_chamado}, {assunto}, {prioridade}, {status}, {data_abertura}, {descricao}</p>
-                    </div>
-                    
-                    <div style="margin-top: 15px;">
-                        <button id="btn-salvar-template" class="btn btn-primary">Salvar Template</button>
-                        <button id="btn-resetar-template" class="btn btn-danger">Resetar para Padrão</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="tab-logs" class="config-content">
-                <div class="email-config-section">
-                    <h3>Logs de Email</h3>
-                    
-                    <div class="responsive-table">
-                        <table id="tabela-logs-email">
-                            <thead>
-                                <tr>
-                                    <th>Data/Hora</th>
-                                    <th>Destinatário</th>
-                                    <th>Assunto</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Logs serão inseridos dinamicamente via JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <button id="btn-limpar-logs" class="btn btn-danger" style="margin-top: 15px;">Limpar Logs</button>
-                </div>
             </div>
         </div>
 
@@ -1528,21 +1270,6 @@
                     <div id="resolvidos" class="stat-value">0</div>
                 </div>
             </div>
-            
-            <div class="stats-container">
-                <div class="stat-card">
-                    <h3>Visitas Técnicas</h3>
-                    <div id="total-visitas" class="stat-value">0</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Pendentes</h3>
-                    <div id="visitas-pendentes" class="stat-value">0</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Concluídas</h3>
-                    <div id="visitas-concluidas" class="stat-value">0</div>
-                </div>
-            </div>
 
             <h3>Chamados por Setor</h3>
             <div class="responsive-table">
@@ -1574,7 +1301,6 @@
                     <div class="modal-tabs">
                         <div class="modal-tab active" data-tab="info">Informações</div>
                         <div class="modal-tab" data-tab="history">Histórico</div>
-                        <div id="tab-agendar" class="modal-tab hidden" data-tab="agenda">Agendar Visita</div>
                         <div id="tab-responder" class="modal-tab hidden" data-tab="response">Responder</div>
                     </div>
                     
@@ -1582,10 +1308,6 @@
                     <div id="tab-info" class="tab-content active">
                         <div class="info-grid" id="info-chamado">
                             <!-- Informações do chamado serão inseridas aqui -->
-                        </div>
-                        
-                        <div id="visita-agendada-info" class="hidden agenda-visita">
-                            <!-- Informações da visita agendada serão inseridas aqui -->
                         </div>
                         
                         <div class="divider"></div>
@@ -1598,51 +1320,6 @@
                     <div id="tab-history" class="tab-content">
                         <div class="timeline" id="historico-chamado">
                             <!-- Histórico será inserido aqui -->
-                        </div>
-                    </div>
-                    
-                    <!-- Tab de Agendamento -->
-                    <div id="tab-agenda" class="tab-content">
-                        <div class="tab-agenda">
-                            <h4>Agendar Visita Técnica</h4>
-                            <form id="form-agendar-visita">
-                                <input type="hidden" id="visita-chamado-id">
-                                
-                                <div class="form-group">
-                                    <label for="visita-data">Data da Visita:</label>
-                                    <input type="date" id="visita-data" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="visita-hora">Hora:</label>
-                                    <input type="time" id="visita-hora" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="visita-tecnico">Técnico Responsável:</label>
-                                    <select id="visita-tecnico" required>
-                                        <option value="">Selecione o técnico</option>
-                                        <option value="Técnico 1">Técnico 1</option>
-                                        <option value="Técnico 2">Técnico 2</option>
-                                        <option value="Técnico 3">Técnico 3</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="visita-observacoes">Observações:</label>
-                                    <textarea id="visita-observacoes" placeholder="Instruções ou detalhes adicionais para a visita..."></textarea>
-                                </div>
-                                
-                                <div>
-                                    <button type="submit" class="btn btn-primary">Agendar Visita</button>
-                                    <button type="button" id="btn-cancelar-agendamento" class="btn btn-danger">Cancelar</button>
-                                </div>
-                            </form>
-                        </div>
-                        
-                        <div id="agendamentos-list" class="agendamentos-list">
-                            <h4>Histórico de Agendamentos</h4>
-                            <!-- Agendamentos serão listados aqui -->
                         </div>
                     </div>
                     
@@ -1697,65 +1374,6 @@
             </div>
         </div>
         
-        <!-- Modal para editar/excluir visita -->
-        <div id="modal-visita" class="modal hidden">
-            <div class="modal-content" style="max-width: 650px;">
-                <div class="modal-header">
-                    <h3 class="modal-title">Editar Visita Técnica</h3>
-                    <span class="close" id="fechar-modal-visita">&times;</span>
-                </div>
-                
-                <div class="modal-body">
-                    <form id="form-editar-visita">
-                        <input type="hidden" id="editar-visita-id">
-                        <input type="hidden" id="editar-chamado-id">
-                        
-                        <div class="form-group">
-                            <label for="editar-data">Data da Visita:</label>
-                            <input type="date" id="editar-data" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="editar-hora">Hora:</label>
-                            <input type="time" id="editar-hora" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="editar-tecnico">Técnico Responsável:</label>
-                            <select id="editar-tecnico" required>
-                                <option value="">Selecione o técnico</option>
-                                <option value="Técnico 1">Técnico 1</option>
-                                <option value="Técnico 2">Técnico 2</option>
-                                <option value="Técnico 3">Técnico 3</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="editar-status">Status da Visita:</label>
-                            <select id="editar-status" required>
-                                <option value="Agendada">Agendada</option>
-                                <option value="Em andamento">Em andamento</option>
-                                <option value="Concluída">Concluída</option>
-                                <option value="Cancelada">Cancelada</option>
-                                <option value="Reagendada">Reagendada</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="editar-observacoes">Observações:</label>
-                            <textarea id="editar-observacoes" placeholder="Instruções ou detalhes adicionais para a visita..."></textarea>
-                        </div>
-                    </form>
-                </div>
-                
-                <div class="modal-footer">
-                    <button id="btn-salvar-visita" class="btn btn-primary">Salvar Alterações</button>
-                    <button id="btn-excluir-visita" class="btn btn-danger">Excluir Visita</button>
-                    <button id="btn-cancelar-visita" class="btn btn-secondary">Cancelar</button>
-                </div>
-            </div>
-        </div>
-        
         <!-- Container de Notificações Toast -->
         <div id="toast-container"></div>
 
@@ -1776,10 +1394,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Garante que os modais estão ocultos na inicialização
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.classList.add('hidden');
-            });
+            // CORREÇÃO: Garantir que o modal está oculto na inicialização
+            const modalDetalhes = document.getElementById('modal-detalhes');
+            if (modalDetalhes) {
+                modalDetalhes.classList.add('hidden');
+            }
             
             // Elementos do login
             const loginSection = document.getElementById('login-section');
@@ -1802,8 +1421,6 @@
             const btnNovoChamado = document.getElementById('btn-novo-chamado');
             const btnMeusChamados = document.getElementById('btn-meus-chamados');
             const btnAtenderChamados = document.getElementById('btn-atender-chamados');
-            const btnVisitasTecnicas = document.getElementById('btn-visitas-tecnicas');
-            const btnConfigEmail = document.getElementById('btn-config-email');
             const btnGerenciarUsuarios = document.getElementById('btn-gerenciar-usuarios');
             const btnDashboard = document.getElementById('btn-dashboard');
             
@@ -1811,8 +1428,6 @@
             const secaoNovoChamado = document.getElementById('novo-chamado');
             const secaoMeusChamados = document.getElementById('meus-chamados');
             const secaoAtenderChamados = document.getElementById('atender-chamados');
-            const secaoVisitasTecnicas = document.getElementById('visitas-tecnicas');
-            const secaoConfigEmail = document.getElementById('config-email');
             const secaoGerenciarUsuarios = document.getElementById('gerenciar-usuarios');
             const secaoDashboard = document.getElementById('dashboard');
             
@@ -1822,73 +1437,16 @@
             const setorDestino = document.getElementById('setor-destino');
             
             // Modal e seus elementos
-            const modalDetalhes = document.getElementById('modal-detalhes');
             const modalTitulo = document.getElementById('modal-titulo');
             const fecharModal = document.getElementById('fechar-modal');
             const btnFecharModal = document.getElementById('btn-fechar-modal');
             const modalTabs = document.querySelectorAll('.modal-tab');
             const tabContents = document.querySelectorAll('.tab-content');
             const tabResponder = document.getElementById('tab-responder');
-            const tabAgendar = document.getElementById('tab-agendar');
             
             // Formulário de resposta
             const formResposta = document.getElementById('form-resposta');
             const inputChamadoId = document.getElementById('chamado-id');
-            
-            // Formulário de agendamento
-            const formAgendarVisita = document.getElementById('form-agendar-visita');
-            const visitaChamadoId = document.getElementById('visita-chamado-id');
-            const visitaData = document.getElementById('visita-data');
-            const visitaHora = document.getElementById('visita-hora');
-            const visitaTecnico = document.getElementById('visita-tecnico');
-            const visitaObservacoes = document.getElementById('visita-observacoes');
-            const btnCancelarAgendamento = document.getElementById('btn-cancelar-agendamento');
-            const visitaAgendadaInfo = document.getElementById('visita-agendada-info');
-            const agendamentosList = document.getElementById('agendamentos-list');
-            
-            // Filtro de visitas técnicas
-            const filtroVisitas = document.getElementById('filtro-visitas');
-            
-            // Configurações de Email
-            const formConfigSmtp = document.getElementById('form-config-smtp');
-            const smtpServidor = document.getElementById('smtp-servidor');
-            const smtpPorta = document.getElementById('smtp-porta');
-            const smtpSeguranca = document.getElementById('smtp-seguranca');
-            const smtpUsuario = document.getElementById('smtp-usuario');
-            const smtpSenha = document.getElementById('smtp-senha');
-            const smtpRemetente = document.getElementById('smtp-remetente');
-            const smtpEmail = document.getElementById('smtp-email');
-            const btnTestarEmail = document.getElementById('btn-testar-email');
-            const emailTestResult = document.getElementById('email-test-result');
-            
-            // Templates de Email
-            const templateSelector = document.getElementById('template-selector');
-            const templateAssunto = document.getElementById('template-assunto');
-            const templateConteudo = document.getElementById('template-conteudo');
-            const btnSalvarTemplate = document.getElementById('btn-salvar-template');
-            const btnResetarTemplate = document.getElementById('btn-resetar-template');
-            
-            // Logs de Email
-            const btnLimparLogs = document.getElementById('btn-limpar-logs');
-            
-            // Modal de edição de visita
-            const modalVisita = document.getElementById('modal-visita');
-            const fecharModalVisita = document.getElementById('fechar-modal-visita');
-            const formEditarVisita = document.getElementById('form-editar-visita');
-            const editarVisitaId = document.getElementById('editar-visita-id');
-            const editarChamadoId = document.getElementById('editar-chamado-id');
-            const editarData = document.getElementById('editar-data');
-            const editarHora = document.getElementById('editar-hora');
-            const editarTecnico = document.getElementById('editar-tecnico');
-            const editarStatus = document.getElementById('editar-status');
-            const editarObservacoes = document.getElementById('editar-observacoes');
-            const btnSalvarVisita = document.getElementById('btn-salvar-visita');
-            const btnExcluirVisita = document.getElementById('btn-excluir-visita');
-            const btnCancelarVisita = document.getElementById('btn-cancelar-visita');
-            
-            // Config Tabs
-            const configTabs = document.querySelectorAll('.config-tab');
-            const configContents = document.querySelectorAll('.config-content');
             
             // Elementos de Notificação
             const notificationBell = document.getElementById('notification-bell');
@@ -1965,7 +1523,7 @@
                 { setor: "UBS CSII - Centro", nome: "cs2_centro", senha: "cs2_centro2025", email: "ubscosmopoliscs2@yahoo.com" },
                 { setor: "UBS Jardim de Fáveri", nome: "jardim_faveri", senha: "jardim_faveri2025", email: "ubsfaveri@gmail.com" },
                 { setor: "UBS / PSF Andorinhas", nome: "andorinhas_psf", senha: "andorinhas_psf2025", email: "ubsandorinhas@gmail.com" },
-                { setor: "UBS / PSF Beto Spana", nome: "beto_spana", senha: "beto_spana2025", email: "ubsbetospana@gmail.com" },
+                { setor: "UBS / PSF Beto Spana", nome: "beto_spana", senha: "beto_spana2025", email: "betospana@gmail.com" },
                 { setor: "PSF Cosmópolis I", nome: "cosmopolis_1", senha: "cosmopolis_12025", email: "psf.cosmopolis.01@gmail.com" },
                 { setor: "PSF Vila Cosmos", nome: "vila_cosmos", senha: "vila_cosmos2025", email: "psfvilacosmos@gmail.com" },
                 { setor: "PSF Henrique Scursoni Neto", nome: "henrique_neto", senha: "henrique_neto2025", email: "psfparqueester1@gmail.com" },
@@ -2125,11 +1683,6 @@
                 localStorage.setItem('chamados', JSON.stringify([]));
             }
             
-            // Inicializa o array de visitas no localStorage se não existir
-            if (!localStorage.getItem('visitas')) {
-                localStorage.setItem('visitas', JSON.stringify([]));
-            }
-            
             // Inicializa o array de emails no localStorage se não existir
             if (!localStorage.getItem('emails')) {
                 localStorage.setItem('emails', JSON.stringify([]));
@@ -2140,103 +1693,6 @@
                 localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
             } else {
                 configuracoes = JSON.parse(localStorage.getItem('configuracoes'));
-            }
-            
-            // Inicializa configurações de email no localStorage se não existir
-            if (!localStorage.getItem('configEmail')) {
-                const configEmail = {
-                    smtp: {
-                        servidor: "smtp.gmail.com",
-                        porta: 587,
-                        seguranca: "tls",
-                        usuario: "suporte.ti@saude.exemplo.gov.br",
-                        senha: "senha_segura_123",
-                        remetente: "Suporte TI - Saúde",
-                        email: "suporte.ti@saude.exemplo.gov.br"
-                    },
-                    templates: {
-                        "novo-chamado": {
-                            assunto: "[Chamado #{id_chamado}] Confirmação de Abertura: {assunto}",
-                            conteudo: `
-                                <h2>Confirmação de Abertura de Chamado</h2>
-                                <p>Olá {nome_usuario},</p>
-                                <p>Seu chamado foi aberto com sucesso no Sistema de Chamados da Saúde.</p>
-                                
-                                <div style="margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #24b561;">
-                                    <p><strong>Número do chamado:</strong> #{id_chamado}</p>
-                                    <p><strong>Assunto:</strong> {assunto}</p>
-                                    <p><strong>Setor de Destino:</strong> {setor_destino}</p>
-                                    <p><strong>Prioridade:</strong> {prioridade}</p>
-                                    <p><strong>Status:</strong> {status}</p>
-                                </div>
-                                
-                                <p>Você receberá notificações sempre que houver atualizações em seu chamado.</p>
-                                <p>Este é um email automático, por favor não responda.</p>
-                                <p>Atenciosamente,<br>Sistema de Chamados - Saúde</p>
-                            `
-                        },
-                        "atualizacao": {
-                            assunto: "[Chamado #{id_chamado}] Atualização: {assunto}",
-                            conteudo: `
-                                <h2>Atualização de Chamado</h2>
-                                <p>Olá {nome_usuario},</p>
-                                <p>Seu chamado foi atualizado no Sistema de Chamados da Saúde.</p>
-                                
-                                <div style="margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #24b561;">
-                                    <p><strong>Número do chamado:</strong> #{id_chamado}</p>
-                                    <p><strong>Assunto:</strong> {assunto}</p>
-                                    <p><strong>Status atual:</strong> {status}</p>
-                                </div>
-                                
-                                <p>Você receberá notificações sempre que houver novas atualizações em seu chamado.</p>
-                                <p>Este é um email automático, por favor não responda.</p>
-                                <p>Atenciosamente,<br>Sistema de Chamados - Saúde</p>
-                            `
-                        },
-                        "resolucao": {
-                            assunto: "[Chamado #{id_chamado}] Resolvido: {assunto}",
-                            conteudo: `
-                                <h2>Chamado Resolvido</h2>
-                                <p>Olá {nome_usuario},</p>
-                                <p>Seu chamado foi resolvido com sucesso.</p>
-                                
-                                <div style="margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #28a745;">
-                                    <p><strong>Número do chamado:</strong> #{id_chamado}</p>
-                                    <p><strong>Assunto:</strong> {assunto}</p>
-                                    <p><strong>Data de abertura:</strong> {data_abertura}</p>
-                                    <p><strong>Status atual:</strong> Resolvido</p>
-                                </div>
-                                
-                                <p>Caso tenha qualquer dúvida adicional ou precise de mais assistência, por favor abra um novo chamado.</p>
-                                <p>Este é um email automático, por favor não responda.</p>
-                                <p>Atenciosamente,<br>Sistema de Chamados - Saúde</p>
-                            `
-                        },
-                        "agendamento": {
-                            assunto: "[Chamado #{id_chamado}] Visita Técnica Agendada: {assunto}",
-                            conteudo: `
-                                <h2>Visita Técnica Agendada</h2>
-                                <p>Olá {nome_usuario},</p>
-                                <p>Uma visita técnica foi agendada para resolução do seu chamado.</p>
-                                
-                                <div style="margin: 20px 0; padding: 15px; background-color: #f0f8ff; border-left: 4px solid #17a2b8;">
-                                    <p><strong>Número do chamado:</strong> #{id_chamado}</p>
-                                    <p><strong>Assunto:</strong> {assunto}</p>
-                                    <p><strong>Data da visita:</strong> {data_visita}</p>
-                                    <p><strong>Hora da visita:</strong> {hora_visita}</p>
-                                    <p><strong>Técnico responsável:</strong> {tecnico}</p>
-                                </div>
-                                
-                                <p>Por favor, certifique-se de que haja alguém disponível para receber o técnico no horário agendado.</p>
-                                <p>Este é um email automático, por favor não responda.</p>
-                                <p>Atenciosamente,<br>Sistema de Chamados - Saúde</p>
-                            `
-                        }
-                    },
-                    logs: []
-                };
-                
-                localStorage.setItem('configEmail', JSON.stringify(configEmail));
             }
             
             // Inicializa as notificações no localStorage se não existir
@@ -2600,12 +2056,12 @@
                 });
             }
             
-            // Função para carregar apenas o setor TI como destino
+            // MODIFICADO: Função para carregar apenas o setor TI como destino
             function carregarSetoresDestino() {
                 const setores = JSON.parse(localStorage.getItem('setores'));
                 setorDestino.innerHTML = '<option value="">Selecione o setor</option>';
                 
-                // Filtrar apenas o setor de TI
+                // Filtrar apenas o setor de TI (TI será o único setor de tipo 'support')
                 const setorTI = setores.find(setor => setor.tipo === 'support');
                 
                 if (setorTI) {
@@ -2766,8 +2222,6 @@
                     btnNovoChamado.classList.add('hidden');
                     btnMeusChamados.classList.add('hidden');
                     btnAtenderChamados.classList.remove('hidden');
-                    btnVisitasTecnicas.classList.remove('hidden');
-                    btnConfigEmail.classList.remove('hidden');
                     btnGerenciarUsuarios.classList.remove('hidden');
                     
                     // Atualiza as notificações para mostrar apenas as relevantes para o suporte
@@ -2787,8 +2241,6 @@
                     btnNovoChamado.classList.remove('hidden');
                     btnMeusChamados.classList.remove('hidden');
                     btnAtenderChamados.classList.add('hidden');
-                    btnVisitasTecnicas.classList.add('hidden');
-                    btnConfigEmail.classList.add('hidden');
                     btnGerenciarUsuarios.classList.add('hidden');
                     
                     // Atualiza as notificações para mostrar apenas as relevantes para o usuário
@@ -2824,8 +2276,6 @@
                 secaoNovoChamado.classList.add('hidden');
                 secaoMeusChamados.classList.add('hidden');
                 secaoAtenderChamados.classList.add('hidden');
-                secaoVisitasTecnicas.classList.add('hidden');
-                secaoConfigEmail.classList.add('hidden');
                 secaoGerenciarUsuarios.classList.add('hidden');
                 secaoDashboard.classList.add('hidden');
                 
@@ -2853,8 +2303,6 @@
                 secaoNovoChamado.classList.add('hidden');
                 secaoMeusChamados.classList.add('hidden');
                 secaoAtenderChamados.classList.add('hidden');
-                secaoVisitasTecnicas.classList.add('hidden');
-                secaoConfigEmail.classList.add('hidden');
                 secaoGerenciarUsuarios.classList.add('hidden');
                 secaoDashboard.classList.add('hidden');
                 
@@ -2862,8 +2310,6 @@
                 btnNovoChamado.classList.remove('active');
                 btnMeusChamados.classList.remove('active');
                 btnAtenderChamados.classList.remove('active');
-                btnVisitasTecnicas.classList.remove('active');
-                btnConfigEmail.classList.remove('active');
                 btnGerenciarUsuarios.classList.remove('active');
                 btnDashboard.classList.remove('active');
                 
@@ -2879,14 +2325,6 @@
                     secaoAtenderChamados.classList.remove('hidden');
                     btnAtenderChamados.classList.add('active');
                     carregarChamadosParaAtendimento();
-                } else if (secao === 'visitas-tecnicas') {
-                    secaoVisitasTecnicas.classList.remove('hidden');
-                    btnVisitasTecnicas.classList.add('active');
-                    carregarVisitasTecnicas();
-                } else if (secao === 'config-email') {
-                    secaoConfigEmail.classList.remove('hidden');
-                    btnConfigEmail.classList.add('active');
-                    carregarConfiguracoesEmail();
                 } else if (secao === 'gerenciar-usuarios') {
                     secaoGerenciarUsuarios.classList.remove('hidden');
                     btnGerenciarUsuarios.classList.add('active');
@@ -2902,34 +2340,14 @@
             btnNovoChamado.addEventListener('click', () => mostrarSecao('novo-chamado'));
             btnMeusChamados.addEventListener('click', () => mostrarSecao('meus-chamados'));
             btnAtenderChamados.addEventListener('click', () => mostrarSecao('atender-chamados'));
-            btnVisitasTecnicas.addEventListener('click', () => mostrarSecao('visitas-tecnicas'));
-            btnConfigEmail.addEventListener('click', () => mostrarSecao('config-email'));
             btnGerenciarUsuarios.addEventListener('click', () => mostrarSecao('gerenciar-usuarios'));
             btnDashboard.addEventListener('click', () => mostrarSecao('dashboard'));
-            
-            // Evento para tabs de configuração de email
-            configTabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const tabId = this.getAttribute('data-tab');
-                    configTabs.forEach(t => t.classList.remove('active'));
-                    configContents.forEach(c => c.classList.remove('active'));
-                    this.classList.add('active');
-                    document.getElementById(`tab-${tabId}`).classList.add('active');
-                });
-            });
             
             // Função para gerar um ID único para o chamado
             function gerarId() {
                 const chamados = JSON.parse(localStorage.getItem('chamados'));
                 if (chamados.length === 0) return 1;
                 return Math.max(...chamados.map(c => c.id)) + 1;
-            }
-            
-            // Função para gerar um ID único para visita
-            function gerarIdVisita() {
-                const visitas = JSON.parse(localStorage.getItem('visitas'));
-                if (visitas.length === 0) return 1;
-                return Math.max(...visitas.map(v => v.id)) + 1;
             }
             
             // Função para exibir notificação toast
@@ -2970,434 +2388,93 @@
             
             // Função para simular o envio de email
             function enviarEmail(destinatario, assunto, corpo) {
-                // Obtém as configurações de email
-                const configEmail = JSON.parse(localStorage.getItem('configEmail'));
-                
-                // Verifica se há configurações de SMTP
-                if (!configEmail.smtp.servidor || !configEmail.smtp.usuario || !configEmail.smtp.senha) {
-                    console.log("Configurações de SMTP incompletas");
-                    
-                    // Registra a tentativa no log
-                    registrarLogEmail(destinatario, assunto, "Erro: Configurações SMTP incompletas");
-                    
-                    return false;
-                }
-                
                 // Em um ambiente real, isso seria uma chamada para um servidor de email
                 console.log(`Enviando email para: ${destinatario}`);
-                console.log(`Usando servidor: ${configEmail.smtp.servidor}:${configEmail.smtp.porta}`);
-                console.log(`De: ${configEmail.smtp.remetente} <${configEmail.smtp.email}>`);
                 console.log(`Assunto: ${assunto}`);
                 console.log(`Corpo: ${corpo}`);
                 
-                // Simula o envio bem-sucedido
-                const sucesso = true;
-                
-                // Registra o email enviado
-                registrarLogEmail(destinatario, assunto, sucesso ? "Enviado" : "Falha no envio");
-                
-                if (sucesso) {
-                    // Exibe notificação de sucesso
-                    showToast('success', 'Email Enviado', `Notificação enviada para: ${destinatario}`);
-                }
-                
-                return sucesso;
-            }
-            
-            // Função para registrar logs de email
-            function registrarLogEmail(destinatario, assunto, status) {
-                const configEmail = JSON.parse(localStorage.getItem('configEmail'));
-                
-                // Adiciona um registro ao log
-                configEmail.logs.unshift({
-                    data: new Date().toISOString(),
+                // Simula o armazenamento do email enviado
+                const emails = JSON.parse(localStorage.getItem('emails'));
+                emails.push({
                     destinatario,
                     assunto,
-                    status
+                    corpo,
+                    dataEnvio: new Date().toISOString()
                 });
+                localStorage.setItem('emails', JSON.stringify(emails));
                 
-                // Limita a 100 registros
-                if (configEmail.logs.length > 100) {
-                    configEmail.logs = configEmail.logs.slice(0, 100);
-                }
+                // Exibe notificação de sucesso
+                showToast('success', 'Email Enviado', `Notificação enviada para: ${destinatario}`);
                 
-                // Salva no localStorage
-                localStorage.setItem('configEmail', JSON.stringify(configEmail));
-                
-                // Atualiza a tabela de logs se estiver visível
-                const tabLogsContent = document.getElementById('tab-logs');
-                if (tabLogsContent && !tabLogsContent.classList.contains('hidden')) {
-                    carregarLogsEmail();
-                }
-            }
-            
-            // Função para obter template de email
-            function obterTemplate(tipo, dados) {
-                const configEmail = JSON.parse(localStorage.getItem('configEmail'));
-                
-                if (!configEmail.templates[tipo]) {
-                    console.error(`Template de email '${tipo}' não encontrado`);
-                    return null;
-                }
-                
-                // Obtém o template
-                let assunto = configEmail.templates[tipo].assunto;
-                let corpo = configEmail.templates[tipo].conteudo;
-                
-                // Substitui as variáveis no assunto
-                Object.keys(dados).forEach(key => {
-                    assunto = assunto.replace(new RegExp(`{${key}}`, 'g'), dados[key]);
-                });
-                
-                // Substitui as variáveis no corpo
-                Object.keys(dados).forEach(key => {
-                    corpo = corpo.replace(new RegExp(`{${key}}`, 'g'), dados[key]);
-                });
-                
-                return { assunto, corpo };
+                return true;
             }
             
             // Função para enviar email de notificação de novo chamado
             function enviarEmailNovoChamado(chamado) {
-                const dados = {
-                    id_chamado: chamado.id,
-                    nome_usuario: chamado.usuarioNome,
-                    setor_origem: chamado.setorOrigemNome,
-                    setor_destino: chamado.setorDestinoNome,
-                    assunto: chamado.assunto,
-                    prioridade: chamado.prioridade,
-                    status: chamado.status,
-                    data_abertura: formatarDataHora(new Date(chamado.dataAbertura)),
-                    descricao: chamado.descricao
-                };
+                const destinatario = chamado.usuarioEmail;
+                const assunto = `[Chamado #${chamado.id}] Confirmação de Abertura: ${chamado.assunto}`;
                 
-                const template = obterTemplate('novo-chamado', dados);
-                if (!template) return false;
+                const corpo = `
+                    <h2>Confirmação de Abertura de Chamado</h2>
+                    <p>Olá ${chamado.usuarioNome},</p>
+                    <p>Seu chamado foi aberto com sucesso no Sistema de Chamados da Saúde.</p>
+                    
+                    <div style="margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #24b561;">
+                        <p><strong>Número do chamado:</strong> #${chamado.id}</p>
+                        <p><strong>Assunto:</strong> ${chamado.assunto}</p>
+                        <p><strong>Setor de Destino:</strong> ${chamado.setorDestinoNome}</p>
+                        <p><strong>Prioridade:</strong> ${chamado.prioridade}</p>
+                        <p><strong>Status:</strong> Em aberto</p>
+                    </div>
+                    
+                    <p>Você receberá notificações sempre que houver atualizações em seu chamado.</p>
+                    <p>Este é um email automático, por favor não responda.</p>
+                    <p>Atenciosamente,<br>Sistema de Chamados - Saúde</p>
+                `;
                 
-                return enviarEmail(chamado.usuarioEmail, template.assunto, template.corpo);
+                return enviarEmail(destinatario, assunto, corpo);
             }
             
             // Função para enviar email de notificação de atualização de chamado
             function enviarEmailAtualizacaoChamado(chamado, acao, comentario) {
-                const dados = {
-                    id_chamado: chamado.id,
-                    nome_usuario: chamado.usuarioNome,
-                    setor_origem: chamado.setorOrigemNome,
-                    setor_destino: chamado.setorDestinoNome,
-                    assunto: chamado.assunto,
-                    prioridade: chamado.prioridade,
-                    status: chamado.status,
-                    data_abertura: formatarDataHora(new Date(chamado.dataAbertura)),
-                    descricao: chamado.descricao,
-                    acao: acao,
-                    comentario: comentario || ''
-                };
+                const destinatario = chamado.usuarioEmail;
+                const assunto = `[Chamado #${chamado.id}] Atualização: ${chamado.assunto}`;
                 
-                // Escolhe o template correto com base no status
-                let tipoTemplate = 'atualizacao';
-                if (chamado.status === 'Resolvido') {
-                    tipoTemplate = 'resolucao';
+                // Define a cor do status para o email
+                let corStatus = "#ffc107"; // Amarelo para "Em aberto"
+                if (chamado.status === "Em andamento") {
+                    corStatus = "#17a2b8"; // Azul
+                } else if (chamado.status === "Resolvido") {
+                    corStatus = "#28a745"; // Verde
+                } else if (chamado.status === "Fechado") {
+                    corStatus = "#6c757d"; // Cinza
                 }
                 
-                const template = obterTemplate(tipoTemplate, dados);
-                if (!template) return false;
-                
-                return enviarEmail(chamado.usuarioEmail, template.assunto, template.corpo);
-            }
-            
-            // Função para enviar email de notificação de agendamento de visita
-            function enviarEmailAgendamentoVisita(chamado, visita) {
-                const dataFormatada = formatarData(new Date(visita.data));
-                
-                const dados = {
-                    id_chamado: chamado.id,
-                    nome_usuario: chamado.usuarioNome,
-                    setor_origem: chamado.setorOrigemNome,
-                    setor_destino: chamado.setorDestinoNome,
-                    assunto: chamado.assunto,
-                    prioridade: chamado.prioridade,
-                    status: chamado.status,
-                    data_abertura: formatarDataHora(new Date(chamado.dataAbertura)),
-                    descricao: chamado.descricao,
-                    data_visita: dataFormatada,
-                    hora_visita: visita.hora,
-                    tecnico: visita.tecnico
-                };
-                
-                const template = obterTemplate('agendamento', dados);
-                if (!template) return false;
-                
-                return enviarEmail(chamado.usuarioEmail, template.assunto, template.corpo);
-            }
-            
-            // Função para carregar as configurações de email
-            function carregarConfiguracoesEmail() {
-                const configEmail = JSON.parse(localStorage.getItem('configEmail'));
-                
-                // Preenche o formulário de configurações SMTP
-                smtpServidor.value = configEmail.smtp.servidor;
-                smtpPorta.value = configEmail.smtp.porta;
-                smtpSeguranca.value = configEmail.smtp.seguranca;
-                smtpUsuario.value = configEmail.smtp.usuario;
-                smtpSenha.value = configEmail.smtp.senha;
-                smtpRemetente.value = configEmail.smtp.remetente;
-                smtpEmail.value = configEmail.smtp.email;
-                
-                // Carrega o template selecionado
-                carregarTemplate('novo-chamado');
-                
-                // Carrega os logs de email
-                carregarLogsEmail();
-            }
-            
-            // Função para carregar um template de email
-            function carregarTemplate(tipo) {
-                const configEmail = JSON.parse(localStorage.getItem('configEmail'));
-                
-                if (configEmail.templates[tipo]) {
-                    templateAssunto.value = configEmail.templates[tipo].assunto;
-                    templateConteudo.value = configEmail.templates[tipo].conteudo;
-                } else {
-                    templateAssunto.value = '';
-                    templateConteudo.value = '';
-                }
-            }
-            
-            // Função para carregar os logs de email
-            function carregarLogsEmail() {
-                const configEmail = JSON.parse(localStorage.getItem('configEmail'));
-                const tbody = document.querySelector('#tabela-logs-email tbody');
-                
-                // Limpa a tabela
-                tbody.innerHTML = '';
-                
-                if (configEmail.logs.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="4" class="text-center">Nenhum log de email encontrado.</td></tr>';
-                    return;
-                }
-                
-                // Adiciona cada log à tabela
-                configEmail.logs.forEach(log => {
-                    const tr = document.createElement('tr');
+                const corpo = `
+                    <h2>Atualização de Chamado</h2>
+                    <p>Olá ${chamado.usuarioNome},</p>
+                    <p>Seu chamado foi atualizado no Sistema de Chamados da Saúde.</p>
                     
-                    // Define a classe da linha com base no status
-                    if (log.status.includes('Erro') || log.status.includes('Falha')) {
-                        tr.className = 'bg-danger';
-                    }
+                    <div style="margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #24b561;">
+                        <p><strong>Número do chamado:</strong> #${chamado.id}</p>
+                        <p><strong>Assunto:</strong> ${chamado.assunto}</p>
+                        <p><strong>Status atual:</strong> <span style="display: inline-block; padding: 5px 10px; border-radius: 15px; color: white; font-size: 14px; background-color: ${corStatus};">${chamado.status}</span></p>
+                    </div>
                     
-                    tr.innerHTML = `
-                        <td>${formatarDataHora(new Date(log.data))}</td>
-                        <td>${log.destinatario}</td>
-                        <td>${log.assunto}</td>
-                        <td>${log.status}</td>
-                    `;
+                    <div style="margin: 20px 0; padding: 15px; background-color: #f0f7ff; border-left: 4px solid #17a2b8;">
+                        <p><strong>Atualização:</strong> ${acao}</p>
+                        ${comentario ? `<p><strong>Comentário:</strong><br>${comentario}</p>` : ''}
+                    </div>
                     
-                    tbody.appendChild(tr);
-                });
+                    <p>Você receberá notificações sempre que houver novas atualizações em seu chamado.</p>
+                    <p>Este é um email automático, por favor não responda.</p>
+                    <p>Atenciosamente,<br>Sistema de Chamados - Saúde</p>
+                `;
+                
+                return enviarEmail(destinatario, assunto, corpo);
             }
             
-            // Evento para salvar configurações SMTP
-            formConfigSmtp.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const configEmail = JSON.parse(localStorage.getItem('configEmail'));
-                
-                // Atualiza as configurações
-                configEmail.smtp.servidor = smtpServidor.value;
-                configEmail.smtp.porta = parseInt(smtpPorta.value);
-                configEmail.smtp.seguranca = smtpSeguranca.value;
-                configEmail.smtp.usuario = smtpUsuario.value;
-                configEmail.smtp.senha = smtpSenha.value;
-                configEmail.smtp.remetente = smtpRemetente.value;
-                configEmail.smtp.email = smtpEmail.value;
-                
-                // Salva no localStorage
-                localStorage.setItem('configEmail', JSON.stringify(configEmail));
-                
-                // Mostra confirmação
-                showToast('success', 'Configurações', 'Configurações de email salvas com sucesso!');
-            });
-            
-            // Evento para testar conexão SMTP
-            btnTestarEmail.addEventListener('click', function() {
-                const servidor = smtpServidor.value;
-                const porta = smtpPorta.value;
-                const usuario = smtpUsuario.value;
-                const email = smtpEmail.value;
-                
-                if (!servidor || !porta || !usuario || !email) {
-                    emailTestResult.innerHTML = 'Preencha todos os campos antes de testar a conexão.';
-                    emailTestResult.className = 'email-test-result email-test-error';
-                    emailTestResult.style.display = 'block';
-                    return;
-                }
-                
-                // Simulação de teste de conexão
-                emailTestResult.innerHTML = 'Testando conexão com o servidor...';
-                emailTestResult.className = 'email-test-result';
-                emailTestResult.style.display = 'block';
-                
-                // Simulação de delay
-                setTimeout(() => {
-                    // Simulação de sucesso
-                    emailTestResult.innerHTML = `Conexão bem-sucedida com ${servidor}:${porta}. Email de teste enviado para ${usuario}.`;
-                    emailTestResult.className = 'email-test-result email-test-success';
-                    
-                    // Adiciona ao log
-                    registrarLogEmail(
-                        usuario,
-                        'Teste de Conexão SMTP',
-                        'Teste concluído com sucesso'
-                    );
-                }, 1500);
-            });
-            
-            // Evento para carregar template selecionado
-            templateSelector.addEventListener('change', function() {
-                carregarTemplate(this.value);
-            });
-            
-            // Evento para salvar template
-            btnSalvarTemplate.addEventListener('click', function() {
-                const tipo = templateSelector.value;
-                const assunto = templateAssunto.value;
-                const conteudo = templateConteudo.value;
-                
-                if (!tipo || !assunto || !conteudo) {
-                    showToast('warning', 'Erro', 'Preencha todos os campos do template!');
-                    return;
-                }
-                
-                const configEmail = JSON.parse(localStorage.getItem('configEmail'));
-                
-                // Atualiza o template
-                configEmail.templates[tipo] = {
-                    assunto,
-                    conteudo
-                };
-                
-                // Salva no localStorage
-                localStorage.setItem('configEmail', JSON.stringify(configEmail));
-                
-                // Mostra confirmação
-                showToast('success', 'Template Salvo', 'Template de email salvo com sucesso!');
-            });
-            
-            // Evento para resetar template para o padrão
-            btnResetarTemplate.addEventListener('click', function() {
-                const tipo = templateSelector.value;
-                
-                if (!tipo) {
-                    showToast('warning', 'Erro', 'Selecione um template para resetar!');
-                    return;
-                }
-                
-                // Templates padrão
-                const templatesDefault = {
-                    "novo-chamado": {
-                        assunto: "[Chamado #{id_chamado}] Confirmação de Abertura: {assunto}",
-                        conteudo: `
-                            <h2>Confirmação de Abertura de Chamado</h2>
-                            <p>Olá {nome_usuario},</p>
-                            <p>Seu chamado foi aberto com sucesso no Sistema de Chamados da Saúde.</p>
-                            
-                            <div style="margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #24b561;">
-                                <p><strong>Número do chamado:</strong> #{id_chamado}</p>
-                                <p><strong>Assunto:</strong> {assunto}</p>
-                                <p><strong>Setor de Destino:</strong> {setor_destino}</p>
-                                <p><strong>Prioridade:</strong> {prioridade}</p>
-                                <p><strong>Status:</strong> {status}</p>
-                            </div>
-                            
-                            <p>Você receberá notificações sempre que houver atualizações em seu chamado.</p>
-                            <p>Este é um email automático, por favor não responda.</p>
-                            <p>Atenciosamente,<br>Sistema de Chamados - Saúde</p>
-                        `
-                    },
-                    "atualizacao": {
-                        assunto: "[Chamado #{id_chamado}] Atualização: {assunto}",
-                        conteudo: `
-                            <h2>Atualização de Chamado</h2>
-                            <p>Olá {nome_usuario},</p>
-                            <p>Seu chamado foi atualizado no Sistema de Chamados da Saúde.</p>
-                            
-                            <div style="margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #24b561;">
-                                <p><strong>Número do chamado:</strong> #{id_chamado}</p>
-                                <p><strong>Assunto:</strong> {assunto}</p>
-                                <p><strong>Status atual:</strong> {status}</p>
-                            </div>
-                            
-                            <p>Você receberá notificações sempre que houver novas atualizações em seu chamado.</p>
-                            <p>Este é um email automático, por favor não responda.</p>
-                            <p>Atenciosamente,<br>Sistema de Chamados - Saúde</p>
-                        `
-                    },
-                    "resolucao": {
-                        assunto: "[Chamado #{id_chamado}] Resolvido: {assunto}",
-                        conteudo: `
-                            <h2>Chamado Resolvido</h2>
-                            <p>Olá {nome_usuario},</p>
-                            <p>Seu chamado foi resolvido com sucesso.</p>
-                            
-                            <div style="margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #28a745;">
-                                <p><strong>Número do chamado:</strong> #{id_chamado}</p>
-                                <p><strong>Assunto:</strong> {assunto}</p>
-                                <p><strong>Data de abertura:</strong> {data_abertura}</p>
-                                <p><strong>Status atual:</strong> Resolvido</p>
-                            </div>
-                            
-                            <p>Caso tenha qualquer dúvida adicional ou precise de mais assistência, por favor abra um novo chamado.</p>
-                            <p>Este é um email automático, por favor não responda.</p>
-                            <p>Atenciosamente,<br>Sistema de Chamados - Saúde</p>
-                        `
-                    },
-                    "agendamento": {
-                        assunto: "[Chamado #{id_chamado}] Visita Técnica Agendada: {assunto}",
-                        conteudo: `
-                            <h2>Visita Técnica Agendada</h2>
-                            <p>Olá {nome_usuario},</p>
-                            <p>Uma visita técnica foi agendada para resolução do seu chamado.</p>
-                            
-                            <div style="margin: 20px 0; padding: 15px; background-color: #f0f8ff; border-left: 4px solid #17a2b8;">
-                                <p><strong>Número do chamado:</strong> #{id_chamado}</p>
-                                <p><strong>Assunto:</strong> {assunto}</p>
-                                <p><strong>Data da visita:</strong> {data_visita}</p>
-                                <p><strong>Hora da visita:</strong> {hora_visita}</p>
-                                <p><strong>Técnico responsável:</strong> {tecnico}</p>
-                            </div>
-                            
-                            <p>Por favor, certifique-se de que haja alguém disponível para receber o técnico no horário agendado.</p>
-                            <p>Este é um email automático, por favor não responda.</p>
-                            <p>Atenciosamente,<br>Sistema de Chamados - Saúde</p>
-                        `
-                    }
-                };
-                
-                if (!templatesDefault[tipo]) {
-                    showToast('warning', 'Erro', 'Template padrão não encontrado!');
-                    return;
-                }
-                
-                // Atualiza os campos
-                templateAssunto.value = templatesDefault[tipo].assunto;
-                templateConteudo.value = templatesDefault[tipo].conteudo;
-                
-                // Mostra confirmação
-                showToast('info', 'Template Resetado', 'Template restaurado para o padrão. Clique em Salvar para aplicar as mudanças.');
-            });
-            
-            // Evento para limpar logs de email
-            btnLimparLogs.addEventListener('click', function() {
-                if (confirm('Tem certeza que deseja limpar todos os logs de email?')) {
-                    const configEmail = JSON.parse(localStorage.getItem('configEmail'));
-                    configEmail.logs = [];
-                    localStorage.setItem('configEmail', JSON.stringify(configEmail));
-                    carregarLogsEmail();
-                    showToast('success', 'Logs Limpos', 'Todos os logs de email foram removidos.');
-                }
-            });
-            
-            // Event listener para o formulário de chamado
+            // Event listener para o formulário de novo chamado
             formChamado.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
@@ -3471,7 +2548,8 @@
                 // Envia email de notificação
                 enviarEmailNovoChamado(novoChamado);
                 
-                // Criar uma notificação para o setor de TI (destino)
+                // CORREÇÃO: Criar uma notificação para o setor de TI (destino)
+                // Isto garante que o aviso visual/sonoro funcione para novos chamados
                 const setorTI = setores.find(s => s.tipo === 'support');
                 if (setorTI && setorTI.id === setorDestinoId) {
                     criarNotificacao(
@@ -3510,25 +2588,6 @@
             // Função para verificar se um chamado possui notificação não lida
             function temNotificacaoNaoLida(chamadoId) {
                 return notificacoes.some(n => n.chamadoId === chamadoId && !n.lida);
-            }
-            
-            // Função para verificar se um chamado possui visita agendada
-            function temVisitaAgendada(chamadoId) {
-                const visitas = JSON.parse(localStorage.getItem('visitas'));
-                return visitas.some(v => v.chamadoId === chamadoId && v.status !== 'Cancelada');
-            }
-            
-            // Função para obter a última visita agendada para um chamado
-            function obterUltimaVisita(chamadoId) {
-                const visitas = JSON.parse(localStorage.getItem('visitas'));
-                const visitasChamado = visitas.filter(v => v.chamadoId === chamadoId);
-                
-                if (visitasChamado.length === 0) return null;
-                
-                // Ordena por data decrescente (mais recente primeiro)
-                visitasChamado.sort((a, b) => new Date(b.data) - new Date(a.data));
-                
-                return visitasChamado[0];
             }
             
             // Função para carregar os meus chamados na tabela (para usuários)
@@ -3579,7 +2638,7 @@
                         <td>${chamado.assunto}</td>
                         <td>${chamado.setorDestinoNome}</td>
                         <td>${formatarData(chamado.dataAbertura)}</td>
-                        <td><span class="badge ${getPrioridadeBadgeClass(chamado.prioridade)}">${chamado.prioridade}</span></td>
+                        <td>${chamado.prioridade}</td>
                         <td><span class="badge ${statusClass}">${chamado.status}</span></td>
                         <td>
                             <button class="btn btn-success btn-ver" data-id="${chamado.id}">Ver</button>
@@ -3648,7 +2707,7 @@
                 if (chamadosParaAtender.length === 0) {
                     tbody.innerHTML = `
                         <tr>
-                            <td colspan="8" class="text-center">Nenhum chamado para atendimento.</td>
+                            <td colspan="7" class="text-center">Nenhum chamado para atendimento.</td>
                         </tr>
                     `;
                     return;
@@ -3661,9 +2720,6 @@
                     // Verifica se o chamado tem notificações não lidas
                     const naoLido = temNotificacaoNaoLida(chamado.id);
                     
-                    // Verifica se o chamado tem visita agendada
-                    const temVisita = temVisitaAgendada(chamado.id);
-                    
                     // Adiciona classe de destaque para chamados não lidos
                     if (naoLido && configuracoes.destacarNaoLidos) {
                         tr.classList.add('blink-row');
@@ -3672,25 +2728,6 @@
                     // Classe de status para o badge
                     let statusClass = getStatusClass(chamado.status);
                     
-                    // Coluna de visita técnica
-                    let colunaVisita = '';
-                    if (temVisita) {
-                        const ultimaVisita = obterUltimaVisita(chamado.id);
-                        if (ultimaVisita) {
-                            const statusVisita = ultimaVisita.status;
-                            const dataVisita = formatarData(new Date(ultimaVisita.data));
-                            
-                            let classeVisita = 'badge-info';
-                            if (statusVisita === 'Concluída') classeVisita = 'badge-success';
-                            else if (statusVisita === 'Cancelada') classeVisita = 'badge-secondary';
-                            else if (statusVisita === 'Reagendada') classeVisita = 'badge-warning';
-                            
-                            colunaVisita = `<span class="badge ${classeVisita}">${statusVisita}</span> - ${dataVisita}`;
-                        }
-                    } else {
-                        colunaVisita = '<button class="btn btn-info btn-sm btn-agendar" data-id="' + chamado.id + '">Agendar</button>';
-                    }
-                    
                     tr.innerHTML = `
                         <td>#${chamado.id}</td>
                         <td>${chamado.assunto}</td>
@@ -3698,7 +2735,6 @@
                         <td>${formatarData(chamado.dataAbertura)}</td>
                         <td><span class="badge ${getPrioridadeBadgeClass(chamado.prioridade)}">${chamado.prioridade}</span></td>
                         <td><span class="badge ${statusClass}">${chamado.status}</span></td>
-                        <td>${colunaVisita}</td>
                         <td>
                             <button class="btn btn-success btn-ver" data-id="${chamado.id}">Ver</button>
                         </td>
@@ -3732,511 +2768,6 @@
                             tr.classList.remove('blink-row');
                         }
                     });
-                });
-                
-                // Adiciona evento aos botões "Agendar"
-                document.querySelectorAll('.btn-agendar').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const id = parseInt(this.getAttribute('data-id'));
-                        
-                        // Limpa o formulário
-                        formAgendarVisita.reset();
-                        
-                        // Define a data atual como mínima para o campo de data
-                        const hoje = new Date().toISOString().split('T')[0];
-                        visitaData.min = hoje;
-                        
-                        // Define uma data padrão (hoje)
-                        visitaData.value = hoje;
-                        
-                        // Define o ID do chamado
-                        visitaChamadoId.value = id;
-                        
-                        // Abre o modal do chamado na tab de agendamento
-                        abrirModalChamado(id, 'agenda');
-                    });
-                });
-            }
-            
-            // Função para carregar visitas técnicas
-            function carregarVisitasTecnicas() {
-                if (!usuarioAtual || usuarioAtual.tipoUsuario !== 'support') {
-                    showToast('warning', 'Erro', 'Você precisa estar logado como suporte para gerenciar visitas técnicas!');
-                    return;
-                }
-                
-                const visitas = JSON.parse(localStorage.getItem('visitas'));
-                const listaVisitas = document.getElementById('lista-visitas-agendadas');
-                const semVisitas = document.getElementById('sem-visitas');
-                
-                // Limpa a lista
-                const elementosAntigos = listaVisitas.querySelectorAll('.agenda-visita');
-                elementosAntigos.forEach(el => el.remove());
-                
-                // Aplica o filtro
-                const filtro = filtroVisitas.value;
-                let visitasFiltradas = visitas;
-                
-                if (filtro === 'pendentes') {
-                    visitasFiltradas = visitas.filter(v => v.status === 'Agendada' || v.status === 'Em andamento');
-                } else if (filtro === 'concluidas') {
-                    visitasFiltradas = visitas.filter(v => v.status === 'Concluída');
-                } else if (filtro === 'hoje') {
-                    const hoje = new Date().toISOString().split('T')[0];
-                    visitasFiltradas = visitas.filter(v => v.data === hoje);
-                } else if (filtro === 'semana') {
-                    // Obter a data de hoje e o início da semana (domingo)
-                    const hoje = new Date();
-                    const inicioSemana = new Date(hoje);
-                    inicioSemana.setDate(hoje.getDate() - hoje.getDay()); // Domingo
-                    
-                    // Obter o fim da semana (sábado)
-                    const fimSemana = new Date(inicioSemana);
-                    fimSemana.setDate(inicioSemana.getDate() + 6); // Sábado
-                    
-                    // Filtrar as visitas da semana atual
-                    visitasFiltradas = visitas.filter(v => {
-                        const dataVisita = new Date(v.data);
-                        return dataVisita >= inicioSemana && dataVisita <= fimSemana;
-                    });
-                }
-                
-                // Ordena as visitas por data (mais próximas primeiro)
-                visitasFiltradas.sort((a, b) => new Date(a.data) - new Date(b.data));
-                
-                if (visitasFiltradas.length === 0) {
-                    semVisitas.classList.remove('hidden');
-                    return;
-                }
-                
-                semVisitas.classList.add('hidden');
-                
-                // Adiciona cada visita à lista
-                visitasFiltradas.forEach(visita => {
-                    // Busca o chamado associado
-                    const chamados = JSON.parse(localStorage.getItem('chamados'));
-                    const chamado = chamados.find(c => c.id === visita.chamadoId);
-                    
-                    if (!chamado) return; // Pula se o chamado não for encontrado
-                    
-                    const divVisita = document.createElement('div');
-                    divVisita.className = 'agenda-visita';
-                    
-                    // Define cores específicas por status
-                    if (visita.status === 'Agendada') {
-                        divVisita.style.borderLeftColor = '#17a2b8'; // Azul
-                    } else if (visita.status === 'Em andamento') {
-                        divVisita.style.borderLeftColor = '#ffc107'; // Amarelo
-                    } else if (visita.status === 'Concluída') {
-                        divVisita.style.borderLeftColor = '#28a745'; // Verde
-                    } else if (visita.status === 'Cancelada') {
-                        divVisita.style.borderLeftColor = '#dc3545'; // Vermelho
-                    } else if (visita.status === 'Reagendada') {
-                        divVisita.style.borderLeftColor = '#6c757d'; // Cinza
-                    }
-                    
-                    divVisita.innerHTML = `
-                        <div class="agenda-visita-header">
-                            <div class="agenda-visita-title">
-                                <strong>Chamado #${chamado.id}:</strong> ${chamado.assunto}
-                            </div>
-                            <span class="badge ${getPrioridadeBadgeClass(chamado.prioridade)}">${chamado.prioridade}</span>
-                        </div>
-                        <div class="agenda-visita-details">
-                            <div class="agenda-visita-detail">
-                                <div class="agenda-visita-detail-label">Setor</div>
-                                <div class="agenda-visita-detail-value">${chamado.setorOrigemNome}</div>
-                            </div>
-                            <div class="agenda-visita-detail">
-                                <div class="agenda-visita-detail-label">Data</div>
-                                <div class="agenda-visita-detail-value">${formatarData(new Date(visita.data))}</div>
-                            </div>
-                            <div class="agenda-visita-detail">
-                                <div class="agenda-visita-detail-label">Hora</div>
-                                <div class="agenda-visita-detail-value">${visita.hora}</div>
-                            </div>
-                            <div class="agenda-visita-detail">
-                                <div class="agenda-visita-detail-label">Técnico</div>
-                                <div class="agenda-visita-detail-value">${visita.tecnico}</div>
-                            </div>
-                            <div class="agenda-visita-detail">
-                                <div class="agenda-visita-detail-label">Status</div>
-                                <div class="agenda-visita-detail-value">
-                                    <span class="badge ${getStatusVisitaBadgeClass(visita.status)}">${visita.status}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="agenda-visita-actions">
-                            <button class="btn btn-info btn-sm btn-ver-chamado" data-id="${chamado.id}">Ver Chamado</button>
-                            <button class="btn btn-primary btn-sm btn-editar-visita" data-id="${visita.id}">Editar</button>
-                        </div>
-                    `;
-                    
-                    listaVisitas.appendChild(divVisita);
-                });
-                
-                // Adiciona eventos aos botões
-                document.querySelectorAll('.btn-ver-chamado').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const id = parseInt(this.getAttribute('data-id'));
-                        abrirModalChamado(id);
-                    });
-                });
-                
-                document.querySelectorAll('.btn-editar-visita').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const id = parseInt(this.getAttribute('data-id'));
-                        abrirModalEditarVisita(id);
-                    });
-                });
-            }
-            
-            // Função para abrir o modal de edição de visita
-            function abrirModalEditarVisita(id) {
-                const visitas = JSON.parse(localStorage.getItem('visitas'));
-                const visita = visitas.find(v => v.id === id);
-                
-                if (!visita) {
-                    showToast('warning', 'Erro', 'Visita não encontrada!');
-                    return;
-                }
-                
-                // Preenche os campos com os dados da visita
-                editarVisitaId.value = visita.id;
-                editarChamadoId.value = visita.chamadoId;
-                editarData.value = visita.data;
-                editarHora.value = visita.hora;
-                editarTecnico.value = visita.tecnico;
-                editarStatus.value = visita.status;
-                editarObservacoes.value = visita.observacoes || '';
-                
-                // Define a data atual como mínima para o campo de data
-                const hoje = new Date().toISOString().split('T')[0];
-                editarData.min = hoje;
-                
-                // Mostra o modal
-                modalVisita.classList.remove('hidden');
-            }
-            
-            // Evento para salvar visita editada
-            btnSalvarVisita.addEventListener('click', function() {
-                const id = parseInt(editarVisitaId.value);
-                const chamadoId = parseInt(editarChamadoId.value);
-                const data = editarData.value;
-                const hora = editarHora.value;
-                const tecnico = editarTecnico.value;
-                const status = editarStatus.value;
-                const observacoes = editarObservacoes.value;
-                
-                if (!data || !hora || !tecnico || !status) {
-                    showToast('warning', 'Erro', 'Preencha todos os campos obrigatórios!');
-                    return;
-                }
-                
-                const visitas = JSON.parse(localStorage.getItem('visitas'));
-                const index = visitas.findIndex(v => v.id === id);
-                
-                if (index === -1) {
-                    showToast('warning', 'Erro', 'Visita não encontrada!');
-                    return;
-                }
-                
-                // Obtém a visita original para verificar mudanças
-                const visitaOriginal = visitas[index];
-                
-                // Atualiza os dados da visita
-                visitas[index] = {
-                    ...visitaOriginal,
-                    data,
-                    hora,
-                    tecnico,
-                    status,
-                    observacoes,
-                    dataAtualizacao: new Date().toISOString()
-                };
-                
-                // Salva no localStorage
-                localStorage.setItem('visitas', JSON.stringify(visitas));
-                
-                // Busca o chamado associado
-                const chamados = JSON.parse(localStorage.getItem('chamados'));
-                const chamado = chamados.find(c => c.id === chamadoId);
-                
-                if (chamado) {
-                    // Adiciona registro no histórico do chamado
-                    let mensagemHistorico = '';
-                    
-                    if (visitaOriginal.status !== status) {
-                        mensagemHistorico = `Status da visita técnica alterado de "${visitaOriginal.status}" para "${status}"`;
-                    } else if (visitaOriginal.data !== data || visitaOriginal.hora !== hora) {
-                        mensagemHistorico = `Visita técnica reagendada para ${formatarData(new Date(data))} às ${hora}`;
-                    } else {
-                        mensagemHistorico = `Detalhes da visita técnica atualizados`;
-                    }
-                    
-                    const entradaHistorico = {
-                        data: new Date().toISOString(),
-                        responsavelNome: usuarioAtual.nome,
-                        responsavelSetor: usuarioAtual.setorNome,
-                        acao: 'Visita técnica atualizada',
-                        detalhes: mensagemHistorico
-                    };
-                    
-                    chamado.historico.push(entradaHistorico);
-                    
-                    // Salva o chamado atualizado
-                    const chamadoIndex = chamados.findIndex(c => c.id === chamadoId);
-                    chamados[chamadoIndex] = chamado;
-                    localStorage.setItem('chamados', JSON.stringify(chamados));
-                    
-                    // Envia email de notificação se status mudou
-                    if (visitaOriginal.status !== status || visitaOriginal.data !== data || visitaOriginal.hora !== hora) {
-                        enviarEmailAgendamentoVisita(chamado, visitas[index]);
-                    }
-                }
-                
-                // Fecha o modal
-                modalVisita.classList.add('hidden');
-                
-                // Recarrega as visitas
-                carregarVisitasTecnicas();
-                
-                // Mostra mensagem de sucesso
-                showToast('success', 'Visita Atualizada', 'Visita técnica atualizada com sucesso!');
-            });
-            
-            // Evento para excluir visita
-            btnExcluirVisita.addEventListener('click', function() {
-                if (confirm('Tem certeza que deseja excluir esta visita?')) {
-                    const id = parseInt(editarVisitaId.value);
-                    const chamadoId = parseInt(editarChamadoId.value);
-                    
-                    const visitas = JSON.parse(localStorage.getItem('visitas'));
-                    const index = visitas.findIndex(v => v.id === id);
-                    
-                    if (index === -1) {
-                        showToast('warning', 'Erro', 'Visita não encontrada!');
-                        return;
-                    }
-                    
-                    // Remove a visita
-                    visitas.splice(index, 1);
-                    
-                    // Salva no localStorage
-                    localStorage.setItem('visitas', JSON.stringify(visitas));
-                    
-                    // Adiciona registro no histórico do chamado
-                    const chamados = JSON.parse(localStorage.getItem('chamados'));
-                    const chamadoIndex = chamados.findIndex(c => c.id === chamadoId);
-                    
-                    if (chamadoIndex !== -1) {
-                        chamados[chamadoIndex].historico.push({
-                            data: new Date().toISOString(),
-                            responsavelNome: usuarioAtual.nome,
-                            responsavelSetor: usuarioAtual.setorNome,
-                            acao: 'Visita técnica excluída',
-                            detalhes: 'Visita técnica foi removida'
-                        });
-                        
-                        localStorage.setItem('chamados', JSON.stringify(chamados));
-                    }
-                    
-                    // Fecha o modal
-                    modalVisita.classList.add('hidden');
-                    
-                    // Recarrega as visitas
-                    carregarVisitasTecnicas();
-                    
-                    // Mostra mensagem de sucesso
-                    showToast('success', 'Visita Excluída', 'Visita técnica excluída com sucesso!');
-                }
-            });
-            
-            // Eventos para fechar o modal de edição de visita
-            btnCancelarVisita.addEventListener('click', () => modalVisita.classList.add('hidden'));
-            fecharModalVisita.addEventListener('click', () => modalVisita.classList.add('hidden'));
-            modalVisita.addEventListener('click', e => {
-                if (e.target === modalVisita) {
-                    modalVisita.classList.add('hidden');
-                }
-            });
-            
-            // Evento para filtrar visitas
-            filtroVisitas.addEventListener('change', carregarVisitasTecnicas);
-            
-            // Evento para agendar visita
-            formAgendarVisita.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const chamadoId = parseInt(visitaChamadoId.value);
-                const data = visitaData.value;
-                const hora = visitaHora.value;
-                const tecnico = visitaTecnico.value;
-                const observacoes = visitaObservacoes.value;
-                
-                if (!chamadoId || !data || !hora || !tecnico) {
-                    showToast('warning', 'Erro', 'Preencha todos os campos obrigatórios!');
-                    return;
-                }
-                
-                // Cria nova visita
-                const novaVisita = {
-                    id: gerarIdVisita(),
-                    chamadoId,
-                    data,
-                    hora,
-                    tecnico,
-                    observacoes,
-                    status: 'Agendada',
-                    dataCriacao: new Date().toISOString(),
-                    dataAtualizacao: new Date().toISOString()
-                };
-                
-                // Adiciona a visita
-                const visitas = JSON.parse(localStorage.getItem('visitas'));
-                visitas.push(novaVisita);
-                localStorage.setItem('visitas', JSON.stringify(visitas));
-                
-                // Busca o chamado
-                const chamados = JSON.parse(localStorage.getItem('chamados'));
-                const chamadoIndex = chamados.findIndex(c => c.id === chamadoId);
-                
-                if (chamadoIndex !== -1) {
-                    // Adiciona registro no histórico do chamado
-                    chamados[chamadoIndex].historico.push({
-                        data: new Date().toISOString(),
-                        responsavelNome: usuarioAtual.nome,
-                        responsavelSetor: usuarioAtual.setorNome,
-                        acao: 'Visita técnica agendada',
-                        detalhes: `Agendada visita técnica para o dia ${formatarData(new Date(data))} às ${hora} com o técnico ${tecnico}`
-                    });
-                    
-                    localStorage.setItem('chamados', JSON.stringify(chamados));
-                    
-                    // Envia email de notificação
-                    enviarEmailAgendamentoVisita(chamados[chamadoIndex], novaVisita);
-                }
-                
-                // Limpa o formulário
-                formAgendarVisita.reset();
-                
-                // Atualiza a visualização da visita agendada no modal do chamado
-                atualizarVisualizacaoVisita(chamadoId);
-                
-                // Atualiza a tabela de chamados
-                if (!secaoAtenderChamados.classList.contains('hidden')) {
-                    carregarChamadosParaAtendimento();
-                }
-                
-                // Mostra mensagem de sucesso
-                showToast('success', 'Visita Agendada', `Visita técnica agendada para ${formatarData(new Date(data))} às ${hora}`);
-                
-                // Muda para a aba de info
-                document.querySelector('.modal-tab[data-tab="info"]').click();
-            });
-            
-            // Evento para cancelar agendamento
-            btnCancelarAgendamento.addEventListener('click', function() {
-                formAgendarVisita.reset();
-                document.querySelector('.modal-tab[data-tab="info"]').click();
-            });
-            
-            // Função para atualizar a visualização da visita no modal do chamado
-            function atualizarVisualizacaoVisita(chamadoId) {
-                const visita = obterUltimaVisita(chamadoId);
-                
-                if (!visita) {
-                    visitaAgendadaInfo.classList.add('hidden');
-                    return;
-                }
-                
-                visitaAgendadaInfo.classList.remove('hidden');
-                
-                let statusClass = 'badge-info';
-                if (visita.status === 'Concluída') statusClass = 'badge-success';
-                else if (visita.status === 'Cancelada') statusClass = 'badge-secondary';
-                else if (visita.status === 'Reagendada') statusClass = 'badge-warning';
-                
-                visitaAgendadaInfo.innerHTML = `
-                    <h4>Visita Técnica <span class="badge ${statusClass}">${visita.status}</span></h4>
-                    <div class="agenda-visita-details">
-                        <div class="agenda-visita-detail">
-                            <div class="agenda-visita-detail-label">Data</div>
-                            <div class="agenda-visita-detail-value">${formatarData(new Date(visita.data))}</div>
-                        </div>
-                        <div class="agenda-visita-detail">
-                            <div class="agenda-visita-detail-label">Hora</div>
-                            <div class="agenda-visita-detail-value">${visita.hora}</div>
-                        </div>
-                        <div class="agenda-visita-detail">
-                            <div class="agenda-visita-detail-label">Técnico</div>
-                            <div class="agenda-visita-detail-value">${visita.tecnico}</div>
-                        </div>
-                    </div>
-                    ${visita.observacoes ? `
-                    <div class="agenda-visita-detail" style="margin-top: 10px;">
-                        <div class="agenda-visita-detail-label">Observações</div>
-                        <div class="agenda-visita-detail-value">${visita.observacoes}</div>
-                    </div>
-                    ` : ''}
-                    <div class="agenda-visita-actions" style="margin-top: 10px;">
-                        <button class="btn btn-primary btn-sm btn-editar-visita-modal" data-id="${visita.id}">Editar</button>
-                    </div>
-                `;
-                
-                // Adiciona evento ao botão de editar
-                document.querySelector('.btn-editar-visita-modal').addEventListener('click', function() {
-                    const id = parseInt(this.getAttribute('data-id'));
-                    abrirModalEditarVisita(id);
-                });
-            }
-            
-            // Função para carregar histórico de agendamentos de um chamado
-            function carregarHistoricoAgendamentos(chamadoId) {
-                const visitas = JSON.parse(localStorage.getItem('visitas'));
-                const visitasChamado = visitas.filter(v => v.chamadoId === chamadoId);
-                
-                const agendamentosList = document.getElementById('agendamentos-list');
-                
-                // Limpa o histórico
-                const conteudoHistorico = agendamentosList.querySelector('h4');
-                agendamentosList.innerHTML = '';
-                agendamentosList.appendChild(conteudoHistorico);
-                
-                if (visitasChamado.length === 0) {
-                    const p = document.createElement('p');
-                    p.textContent = 'Nenhum agendamento registrado para este chamado.';
-                    agendamentosList.appendChild(p);
-                    return;
-                }
-                
-                // Ordena as visitas por data (mais recente primeiro)
-                visitasChamado.sort((a, b) => new Date(b.dataCriacao) - new Date(a.dataCriacao));
-                
-                // Adiciona cada visita ao histórico
-                visitasChamado.forEach(visita => {
-                    const divVisita = document.createElement('div');
-                    divVisita.className = 'timeline-item';
-                    
-                    let statusClass = 'badge-info';
-                    if (visita.status === 'Concluída') statusClass = 'badge-success';
-                    else if (visita.status === 'Cancelada') statusClass = 'badge-secondary';
-                    else if (visita.status === 'Reagendada') statusClass = 'badge-warning';
-                    
-                    divVisita.innerHTML = `
-                        <div class="timeline-date">${formatarDataHora(new Date(visita.dataCriacao))}</div>
-                        <div class="timeline-title">
-                            Visita técnica <span class="badge ${statusClass}">${visita.status}</span>
-                        </div>
-                        <div class="timeline-body">
-                            <p><strong>Data:</strong> ${formatarData(new Date(visita.data))}</p>
-                            <p><strong>Hora:</strong> ${visita.hora}</p>
-                            <p><strong>Técnico:</strong> ${visita.tecnico}</p>
-                            ${visita.observacoes ? `<p><strong>Observações:</strong> ${visita.observacoes}</p>` : ''}
-                        </div>
-                    `;
-                    
-                    agendamentosList.appendChild(divVisita);
                 });
             }
             
@@ -4516,27 +3047,9 @@
                 }
             }
             
-            // Função para obter a classe de badge para status de visita
-            function getStatusVisitaBadgeClass(status) {
-                switch(status) {
-                    case 'Agendada':
-                        return 'badge-info';
-                    case 'Em andamento':
-                        return 'badge-warning';
-                    case 'Concluída':
-                        return 'badge-success';
-                    case 'Cancelada':
-                        return 'badge-danger';
-                    case 'Reagendada':
-                        return 'badge-secondary';
-                    default:
-                        return 'badge-secondary';
-                }
-            }
-            
             // Função para abrir o modal de detalhes do chamado
-            function abrirModalChamado(id, tabInicial = 'info') {
-                // Verifica se o usuário está logado
+            function abrirModalChamado(id) {
+                // CORREÇÃO: Verifica se o usuário está logado antes de abrir o modal
                 if (!usuarioAtual) {
                     showToast('warning', 'Erro', 'Você precisa estar logado para visualizar detalhes do chamado!');
                     return;
@@ -4567,10 +3080,8 @@
                 // Mostra ou esconde a tab de resposta
                 if (podeResponder) {
                     tabResponder.classList.remove('hidden');
-                    tabAgendar.classList.remove('hidden');
                 } else {
                     tabResponder.classList.add('hidden');
-                    tabAgendar.classList.add('hidden');
                 }
                 
                 // Atualiza as informações do chamado
@@ -4614,9 +3125,6 @@
                     </div>
                 `;
                 
-                // Atualiza a visualização da visita no modal
-                atualizarVisualizacaoVisita(chamado.id);
-                
                 // Atualiza a descrição
                 document.getElementById('descricao-chamado').textContent = chamado.descricao;
                 
@@ -4630,7 +3138,7 @@
                     historicoItem.className = 'timeline-item';
                     
                     historicoItem.innerHTML = `
-                        <div class="timeline-date">${formatarDataHora(new Date(item.data))}</div>
+                        <div class="timeline-date">${formatarDataHora(item.data)}</div>
                         <div class="timeline-title">
                             ${item.acao}
                             <small style="display: block; margin-top: 3px; color: #666;">
@@ -4643,21 +3151,11 @@
                     historicoContainer.appendChild(historicoItem);
                 });
                 
-                // Atualiza histórico de agendamentos
-                carregarHistoricoAgendamentos(chamado.id);
-                
-                // Seleciona a tab inicial
+                // Seleciona a primeira tab
                 modalTabs.forEach(tab => tab.classList.remove('active'));
                 tabContents.forEach(content => content.classList.remove('active'));
-                
-                const tabInicialElement = document.querySelector(`.modal-tab[data-tab="${tabInicial}"]`);
-                if (tabInicialElement && !tabInicialElement.classList.contains('hidden')) {
-                    tabInicialElement.classList.add('active');
-                    document.getElementById(`tab-${tabInicial}`).classList.add('active');
-                } else {
-                    modalTabs[0].classList.add('active');
-                    tabContents[0].classList.add('active');
-                }
+                modalTabs[0].classList.add('active');
+                tabContents[0].classList.add('active');
                 
                 // Exibe o modal
                 modalDetalhes.classList.remove('hidden');
@@ -4785,7 +3283,7 @@
                 }
             });
             
-            // Adicionar evento de tecla ESC para fechar o modal
+            // CORREÇÃO: Adicionar evento de tecla ESC para fechar o modal
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     if (!modalDetalhes.classList.contains('hidden')) {
@@ -4801,37 +3299,24 @@
                         modalConfirmacao.classList.add('hidden');
                         usuarioExclusao = null;
                     }
-                    if (!modalVisita.classList.contains('hidden')) {
-                        modalVisita.classList.add('hidden');
-                    }
                 }
             });
             
             // Função para atualizar o dashboard
             function atualizarDashboard() {
                 const chamados = JSON.parse(localStorage.getItem('chamados'));
-                const visitas = JSON.parse(localStorage.getItem('visitas'));
                 
-                // Contadores de chamados
+                // Contadores
                 let total = chamados.length;
                 let emAberto = chamados.filter(c => c.status === 'Em aberto').length;
                 let emAndamento = chamados.filter(c => c.status === 'Em andamento').length;
                 let resolvidos = chamados.filter(c => c.status === 'Resolvido' || c.status === 'Fechado').length;
-                
-                // Contadores de visitas
-                let totalVisitas = visitas.length;
-                let visitasPendentes = visitas.filter(v => v.status === 'Agendada' || v.status === 'Em andamento').length;
-                let visitasConcluidas = visitas.filter(v => v.status === 'Concluída').length;
                 
                 // Atualiza os contadores no dashboard
                 document.getElementById('total-chamados').textContent = total;
                 document.getElementById('em-aberto').textContent = emAberto;
                 document.getElementById('em-andamento').textContent = emAndamento;
                 document.getElementById('resolvidos').textContent = resolvidos;
-                
-                document.getElementById('total-visitas').textContent = totalVisitas;
-                document.getElementById('visitas-pendentes').textContent = visitasPendentes;
-                document.getElementById('visitas-concluidas').textContent = visitasConcluidas;
                 
                 // Estatísticas por setor
                 const setores = {};
@@ -5066,42 +3551,23 @@
                     }
                 ];
                 
-                // Adiciona visitas de exemplo
-                const visitasExemplo = [
-                    {
-                        id: 1,
-                        chamadoId: 123,
-                        data: new Date(2023, 5, 15).toISOString(), // 15/06/2023
-                        hora: "14:30",
-                        tecnico: "Técnico 1",
-                        observacoes: "Levar peças de reposição (fonte e memória)",
-                        status: "Concluída",
-                        dataCriacao: new Date(2023, 5, 14, 11, 0).toISOString(),
-                        dataAtualizacao: new Date(2023, 5, 15, 16, 30).toISOString()
-                    },
-                    {
-                        id: 2,
-                        chamadoId: 124,
-                        data: new Date().setDate(new Date().getDate() + 1), // Amanhã
-                        hora: "10:00",
-                        tecnico: "Técnico 2",
-                        observacoes: "Trazer ferramentas para diagnóstico de malware",
-                        status: "Agendada",
-                        dataCriacao: new Date().toISOString(),
-                        dataAtualizacao: new Date().toISOString()
-                    }
-                ];
-                
                 localStorage.setItem('chamados', JSON.stringify(chamadosExemplo));
-                localStorage.setItem('visitas', JSON.stringify(visitasExemplo));
             }
             
-            // Evento extra para garantir que o modal esteja oculto
+            // CORREÇÃO: Evento extra para garantir que o modal esteja oculto
             window.addEventListener('load', function() {
-                // Esconde todos os modais
-                document.querySelectorAll('.modal').forEach(modal => {
-                    modal.classList.add('hidden');
-                });
+                if (modalDetalhes) {
+                    modalDetalhes.classList.add('hidden');
+                }
+                if (settingsModal) {
+                    settingsModal.classList.add('hidden');
+                }
+                if (notificationDropdown) {
+                    notificationDropdown.classList.add('hidden');
+                }
+                if (modalConfirmacao) {
+                    modalConfirmacao.classList.add('hidden');
+                }
             });
             
             // Inicializa a aplicação
