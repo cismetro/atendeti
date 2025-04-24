@@ -1000,7 +1000,13 @@
                 
                 <div class="form-group">
                     <label for="login-senha">Senha:</label>
-                    <input type="password" id="login-senha" required placeholder="Digite sua senha">
+                    <div style="position: relative;">
+                        <input type="password" id="login-senha" required placeholder="Digite sua senha" style="padding-right: 40px;">
+                        <button type="button" class="btn-toggle-password" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); border: none; background: transparent; cursor: pointer; padding: 5px; color: #666;">
+                            <span class="show-password">👁️</span>
+                            <span class="hide-password" style="display: none;">🔒</span>
+                        </button>
+                    </div>
                 </div>
                 
                 <div class="form-group">
@@ -1481,7 +1487,13 @@
                         
                         <div class="form-group">
                             <label for="usuario-senha">Senha:</label>
-                            <input type="password" id="usuario-senha" required placeholder="Digite a senha">
+                            <div style="position: relative;">
+                                <input type="password" id="usuario-senha" required placeholder="Digite a senha" style="padding-right: 40px;">
+                                <button type="button" class="btn-toggle-password" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); border: none; background: transparent; cursor: pointer; padding: 5px; color: #666;">
+                                    <span class="show-password">👁️</span>
+                                    <span class="hide-password" style="display: none;">🔒</span>
+                                </button>
+                            </div>
                         </div>
                         
                         <div class="form-group">
@@ -1622,9 +1634,9 @@
                                     <label for="visita-tecnico">Técnico Responsável:</label>
                                     <select id="visita-tecnico" required>
                                         <option value="">Selecione o técnico</option>
-                                        <option value="Técnico 1">Técnico 1</option>
-                                        <option value="Técnico 2">Técnico 2</option>
-                                        <option value="Técnico 3">Técnico 3</option>
+                                        <option value="Técnico 1">David</option>
+                                        <option value="Técnico 2">Márcio</option>
+                                        <option value="Técnico 3">Leonardo</option>
                                     </select>
                                 </div>
                                 
@@ -1724,9 +1736,9 @@
                             <label for="editar-tecnico">Técnico Responsável:</label>
                             <select id="editar-tecnico" required>
                                 <option value="">Selecione o técnico</option>
-                                <option value="Técnico 1">Técnico 1</option>
-                                <option value="Técnico 2">Técnico 2</option>
-                                <option value="Técnico 3">Técnico 3</option>
+                                <option value="Técnico 1">David</option>
+                                <option value="Técnico 2">Márcio</option>
+                                <option value="Técnico 3">Leonardo</option>
                             </select>
                         </div>
                         
@@ -5107,6 +5119,26 @@
             // Inicializa a aplicação
             carregarSetoresLogin();
             
+            // Configura os botões de mostrar/ocultar senha
+            document.querySelectorAll('.btn-toggle-password').forEach(btn => {
+            btn.addEventListener('click', function() {
+            const input = this.parentNode.querySelector('input');
+            const showIcon = this.querySelector('.show-password');
+            const hideIcon = this.querySelector('.hide-password');
+        
+            if (input.type === 'password') {
+            input.type = 'text';
+            showIcon.style.display = 'none';
+            hideIcon.style.display = 'inline';
+                } else {
+            input.type = 'password';
+            showIcon.style.display = 'inline';
+            hideIcon.style.display = 'none';
+            }
+        });
+    });
+
+
             // Carrega as configurações da interface
             soundToggle.checked = configuracoes.somAtivado;
             volumeSlider.value = configuracoes.volume;
