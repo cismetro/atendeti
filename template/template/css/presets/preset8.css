@@ -1,0 +1,181 @@
+/**
+ * @package Helix Ultimate Framework
+ * @author JoomShaper https://www.joomshaper.com
+ * @copyright Copyright (c) 2010 - 2018 JoomShaper
+ * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
+ */
+body, .sp-preloader {
+  background-color: #fff;
+  color: #4b5d73;
+}
+.sp-preloader > div {
+  background: #005792;
+}
+.sp-preloader > div:after {
+  background: #fff;
+}
+#sp-top-bar {
+  background: #fcfcfc;
+  color: #999;
+}
+#sp-top-bar a {
+  color: #999;
+}
+#sp-header {
+  background: #fff;
+}
+a {
+  color: #005792;
+}
+a:hover, a:focus, a:active {
+  color: #005792;
+}
+.tags > li {
+  display: inline-block;
+}
+.tags > li a {
+  background: rgba(0, 87, 146, 0.1);
+  color: #005792;
+}
+.tags > li a:hover {
+  background: #005792;
+}
+.article-social-share .social-share-icon ul li a {
+  color: #4b5d73;
+}
+.article-social-share .social-share-icon ul li a:hover, .article-social-share .social-share-icon ul li a:focus {
+  background: #005792;
+}
+.pager > li a {
+  border: 1px solid #ededed;
+  background: #fff;
+  color: #4b5d73;
+}
+.pager > li a:hover, .pager > li a:focus {
+  background: #005792;
+  color: #fff;
+}
+.sp-megamenu-parent > li > a {
+  color: #3e4043;
+}
+.sp-megamenu-parent > li:hover > a {
+  color: #005792;
+}
+.sp-megamenu-parent > li.active > a, .sp-megamenu-parent > li.active:hover > a {
+  color: #005792;
+}
+.sp-megamenu-parent .sp-dropdown .sp-dropdown-inner {
+  background: #fff;
+}
+.sp-megamenu-parent .sp-dropdown li.sp-menu-item > a {
+  color: #3e4043;
+}
+.sp-megamenu-parent .sp-dropdown li.sp-menu-item > a:hover {
+  color: #005792;
+}
+.sp-megamenu-parent .sp-dropdown li.sp-menu-item.active > a {
+  color: #005792;
+}
+.sp-megamenu-parent .sp-mega-group > li > a {
+  color: #3e4043;
+}
+#offcanvas-toggler > .fa {
+  color: #3e4043;
+}
+#offcanvas-toggler > .fa:hover, #offcanvas-toggler > .fa:focus, #offcanvas-toggler > .fa:active {
+  color: #005792;
+}
+.offcanvas-menu {
+  background-color: #fff;
+  color: #3e4043;
+}
+.offcanvas-menu .offcanvas-inner .sp-module ul > li a, .offcanvas-menu .offcanvas-inner .sp-module ul > li span {
+  color: #3e4043;
+}
+.offcanvas-menu .offcanvas-inner .sp-module ul > li a:hover, .offcanvas-menu .offcanvas-inner .sp-module ul > li span:hover, .offcanvas-menu .offcanvas-inner .sp-module ul > li a:focus, .offcanvas-menu .offcanvas-inner .sp-module ul > li span:focus {
+  color: #005792;
+}
+.offcanvas-menu .offcanvas-inner .sp-module ul > li.menu-parent > a > .menu-toggler, .offcanvas-menu .offcanvas-inner .sp-module ul > li.menu-parent > .menu-separator > .menu-toggler {
+  color: rgba(62, 64, 67, 0.5);
+}
+.offcanvas-menu .offcanvas-inner .sp-module ul > li ul li a {
+  color: rgba(62, 64, 67, 0.8);
+}
+.btn-primary, .sppb-btn-primary {
+  border-color: #005792;
+  background-color: #005792;
+}
+.btn-primary:hover, .sppb-btn-primary:hover {
+  border-color: #005792;
+  background-color: #005792;
+}
+ul.social-icons > li a:hover {
+  color: #005792;
+}
+.sp-page-title {
+  background: #2a303b;
+}
+.sp-page-title h1, .sp-page-title h2, .sp-page-title h3, .sp-page-title h4, .sp-page-title h5, .sp-page-title h6, .sp-page-title .sp-page-title-sub-heading, .sp-page-title .sp-page-title-heading {
+  color: #fff;
+}
+.layout-boxed .body-innerwrapper {
+  background: #fff;
+}
+.sp-module ul > li > a {
+  color: #4b5d73;
+}
+.sp-module ul > li > a:hover {
+  color: #005792;
+}
+.sp-module .latestnews > div > a {
+  color: #4b5d73;
+}
+.sp-module .latestnews > div > a:hover {
+  color: #005792;
+}
+.sp-module .tagscloud .tag-name:hover {
+  background: #005792;
+}
+.search .btn-toolbar button {
+  background: #005792;
+}
+#sp-footer {
+  background: #fff;
+  color: #6d7a8c;
+}
+#sp-footer a {
+  color: #a2a2a2;
+}
+#sp-footer a:hover, #sp-footer a:active, #sp-footer a:focus {
+  color: #fff;
+}
+#sp-bottom {
+  padding: 120px 0;
+  background: #f3f6f7;
+}
+#sp-bottom .sp-module-content .latestnews > li > a > span {
+  color: #6d7a8c;
+}
+.sp-comingsoon body {
+  background-color: #005792;
+}
+.pagination > li > a, .pagination > li > span {
+  color: #4b5d73;
+}
+.pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
+  color: #4b5d73;
+}
+.pagination > .active > a, .pagination > .active > span {
+  border-color: #005792;
+  background-color: #005792;
+}
+.pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+  border-color: #005792;
+  background-color: #005792;
+}
+.error-code, .coming-soon-number {
+  color: #005792;
+}
+.sp-megamenu-parent .sp-dropdown li.sp-menu-item > a:hover:before {
+  background-color: #005792;
+}
