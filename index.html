@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Chamados - Saúde</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
 :root {
             /* Colors from wt_health_center_free Template */
@@ -947,9 +950,83 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /*  NÃO PUBLICAR EM AMBENTE DE PRODUÇÃO*/
+.aviso-teste {
+    text-align: center;
+    font-weight: bold;
+    animation: pulseColor 2s infinite;
+    font-size: large;
+  }
+
+  @keyframes pulseColor {
+    0%   { color: red; }
+    33%  { color: yellow; }
+    66%  { color: purple; }
+    100% { color: red; }
+  }
     </style>
 </head>
 <body>
+
+<div class="container">
+
+  <!-- Modal -->
+  <div class="modalfade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h1>Como acessar o sistema</h1>
+        </div>
+        <p class="aviso-teste"><small>As informações exibidas aqui estatão  visíveis apenas para fins de teste.</small></p>
+        <div class="modal-body">
+     
+     <h3>Usuário que irá abrir o chamado</h3>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr>
+    <th>Usuário</th>
+    <td>cs2_centro</td>
+  </tr>
+  <tr>
+    <th>Senha</th>
+    <td>cs2_centro2025</td>
+  </tr>
+  <tr>
+    <th>E-mail</th>
+    <td>ubscosmopoliscs2@yahoo.com</td>
+  </tr>
+</table>
+
+<br>
+
+<h3>Usuário que irá atender ao chamado</h3>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr>
+    <th>Usuário</th>
+    <td>intranet_saude</td>
+  </tr>
+  <tr>
+    <th>Senha</th>
+    <td>intranet_saude2025</td>
+  </tr>
+  <tr>
+    <th>E-mail</th>
+    <td>ti.saude@cosmopolis.sp.gov.br</td>
+  </tr>
+</table>
+     
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
+
+
     <header>
         <div class="container">
             <h1>Atender TI - Sistema de Chamados da Secretaria de Saúde de Cosmópolis</h1>
@@ -973,6 +1050,9 @@
             </div>
         </div>
     </header>
+
+
+    
 
     <div class="container">
         <!-- Informações do Usuário Logado -->
