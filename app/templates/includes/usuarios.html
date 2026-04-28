@@ -1,0 +1,67 @@
+<!-- Gerenciamento de Usuários -->
+<div id="gerenciar-usuarios" class="section {{ 'hidden' if active_tab != 'usuarios' else '' }}">
+    <div class="section-header">
+        <h2>Gestão de Usuários e Permissões</h2>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-sm btn-success">Cadastrar Novo Usuário</a>
+    </div>
+
+    <div class="filters-bar">
+        <input type="text" id="search-user" class="form-control" placeholder="Buscar por nome ou e-mail...">
+        <select id="filter-user-setor">
+            <option value="todos">Todos os Setores</option>
+            <option value="TI">Equipe de TI</option>
+            <!-- Outros setores carregados dinamicamente -->
+        </select>
+    </div>
+
+    <div class="responsive-table">
+        <table id="tabela-usuarios">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Setor</th>
+                    <th>Tipo</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Preenchido via AJAX -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Formulário de Usuário (Oculto por padrão) -->
+    <div id="form-usuario-container" class="section hidden">
+        <h3 id="form-usuario-titulo">Novo Usuário</h3>
+        <form id="form-usuario">
+            <input type="hidden" id="usuario-id">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="usuario-nome">Nome Completo:</label>
+                    <input type="text" id="usuario-nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="usuario-email">E-mail:</label>
+                    <input type="email" id="usuario-email" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="usuario-setor">Setor:</label>
+                    <select id="usuario-setor" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="usuario-senha">Senha Inicial:</label>
+                    <input type="password" id="usuario-senha" required>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">Salvar Usuário</button>
+                <button type="button" id="btn-cancelar-usuario" class="btn btn-danger">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+

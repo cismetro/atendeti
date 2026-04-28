@@ -1,0 +1,318 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Configurações de Notificação -->
+<div id="settings-modal" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Configurações de Notificação</h3>
+            <span class="close" id="close-settings">&times;</span>
+        </div>
+        
+        <div class="modal-body">
+            <div class="settings-section">
+                <h4>Alertas Sonoros</h4>
+                <div class="toggle-switch">
+                    <label class="toggle-label">Ativar sons de notificação</label>
+                    <label class="switch">
+                        <input type="checkbox" id="sound-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div id="volume-settings">
+                    <div class="volume-container">
+                        <span>Volume:</span>
+                        <input type="range" id="volume-slider" class="volume-slider" min="0" max="100" value="50">
+                        <span id="volume-value">50%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h4>Alertas Visuais</h4>
+                <div class="toggle-switch">
+                    <label class="toggle-label">Piscar sino de notificação</label>
+                    <label class="switch">
+                        <input type="checkbox" id="bell-animation" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h4>Frequência de Verificação</h4>
+                <div class="form-group">
+                    <label for="check-interval">Verificar por novos chamados a cada:</label>
+                    <select id="check-interval">
+                        <option value="15">15 segundos</option>
+                        <option value="30" selected>30 segundos</option>
+                        <option value="60">1 minuto</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <button id="save-settings" class="btn btn-primary">Salvar Configurações</button>
+            <button id="cancel-settings" class="btn btn-danger">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Navegação Principal -->
+<nav id="main-nav">
+    <a href="{{ url_for('main.dashboard', secao='novo-chamado') }}" id="btn-novo-chamado" class="{{ 'active' if active_tab == 'novo-chamado' else '' }}">Novo Chamado</a>
+    <a href="{{ url_for('main.dashboard', secao='meus-chamados') }}" id="btn-meus-chamados" class="{{ 'active' if active_tab == 'meus-chamados' else '' }}">Meus Chamados</a>
+    
+    {% if current_user.is_ti %}
+    <a href="{{ url_for('main.dashboard', secao='atendimento') }}" id="btn-atender-chamados" class="{{ 'active' if active_tab == 'atendimento' else '' }}">Atendimento</a>
+    <a href="{{ url_for('main.dashboard', secao='visitas') }}" id="btn-visitas-tecnicas" class="{{ 'active' if active_tab == 'visitas' else '' }}">Visitas Técnicas</a>
+    <a href="{{ url_for('main.dashboard', secao='config-email') }}" id="btn-config-email" class="{{ 'active' if active_tab == 'config-email' else '' }}">Config. Email</a>
+    <a href="{{ url_for('main.dashboard', secao='usuarios') }}" id="btn-gerenciar-usuarios" class="{{ 'active' if active_tab == 'usuarios' else '' }}">Gerenciar Usuários</a>
+    <a href="{{ url_for('main.dashboard', secao='dashboard') }}" id="btn-dashboard" class="{{ 'active' if active_tab == 'dashboard' else '' }}">Dashboard</a>
+    {% endif %}
+</nav>
+
+<!-- Novo Chamado -->
+<div id="novo-chamado" class="section {{ 'hidden' if active_tab != 'novo-chamado' else '' }}">
+    <h2>Abrir Novo Chamado</h2>
+    <form id="form-chamado" method="POST" action="{{ url_for('main.abrir_chamado') }}">
+        <div class="form-group">
+            <label for="setor-origem-display">Seu Setor (Origem):</label>
+            <input type="text" id="setor-origem-display" class="form-control" value="{{ current_user.setor }}" readonly style="background-color: #f8f9fa; font-weight: bold; color: #2c3e50;">
+            <input type="hidden" name="setor-origem" value="{{ current_user.setor }}">
+        </div>
+
+        <div class="form-group">
+            <label for="setor-destino-display">Setor de Destino:</label>
+            <input type="text" id="setor-destino-display" class="form-control" value="TI SecSau" readonly style="background-color: #f8f9fa; font-weight: bold; color: #2c3e50;">
+            <input type="hidden" name="setor-destino" value="TI SecSau">
+        </div>
+
+        <div class="form-group">
+            <label for="tipo-chamado">Tipo de Chamado:</label>
+            <select id="tipo-chamado" name="tipo-chamado" required>
+                <option value="">Selecione o tipo</option>
+                <optgroup label="Computadores e Hardware">
+                    <option value="Computador não liga">Computador não liga</option>
+                    <option value="Computador lento">Computador lento</option>
+                    <option value="Tela azul/travamentos">Tela azul/travamentos</option>
+                </optgroup>
+                <optgroup label="Internet e Rede">
+                    <option value="Internet não funciona">Internet não funciona</option>
+                    <option value="Conexão lenta">Conexão lenta</option>
+                </optgroup>
+                <option value="Outro problema de TI">Outro problema de TI</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="prioridade">Prioridade:</label>
+            <select id="prioridade" name="prioridade" required>
+                <option value="Baixa">Baixa</option>
+                <option value="Média">Média</option>
+                <option value="Alta">Alta</option>
+                <option value="Urgente">Urgente</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="assunto">Assunto:</label>
+            <input type="text" id="assunto" name="assunto" required placeholder="Digite um título para o chamado">
+        </div>
+
+        <div class="form-group">
+            <label for="descricao">Descrição:</label>
+            <textarea id="descricao" name="descricao" required placeholder="Descreva detalhadamente o problema ou solicitação"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Abrir Chamado</button>
+    </form>
+</div>
+
+<!-- Meus Chamados -->
+<div id="meus-chamados" class="section {{ 'hidden' if active_tab != 'meus-chamados' else '' }}">
+    <h2>Meus Chamados</h2>
+    <div class="responsive-table">
+        <table id="tabela-meus-chamados">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Assunto</th>
+                    <th>Setor Destino</th>
+                    <th>Data</th>
+                    <th>Prioridade</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if tickets %}
+                    {% for ticket in tickets %}
+                    <tr>
+                        <td>#{{ ticket.id }}</td>
+                        <td>{{ ticket.titulo }}</td>
+                        <td>TI SecSau</td>
+                        <td>{{ ticket.data_criacao.strftime('%d/%m/%Y %H:%M') }}</td>
+                        <td><span class="badge badge-{{ 'info' if ticket.prioridade == 'Baixa' else 'warning' if ticket.prioridade == 'Media' else 'danger' }}">{{ ticket.prioridade }}</span></td>
+                        <td><span class="badge badge-{{ 'success' if ticket.status == 'Concluido' else 'info' }}">{{ ticket.status }}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="abrirModalChamado({{ ticket.id }})">Ver</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="7" style="text-align: center;">Nenhum chamado encontrado.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% if current_user.is_ti %}
+    <!-- Seções exclusivas da TI -->
+    {% include 'includes/atendimento.html' %}
+    {% include 'includes/visitas.html' %}
+    {% include 'includes/config_email.html' %}
+    {% include 'includes/usuarios.html' %}
+
+    <!-- Dashboard Stats -->
+    <div id="dashboard" class="section {{ 'hidden' if active_tab != 'dashboard' else '' }}">
+        <h2>Dashboard</h2>
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>Total de Chamados</h3>
+                <div id="total-chamados" class="stat-value">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Em Aberto</h3>
+                <div id="em-aberto" class="stat-value">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Em Andamento</h3>
+                <div id="em-andamento" class="stat-value">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Resolvidos</h3>
+                <div id="resolvidos" class="stat-value">0</div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<!-- Modal Detalhes -->
+<div id="modal-detalhes" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-titulo">Detalhes do Chamado</h3>
+            <span class="close" id="fechar-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="modal-tabs">
+                <div class="modal-tab active" data-tab="info">Informações</div>
+                <div class="modal-tab" data-tab="history">Histórico</div>
+                <div id="tab-agendar" class="modal-tab hidden" data-tab="agenda">Agendar Visita</div>
+                <div id="tab-responder" class="modal-tab hidden" data-tab="response">Responder</div>
+            </div>
+            <div id="tab-info" class="tab-content active">
+                <div id="info-chamado"></div>
+                <div class="divider"></div>
+                <h4>Descrição</h4>
+                <div id="descricao-chamado" class="timeline-body"></div>
+            </div>
+            <div id="tab-history" class="tab-content">
+                <div class="timeline" id="historico-chamado"></div>
+            </div>
+            <div id="tab-agenda" class="tab-content">
+                <form id="form-agendar-visita">
+                    <input type="hidden" id="visita-chamado-id">
+                    <div class="form-group">
+                        <label for="visita-data">Data:</label>
+                        <input type="date" id="visita-data" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="visita-hora">Hora:</label>
+                        <input type="time" id="visita-hora" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Agendar</button>
+                </form>
+            </div>
+            <div id="tab-response" class="tab-content">
+                <form id="form-resposta">
+                    <input type="hidden" id="chamado-id">
+                    <div class="form-group">
+                        <label for="novo-status">Status:</label>
+                        <select id="novo-status">
+                            <option value="Aberto">Aberto</option>
+                            <option value="Em Andamento">Em Andamento</option>
+                            <option value="Concluido">Concluido</option>
+                        </select>
+                    </div>
+                    <textarea id="resposta-chamado" placeholder="Sua resposta..."></textarea>
+                    <button type="submit" class="btn btn-success">Enviar</button>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary hidden" id="btn-comecar">Começar Atendimento</button>
+            <button class="btn btn-danger" id="btn-fechar-modal">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Elemento de Áudio -->
+<audio id="notification-sound-urgente" preload="auto">
+    <source src="https://cdn.jsdelivr.net/gh/anars/blank-audio@master/1-second-of-silence.mp3" type="audio/mp3">
+</audio>
+<audio id="notification-sound-alta" preload="auto"></audio>
+<audio id="notification-sound-media" preload="auto"></audio>
+<audio id="notification-sound-baixa" preload="auto"></audio>
+
+<div id="toast-container"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Inicializa o estado do sistema com dados do Flask
+    window.USUARIO_FLASK = {
+        id: {{ current_user.id }},
+        nome: "{{ current_user.nome }}",
+        setor: "{{ current_user.setor }}",
+        email: "{{ current_user.email }}",
+        is_ti: {{ 'true' if current_user.is_ti else 'false' }}
+    };
+
+    // Mock de setores por enquanto (pode ser migrado para o banco depois)
+    window.SETORES_FLASK = [
+        { id: 1, nome: "UBS CSII - Centro", tipo: "client" },
+        { id: 2, nome: "UBS Jardim de Fáveri", tipo: "client" },
+        { id: 20, nome: "Secretaria de Saúde", tipo: "client" },
+        { id: 13, nome: "CAPS Adulto", tipo: "client" },
+        { id: 27, nome: "TI", tipo: "support" }
+    ];
+
+    window.ACTIVE_TAB = "{{ active_tab }}";
+
+    // Ponte de compatibilidade com main.js original
+    const usuarioLocalStorage = {
+        id: window.USUARIO_FLASK.id,
+        nome: window.USUARIO_FLASK.nome,
+        email: window.USUARIO_FLASK.email,
+        setorId: window.USUARIO_FLASK.is_ti ? 27 : 1, 
+        setorNome: window.USUARIO_FLASK.setor,
+        tipoUsuario: window.USUARIO_FLASK.is_ti ? 'support' : 'user',
+        is_ti: window.USUARIO_FLASK.is_ti
+    };
+    
+    window.usuarioAtual = usuarioLocalStorage;
+    localStorage.setItem('usuarioAtual', JSON.stringify(usuarioLocalStorage));
+    localStorage.setItem('setores', JSON.stringify(window.SETORES_FLASK));
+
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("Sistema inicializado para:", window.USUARIO_FLASK.nome);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Chamados - Saúde</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>AtendeTI - Sistema de Chamados</h1>
+            <div id="notification-bell" class="notification-bell">
+                <div class="bell-icon">
+                    🔔
+                    <span id="notification-count" class="bell-badge hidden">0</span>
+                </div>
+            </div>
+            <div id="notification-dropdown" class="notification-dropdown hidden">
+                <h3>Notificações</h3>
+                <div id="notification-list"></div>
+                <div class="notification-footer">
+                    <span id="settings-btn" class="notification-settings">Configurações</span>
+                    <span id="mark-all-read" class="notification-mark-all-read">Marcar todas como lidas</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Informações do Usuário Logado -->
+        <div id="perfil-usuario" class="profile-info">
+            <div class="profile-avatar" id="avatar-inicial">
+                {% if current_user.is_authenticated %}{{ current_user.nome[0]|upper }}{% else %}U{% endif %}
+            </div>
+            <div class="profile-details">
+                <div class="profile-name" id="nome-usuario">
+                    {% if current_user.is_authenticated %}{{ current_user.nome }}{% else %}Usuário não logado{% endif %}
+                </div>
+                <div class="profile-role" id="setor-usuario">
+                    {% if current_user.is_authenticated %}{{ current_user.setor }}{% else %}Faça login para continuar{% endif %}
+                </div>
+            </div>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-danger" id="btn-logout-link">Sair</a>
+            {% endif %}
+        </div>
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tickets.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/users.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/visits.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/email_config.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

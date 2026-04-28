@@ -1,0 +1,93 @@
+<!-- Visitas Técnicas -->
+<div id="visitas-tecnicas" class="section {{ 'hidden' if active_tab != 'visitas' else '' }}">
+    <div class="section-header">
+        <h2>Visitas Técnicas Agendadas</h2>
+        <button id="nova-visita-manual" class="btn btn-sm btn-primary">Agendar Visita Direta</button>
+    </div>
+
+    <div class="filters-bar">
+        <div class="filter-group">
+            <label for="filtro-visitas">Filtrar por:</label>
+            <div style="display: flex; gap: 10px;">
+                <select id="filtro-visitas" style="min-width: 200px;">
+                    <option value="todas" selected>Todas as visitas</option>
+                    <option value="pendentes">Pendentes</option>
+                    <option value="concluidas">Concluídas</option>
+                    <option value="hoje">Hoje</option>
+                </select>
+                <button id="btn-aplicar-filtro-visitas" class="btn btn-info" onclick="carregarVisitasTecnicas()">Aplicar Filtro</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="lista-visitas-agendadas">
+        <!-- Tabela de visitas será inserida aqui via JS -->
+        <p id="sem-visitas" class="empty-state">Nenhuma visita técnica encontrada para este filtro.</p>
+    </div>
+</div>
+
+<!-- Modal de Visita Técnica -->
+<div id="modal-visita" class="modal hidden">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h3 id="modal-visita-titulo">Agendar Visita Técnica</h3>
+            <span class="close" id="fechar-modal-visita">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="form-visita-tecnica">
+                <input type="hidden" id="visita-id">
+                
+                <div class="form-group">
+                    <label for="visita-setor">Setor / Local:</label>
+                    <select id="visita-setor" required>
+                        <option value="">Selecione o setor</option>
+                        <option value="UBS CSII - Centro">UBS CSII - Centro</option>
+                        <option value="UBS Jardim de Fáveri">UBS Jardim de Fáveri</option>
+                        <option value="UBS Jardim de Plátanos">UBS Jardim de Plátanos</option>
+                        <option value="UBS Dr. Henrique Scursoni">UBS Dr. Henrique Scursoni</option>
+                        <option value="Secretaria de Saúde">Secretaria de Saúde</option>
+                        <option value="CAPS Adulto">CAPS Adulto</option>
+                        <option value="Vigilância em Saúde">Vigilância em Saúde</option>
+                        <option value="Almoxarifado Saúde">Almoxarifado Saúde</option>
+                        <option value="Pronto Socorro">Pronto Socorro</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="visita-data-manual">Data:</label>
+                            <input type="date" id="visita-data-manual" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="visita-hora-manual">Hora:</label>
+                            <input type="time" id="visita-hora-manual" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="visita-tecnico-manual">Técnico Responsável:</label>
+                    <input type="text" id="visita-tecnico-manual" placeholder="Nome do técnico" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="visita-assunto">Assunto / Motivo:</label>
+                    <input type="text" id="visita-assunto" placeholder="Ex: Troca de impressora" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="visita-obs">Observações:</label>
+                    <textarea id="visita-obs" rows="3" placeholder="Detalhes adicionais..."></textarea>
+                </div>
+
+                <div class="modal-footer" style="padding: 15px 0 0 0;">
+                    <button type="submit" class="btn btn-primary">Salvar Agendamento</button>
+                    <button type="button" id="btn-cancelar-visita" class="btn btn-danger">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
