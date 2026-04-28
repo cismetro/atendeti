@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="register-section" class="section">
+    <div class="auth-container" style="max-width: 500px; margin: 40px auto; padding: 30px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
+        <h2 style="text-align: center; color: #2c3e50; margin-bottom: 30px;">Cadastrar Novo Usuário</h2>
+        
+        <form action="{{ url_for('auth.register') }}" method="POST" class="registration-form">
+            <div class="form-group">
+                <label for="reg-nome">Nome Completo:</label>
+                <input type="text" name="nome" id="reg-nome" class="form-control" required placeholder="Ex: João Silva">
+            </div>
+
+            <div class="form-group">
+                <label for="reg-email">E-mail Corporativo:</label>
+                <input type="email" name="email" id="reg-email" class="form-control" required placeholder="email@exemplo.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="reg-setor">Setor:</label>
+                <select name="setor" id="reg-setor" class="form-control" required>
+                    <option value="">Selecione o seu setor</option>
+                    <option value="UBS CSII - Centro">UBS CSII - Centro</option>
+                    <option value="UBS Jardim de Fáveri">UBS Jardim de Fáveri</option>
+                    <option value="UBS Jardim de Plátanos">UBS Jardim de Plátanos</option>
+                    <option value="UBS Dr. Henrique Scursoni">UBS Dr. Henrique Scursoni</option>
+                    <option value="Secretaria de Saúde">Secretaria de Saúde</option>
+                    <option value="CAPS Adulto">CAPS Adulto</option>
+                    <option value="Vigilância em Saúde">Vigilância em Saúde</option>
+                    <option value="Almoxarifado Saúde">Almoxarifado Saúde</option>
+                    <option value="Pronto Socorro">Pronto Socorro</option>
+                    <option value="TI">TI / Informática</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="reg-senha">Senha:</label>
+                <input type="password" name="senha" id="reg-senha" class="form-control" required placeholder="Crie uma senha segura">
+            </div>
+            
+            {% if error %}
+            <div class="alert alert-danger" style="margin-top: 15px; border-radius: 8px;">
+                {{ error }}
+            </div>
+            {% endif %}
+            
+            <div style="margin-top: 30px;">
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-weight: 600; border-radius: 8px; background: linear-gradient(135deg, #3498db, #2980b9); border: none; transition: all 0.3s;">
+                    Criar Conta
+                </button>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <p style="color: #7f8c8d;">Já tem uma conta? <a href="{{ url_for('auth.login') }}" style="color: #3498db; text-decoration: none; font-weight: 600;">Faça login aqui</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .form-control {
+        height: 45px;
+        border-radius: 8px;
+        border: 1px solid #dcdde1;
+        transition: border-color 0.3s;
+    }
+    .form-control:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+    label {
+        font-weight: 500;
+        color: #34495e;
+        margin-bottom: 8px;
+    }
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+    }
+</style>
+{% endblock %}

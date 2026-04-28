@@ -1,0 +1,45 @@
+<!-- Atender Chamados -->
+<div id="atender-chamados" class="section {{ 'hidden' if active_tab != 'atendimento' else '' }}">
+    <div class="section-header">
+        <h2>Painel de Atendimento</h2>
+        <div class="header-actions">
+            <button id="refresh-atendimento" class="btn btn-sm btn-info">Atualizar Listagem</button>
+        </div>
+    </div>
+    
+    <div class="filters-bar">
+        <div class="filter-group">
+            <label>Filtrar Chamados em Atendimento</label>
+        </div>
+        <div class="filter-group">
+            <label>Prioridade:</label>
+            <select id="filter-prioridade-atendimento">
+                <option value="todas">Todas</option>
+                <option value="Urgente">Urgente</option>
+                <option value="Alta">Alta</option>
+                <option value="Media">Média</option>
+                <option value="Baixa">Baixa</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="responsive-table">
+        <table id="tabela-atender-chamados">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Assunto</th>
+                    <th>Setor Origem</th>
+                    <th>Solicitante</th>
+                    <th>Data</th>
+                    <th>Prioridade</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Preenchido via AJAX/SocketIO -->
+            </tbody>
+        </table>
+    </div>
+</div>

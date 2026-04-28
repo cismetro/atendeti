@@ -1,0 +1,51 @@
+<!-- Configurações de Email -->
+<div id="config-email" class="section {{ 'hidden' if active_tab != 'config-email' else '' }}">
+    <h2>Configurações de Notificação por E-mail</h2>
+    <p class="section-desc">Configure o servidor SMTP para o envio automático de alertas de chamados.</p>
+    
+    <form id="form-config-smtp" class="settings-form">
+        <div class="form-row">
+            <div class="form-group col-8">
+                <label for="smtp-servidor">Servidor SMTP:</label>
+                <input type="text" id="smtp-servidor" placeholder="ex: smtp.gmail.com" required>
+            </div>
+            <div class="form-group col-4">
+                <label for="smtp-porta">Porta:</label>
+                <input type="number" id="smtp-porta" placeholder="587" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="smtp-usuario">Usuário/E-mail:</label>
+            <input type="email" id="smtp-usuario" placeholder="ti@empresa.com" required>
+        </div>
+
+        <div class="form-group">
+            <label for="smtp-senha">Senha:</label>
+            <input type="password" id="smtp-senha" placeholder="••••••••" required>
+        </div>
+
+        <div class="form-group">
+            <label for="smtp-email">E-mail de Remetente:</label>
+            <input type="email" id="smtp-email" placeholder="noreply@empresa.com" required>
+        </div>
+
+        <div class="form-group">
+            <label for="smtp-remetente">Nome do Remetente:</label>
+            <input type="text" id="smtp-remetente" placeholder="Sistema de Chamados TI" required>
+        </div>
+
+        <div class="form-group">
+            <label class="checkbox-container">
+                <input type="checkbox" id="smtp-seguranca" checked>
+                <span class="checkmark"></span>
+                Usar TLS/SSL (Segurança)
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Salvar Configurações</button>
+            <button type="button" id="btn-testar-email" class="btn btn-info">Testar Conexão</button>
+        </div>
+    </form>
+</div>
